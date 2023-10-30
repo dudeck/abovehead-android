@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AboveHead</string>
+
+    <string name="news">Wiadomości</string>
+    <string name="pictures">Plakaty</string>
+    <string name="cart">Koszyk</string>
+    <string name="shoppingCart">Twój Koszyk</string>
+</resources>
