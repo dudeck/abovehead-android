@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import pl.abovehead.ui.screens.CartScreen
-import pl.abovehead.ui.screens.NewsScreen
+import pl.abovehead.ui.screens.news.NewsScreen
 import pl.abovehead.ui.screens.PicturesScreen
 
 @Composable
