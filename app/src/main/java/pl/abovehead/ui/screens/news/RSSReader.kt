@@ -14,9 +14,10 @@ class RSSReader {
                 connection.getInputStream()
             )
         )
-        var inputLine: String?
+        var inputLine = ""
 
-        while (`in`.readLine().also { inputLine = it } != null) println(inputLine)
+        while (`in`.readLine().also { inputLine += it } != null) {}
+            println(inputLine)
         `in`.close()
     }
 }
