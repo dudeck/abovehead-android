@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.AndroidEntryPoint
 import pl.abovehead.R
+
+@AndroidEntryPoint
 
 class NewsFragment : Fragment() {
 
@@ -23,7 +26,7 @@ class NewsFragment : Fragment() {
     ): View {
         val binding: pl.abovehead.databinding.FragmentNewsBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_news, container, false)
-        return binding.root;
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
