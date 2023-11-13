@@ -2,11 +2,13 @@ package pl.abovehead.ui.screens.news
 
 // RssFeedAdapter.kt
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import pl.abovehead.databinding.ListItemRssBinding
 import pl.abovehead.model.RssItem
 
@@ -29,6 +31,7 @@ class RssFeedAdapter : ListAdapter<RssItem, RssFeedAdapter.RssItemViewHolder>(Rs
         fun bind(item: RssItem) {
             binding.titleTextView.text = item.title
             binding.descriptionTextView.text = item.description
+            binding.rssItemImage.load(Uri.parse(item.enclosureUrl))
             // You can handle the click event or additional UI bindings here
         }
     }

@@ -5,6 +5,6 @@ data class RssItem(
     val title: String?,
     val link: String,
     val description: String?,
-//    val enclosureUrl: String?,
+    val enclosureUrl: String?,
 //    val pubDate: String?
 )

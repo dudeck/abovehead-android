@@ -44,9 +44,9 @@ class NewsFragment : Fragment() {
 
         viewModel = ViewModelProvider(this)[NewsViewModel::class.java]
 
-        viewModel.rssItemsLiveData.observe(viewLifecycleOwner, { rssItems ->
+        viewModel.rssItemsLiveData.observe(viewLifecycleOwner) { rssItems ->
             adapter.submitList(rssItems)
-        })
+        }
 
         return view
     }
