@@ -111,7 +111,7 @@ class NewsViewModel @Inject constructor(
             eventType = parser.next()
         }
 
-        return RssItem(title, description, link, imageUrl)
+        return RssItem(title, link,description, imageUrl)
     }
 
     private fun parseText(parser: XmlPullParser): String {
