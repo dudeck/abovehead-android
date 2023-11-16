@@ -17,7 +17,7 @@ import pl.abovehead.ui.composables.BottomNavigation
 import pl.abovehead.ui.theme.AboveHeadTheme
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

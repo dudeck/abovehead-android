@@ -1,5 +1,4 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable
@@ -10,8 +9,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/news"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@+id/tv"
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
