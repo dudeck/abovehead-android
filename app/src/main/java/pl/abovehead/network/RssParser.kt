@@ -5,11 +5,11 @@ import pl.abovehead.model.RssItem
 import javax.inject.Inject
 
 interface RssParser{
-    fun parseRssItems(parser: XmlPullParser): List<RssItem>
+    fun parseRssItems(parser: XmlPullParser): MutableList<RssItem>
 }
 class RssParserImpl @Inject constructor(): RssParser {
     override
-    fun parseRssItems(parser: XmlPullParser): List<RssItem> {
+    fun parseRssItems(parser: XmlPullParser): MutableList<RssItem> {
         val rssItems = mutableListOf<RssItem>()
         var eventType = parser.eventType
 

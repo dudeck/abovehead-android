@@ -12,9 +12,9 @@ import java.net.URL
 import javax.inject.Inject
 
 class FetchRssNasaFeedUseCase @Inject constructor(private val rssParser: RssParser) :
-    SuspendUseCase {
+    SuspendUseCase<MutableList<RssItem>> {
     override
-    suspend fun execute(): List<RssItem> {
+    suspend fun execute(): MutableList<RssItem> {
         return withContext(Dispatchers.IO) {
             val rssFeedUrl =
                 "https://www.nasa.gov/rss/dyn/breaking_news.rss" // Replace with your RSS feed URL

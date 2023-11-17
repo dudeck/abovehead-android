@@ -1,5 +1,5 @@
 package pl.abovehead
 
-interface SuspendUseCase{
-    suspend fun execute(): Any
+interface SuspendUseCase<T>{
+    suspend fun execute(): T
 }
