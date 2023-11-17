@@ -20,6 +20,6 @@ abstract class RssModule {
     ): RssParser
 
     @Binds
-    abstract fun bindsFetchRssNasaFeedUseCase(useCase: FetchRssNasaFeedUseCase): SuspendUseCase<MutableList<RssItem>>
+    abstract fun bindsFetchRssNasaFeedUseCase(useCase: FetchRssNasaFeedUseCase): SuspendUseCase<List<RssItem>>
 
 }
