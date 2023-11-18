@@ -43,7 +43,7 @@ class RssFeedAdapter :
                 val context = binding.root.context
                 startActivity(
                     context,
-                    Intent(context, NewsDetails::class.java).apply { putExtra("url", item.link) },
+                    Intent(context, NewsDetails::class.java).apply { putExtra("item", item) },
                     null
                 )
             })
