@@ -36,7 +36,6 @@ class RssFeedAdapter :
 
         fun bind(item: RssItem) {
             binding.titleTextView.text = item.title
-            binding.descriptionTextView.text = item.description
             binding.pubDate.text = item.pubDate
             binding.rssItemImage.load(Uri.parse(item.enclosureUrl))
             binding.root.setOnClickListener(View.OnClickListener {
