@@ -2,17 +2,23 @@ package pl.abovehead.ui.screens.news
 
 // RssFeedAdapter.kt
 
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import pl.abovehead.NewsDetails
 import pl.abovehead.databinding.ListItemRssBinding
 import pl.abovehead.model.RssItem
 
-class RssFeedAdapter : ListAdapter<RssItem, RssFeedAdapter.RssItemViewHolder>(RssItemDiffCallback()) {
+
+class RssFeedAdapter :
+    ListAdapter<RssItem, RssFeedAdapter.RssItemViewHolder>(RssItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RssItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -33,6 +39,14 @@ class RssFeedAdapter : ListAdapter<RssItem, RssFeedAdapter.RssItemViewHolder>(Rs
             binding.descriptionTextView.text = item.description
             binding.pubDate.text = item.pubDate
             binding.rssItemImage.load(Uri.parse(item.enclosureUrl))
+            binding.root.setOnClickListener(View.OnClickListener {
+                val context = binding.root.context
+                startActivity(
+                    context,
+                    Intent(context, NewsDetails::class.java).apply { putExtra("url", item.link) },
+                    null
+                )
+            })
             // You can handle the click event or additional UI bindings here
         }
     }

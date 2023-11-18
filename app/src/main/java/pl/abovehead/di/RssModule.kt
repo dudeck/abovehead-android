@@ -4,7 +4,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-import pl.abovehead.SuspendUseCase
+import pl.abovehead.common.SuspendUseCase
 import pl.abovehead.model.RssItem
 import pl.abovehead.network.FetchRssNasaFeedUseCase
 import pl.abovehead.network.RssParser

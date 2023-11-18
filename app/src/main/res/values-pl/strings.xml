@@ -5,4 +5,5 @@
     <string name="pictures">Plakaty</string>
     <string name="cart">Koszyk</string>
     <string name="shoppingCart">Twój Koszyk</string>
+    <string name="title_activity_news_detail">Wiadomości szczegóły</string>
 </resources>

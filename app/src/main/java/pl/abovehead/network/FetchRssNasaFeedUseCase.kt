@@ -4,7 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
-import pl.abovehead.SuspendUseCase
+import pl.abovehead.common.SuspendUseCase
 import pl.abovehead.model.RssItem
 import java.io.InputStream
 import java.net.HttpURLConnection
