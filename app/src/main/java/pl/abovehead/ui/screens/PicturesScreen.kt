@@ -40,11 +40,13 @@ fun ImagesWithTitlesList(data: GetAstrophotosQuery.Data) {
     val url = parseImg(cosik!!)
     Column {
         Text(stringResource(id = R.string.pictures))
+        Text(data.page.blocks[2]!!.innerHtml?: "")
         AsyncImage(
-            modifier = Modifier.size(160.dp, 160.dp),
+            modifier = Modifier.size(480.dp, 320.dp),
             model = url,
             contentDescription = "Mission patch"
         )
+        Text(data.page.blocks[4]!!.innerHtml?: "")
 
     }
 }
