@@ -1,0 +1,18 @@
+type Query {
+  page(id: ID!): Page
+}
+
+type Page {
+  blocks: [Blocks]!
+}
+
+type Blocks {
+  id: String
+  type: String
+  tagName: String
+  innerHtml: String
+}
+
+schema {
+  query: Query
+}

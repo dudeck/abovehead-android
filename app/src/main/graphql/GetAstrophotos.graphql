@@ -1,0 +1,10 @@
+query GetAstrophotos($id: ID!) {
+    page(id: $id) {
+        blocks {
+            id
+            type
+            tagName
+            innerHtml
+        }
+    }
+}
