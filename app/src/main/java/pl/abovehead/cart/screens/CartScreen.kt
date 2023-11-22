@@ -1,4 +1,4 @@
-package pl.abovehead.ui.screens
+package pl.abovehead.cart.screens
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface

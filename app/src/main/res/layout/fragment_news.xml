@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="pl.abovehead.ui.screens.news.NewsViewModel" />
+            type="pl.abovehead.news.NewsViewModel" />
     </data>
 
     <RelativeLayout

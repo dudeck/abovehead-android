@@ -1,7 +1,7 @@
-package pl.abovehead.network
+package pl.abovehead.news.network
 
 import org.xmlpull.v1.XmlPullParser
-import pl.abovehead.model.RssItem
+import pl.abovehead.news.model.RssItem
 import javax.inject.Inject
 
 interface RssParser{

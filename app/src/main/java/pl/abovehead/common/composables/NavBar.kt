@@ -1,4 +1,4 @@
-package pl.abovehead.ui.composables
+package pl.abovehead.common.composables
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,7 +15,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import pl.abovehead.routes.NavigationHost
-import pl.abovehead.ui.NavBarItem
+import pl.abovehead.common.NavBarItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,11 +1,11 @@
-package pl.abovehead.network
+package pl.abovehead.news.network
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import pl.abovehead.common.SuspendUseCase
-import pl.abovehead.model.RssItem
+import pl.abovehead.news.model.RssItem
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL

@@ -1,4 +1,4 @@
-package pl.abovehead.ui.screens
+package pl.abovehead.pictures
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column

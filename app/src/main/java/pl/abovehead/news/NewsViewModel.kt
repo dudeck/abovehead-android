@@ -1,4 +1,4 @@
-package pl.abovehead.ui.screens.news
+package pl.abovehead.news
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import pl.abovehead.model.RssItem
-import pl.abovehead.network.FetchRssNasaFeedUseCase
+import pl.abovehead.news.model.RssItem
+import pl.abovehead.news.network.FetchRssNasaFeedUseCase
 import javax.inject.Inject
 
 

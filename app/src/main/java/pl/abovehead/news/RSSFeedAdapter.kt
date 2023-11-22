@@ -1,4 +1,4 @@
-package pl.abovehead.ui.screens.news
+package pl.abovehead.news
 
 // RssFeedAdapter.kt
 
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import pl.abovehead.NewsDetails
 import pl.abovehead.databinding.ListItemRssBinding
-import pl.abovehead.model.RssItem
+import pl.abovehead.news.model.RssItem
 
 
 class RssFeedAdapter :
@@ -38,14 +38,14 @@ class RssFeedAdapter :
             binding.titleTextView.text = item.title
             binding.pubDate.text = item.pubDate
             binding.rssItemImage.load(Uri.parse(item.enclosureUrl))
-            binding.root.setOnClickListener(View.OnClickListener {
+            binding.root.setOnClickListener {
                 val context = binding.root.context
                 startActivity(
                     context,
                     Intent(context, NewsDetails::class.java).apply { putExtra("item", item) },
                     null
                 )
-            })
+            }
             // You can handle the click event or additional UI bindings here
         }
     }

@@ -1,21 +1,17 @@
-package pl.abovehead.ui.screens.news
+package pl.abovehead.news
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import androidx.databinding.BindingAdapter
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import pl.abovehead.R
 import pl.abovehead.databinding.FragmentNewsBinding
-import pl.abovehead.model.RssItem
+import pl.abovehead.news.model.RssItem
 
 @AndroidEntryPoint
 class NewsFragment : Fragment() {

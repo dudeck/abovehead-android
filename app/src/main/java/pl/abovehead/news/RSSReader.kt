@@ -1,4 +1,4 @@
-package pl.abovehead.ui.screens.news
+package pl.abovehead.news
 
 import java.io.BufferedReader
 import java.io.InputStreamReader

@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import pl.abovehead.model.RssItem
+import pl.abovehead.news.model.RssItem
 import pl.abovehead.ui.theme.AboveHeadTheme
 
 class NewsDetails : ComponentActivity() {

@@ -7,9 +7,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import pl.abovehead.ui.screens.CartScreen
-import pl.abovehead.ui.screens.news.NewsScreen
-import pl.abovehead.ui.screens.PicturesScreen
+import pl.abovehead.cart.screens.CartScreen
+import pl.abovehead.news.NewsScreen
+import pl.abovehead.pictures.PicturesScreen
 
 @Composable
 fun NavigationHost(navController: NavHostController, paddingValues: PaddingValues) {

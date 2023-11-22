@@ -1,4 +1,4 @@
-package pl.abovehead.ui
+package pl.abovehead.common
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
