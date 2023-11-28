@@ -22,44 +22,8 @@ import pl.abovehead.apolloClient
 
 @Composable
 fun PicturesScreen() {
-    var responseState by rememberSaveable { mutableStateOf<GetAstrophotosQuery.Data?>(null) }
-    LaunchedEffect(Unit) {
-        val response = apolloClient.query(GetAstrophotosQuery("cG9zdDoxMTA=")).execute()
-        Log.d("LOL", "CartScreen: ${response.data}")
-        responseState = response.data!!
-    }
 
     Surface(color = MaterialTheme.colorScheme.background) {
-        if (responseState!= null) ImagesWithTitlesList(responseState!!)
+       AstroPhotoList()
     }
-}
-
-@Composable
-fun ImagesWithTitlesList(data: GetAstrophotosQuery.Data) {
-    val cosik = data.page!!.blocks[1]!!.innerHtml
-    val url = parseImg(cosik!!)
-    Column {
-        Text(stringResource(id = R.string.pictures))
-        Text(data.page.blocks[2]!!.innerHtml?: "")
-        AsyncImage(
-            modifier = Modifier.size(480.dp, 320.dp),
-            model = url,
-            contentDescription = "Mission patch"
-        )
-        Text(data.page.blocks[4]!!.innerHtml?: "")
-
-    }
-}
-
-private fun parseImg(innerHtml: String): String {
-    var substr = innerHtml
-
-    val startIndex: Int = substr.indexOf("<a href=")
-    if (startIndex != -1) {
-        substr = substr.substring(startIndex + 9)
-        val urlIndex = substr.indexOf("\"")
-        substr = substr.substring(0, urlIndex)
-    }
-
-    return substr
 }
