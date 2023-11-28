@@ -6,4 +6,5 @@
     <string name="cart">Koszyk</string>
     <string name="shoppingCart">Twój Koszyk</string>
     <string name="title_activity_news_detail">Wiadomości szczegóły</string>
+    <string name="general_error_message">Przepraszamy, wystąpił błąd</string>
 </resources>

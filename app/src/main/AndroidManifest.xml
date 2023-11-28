@@ -16,7 +16,12 @@
         android:theme="@style/Theme.AboveHead"
         tools:targetApi="34">
         <activity
-            android:name=".NewsDetails"
+            android:name=".NewsDetailsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_news_detail"
+            android:theme="@style/Theme.AboveHead" />
+        <activity
+            android:name=".PictureDetailsActivity"
             android:exported="false"
             android:label="@string/title_activity_news_detail"
             android:theme="@style/Theme.AboveHead" />

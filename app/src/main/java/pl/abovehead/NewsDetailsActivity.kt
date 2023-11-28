@@ -15,19 +15,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import pl.abovehead.news.model.RssItem
 import pl.abovehead.ui.theme.AboveHeadTheme
 
-class NewsDetails : ComponentActivity() {
+class NewsDetailsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("item", RssItem::class.java)
         } else {
-            intent.getParcelableExtra<RssItem>("item")
+            intent.getParcelableExtra("item")
         }
         Log.d("LOL", "onCreate: ${item?.title} ")
         setContent {
@@ -37,7 +36,7 @@ class NewsDetails : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting(item)
+                    NewsDetail(item)
                 }
             }
         }
@@ -45,9 +44,9 @@ class NewsDetails : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(item: RssItem?, modifier: Modifier = Modifier) {
+fun NewsDetail(item: RssItem?, modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(modifier = modifier.padding(16.dp)) {
         Text(text = item?.title ?: "")
         AsyncImage(
             model = item?.enclosureUrl,

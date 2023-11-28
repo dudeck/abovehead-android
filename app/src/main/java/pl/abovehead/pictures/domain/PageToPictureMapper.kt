@@ -7,10 +7,10 @@ class PageToPictureMapper {
 
     private fun splitListByDelimiter(inputList: List<GetAstrophotosQuery.Block?>): List<List<GetAstrophotosQuery.Block?>> =
         inputList.fold(mutableListOf(mutableListOf<GetAstrophotosQuery.Block?>())) { acc, item ->
-            if (item?.tagName == "h2") {
+            if (item?.innerHtml?.contains("<a href") == true) {
                 acc.add(mutableListOf(item))
             } else {
-                acc.lastOrNull()?.add(item) ?: acc.add(mutableListOf(item))
+                acc.lastOrNull()?.add(item)
             }
             acc
         }
@@ -30,7 +30,7 @@ class PageToPictureMapper {
     }
 
     fun mapList(page: GetAstrophotosQuery.Page): List<Picture> {
-        val list = page.blocks.drop(2)
+        val list = page.blocks.drop(1)
         val elements = splitListByDelimiter(list)
 
         val pictures = mutableListOf<Picture>() + elements.map { item ->
