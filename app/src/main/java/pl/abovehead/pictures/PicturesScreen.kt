@@ -19,11 +19,11 @@ import coil.compose.AsyncImage
 import pl.abovehead.GetAstrophotosQuery
 import pl.abovehead.R
 import pl.abovehead.apolloClient
+import pl.abovehead.pictures.ui.PicturesTabLayout
 
 @Composable
 fun PicturesScreen() {
-
     Surface(color = MaterialTheme.colorScheme.background) {
-       AstroPhotoList()
+        PicturesTabLayout(viewModel = PicturesViewModel())
     }
 }
