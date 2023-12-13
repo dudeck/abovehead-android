@@ -1,6 +1,7 @@
-package pl.abovehead.pictures
+package pl.abovehead.news
 
 import android.content.Intent
+import android.text.Html
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,37 +33,34 @@ import coil.compose.AsyncImage
 import com.apollographql.apollo3.api.Error
 import com.apollographql.apollo3.exception.ApolloException
 import com.google.android.material.textview.MaterialTextView
-import pl.abovehead.GetAstrophotosQuery
+import pl.abovehead.GetPostsQuery
 import pl.abovehead.PictureDetailsActivity
 import pl.abovehead.R
 import pl.abovehead.apolloClient
-import pl.abovehead.pictures.AstroPhotosState.ApplicationError
-import pl.abovehead.pictures.AstroPhotosState.Loading
-import pl.abovehead.pictures.AstroPhotosState.ProtocolError
-import pl.abovehead.pictures.AstroPhotosState.Success
-import pl.abovehead.pictures.domain.PageToPictureMapper
+import pl.abovehead.news.PostsState.ApplicationError
+import pl.abovehead.news.PostsState.Loading
+import pl.abovehead.news.PostsState.ProtocolError
+import pl.abovehead.news.PostsState.Success
 import pl.abovehead.pictures.domain.Picture
 import java.util.Locale
 
-private sealed interface AstroPhotosState {
-    data object Loading : AstroPhotosState
-    data class ProtocolError(val exception: ApolloException) : AstroPhotosState
-    data class ApplicationError(val errors: List<Error>) : AstroPhotosState
-    data class Success(val pictures: List<Picture>) : AstroPhotosState
+private sealed interface PostsState {
+    data object Loading : PostsState
+    data class ProtocolError(val exception: ApolloException) : PostsState
+    data class ApplicationError(val errors: List<Error>) : PostsState
+    data class Success(val posts: List<GetPostsQuery.Edge?>?) : PostsState
 }
 
-private const val ASTROPHOTOPAGEID = "cG9zdDoxMTA="
-
 @Composable
-fun AstroPhotoList() {
-    var state by remember { mutableStateOf<AstroPhotosState>(Loading) }
+fun PostsList() {
+    var state by remember { mutableStateOf<PostsState>(Loading) }
     LaunchedEffect(Unit) {
         state = try {
-            val response = apolloClient.query(GetAstrophotosQuery(ASTROPHOTOPAGEID)).execute()
+            val response = apolloClient.query(GetPostsQuery()).execute()
             if (response.hasErrors()) {
                 ApplicationError(response.errors!!)
             } else {
-                Success(PageToPictureMapper().mapList(response.data!!.page!!))
+                Success(response.data?.posts?.edges)
             }
         } catch (e: ApolloException) {
             ProtocolError(e)
@@ -79,8 +77,15 @@ fun AstroPhotoList() {
         is ApplicationError -> ErrorMessage(s.errors[0].message)
         is Success ->
             LazyColumn {
-                items(s.pictures.size) { index ->
-                    if (s.pictures[index].title.isNotBlank()) PictureItem(picture = s.pictures[index])
+                items(s.posts!!.size) { index ->
+                    if (s.posts[index]?.node?.title?.isNotBlank() == true) Text(s.posts[index]!!.node!!.title!!)
+                    if (s.posts[index]?.node?.content?.isNotBlank() == true) Text(
+                        Html.fromHtml(
+                            s.posts[index]!!.node!!.content!!,
+                            HtmlCompat.FROM_HTML_MODE_LEGACY
+                        ).toString()
+                    )
+
                 }
 //
 //                item {
