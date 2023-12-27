@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import pl.abovehead.news.PostsList
 import pl.abovehead.news.model.RssItem
 import pl.abovehead.ui.theme.AboveHeadTheme
 

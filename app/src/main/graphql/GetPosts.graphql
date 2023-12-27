@@ -1,0 +1,18 @@
+query GetPosts {
+  posts {
+    edges {
+      node {
+        id
+        title
+        content(format: RENDERED)
+        featuredImage {
+          node {
+            mediaItemUrl
+          }
+        }
+        modified
+        link
+      }
+    }
+  }
+}

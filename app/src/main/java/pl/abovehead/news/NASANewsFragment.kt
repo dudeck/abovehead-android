@@ -14,7 +14,7 @@ import pl.abovehead.databinding.FragmentNewsBinding
 import pl.abovehead.news.model.RssItem
 
 @AndroidEntryPoint
-class NewsFragment : Fragment() {
+class NASANewsFragment : Fragment() {
 
     companion object {
         @BindingAdapter("listItems")
@@ -25,7 +25,7 @@ class NewsFragment : Fragment() {
         }
     }
 
-    private lateinit var viewModel: NewsViewModel
+    private lateinit var viewModel: NASANewsViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,7 +38,7 @@ class NewsFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
 
-        viewModel = ViewModelProvider(this)[NewsViewModel::class.java]
+        viewModel = ViewModelProvider(this)[NASANewsViewModel::class.java]
 
         viewModel.rssItemsLiveData.observe(viewLifecycleOwner) { rssItems ->
             adapter.submitList(rssItems)

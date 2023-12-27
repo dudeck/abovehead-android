@@ -36,29 +36,29 @@ import pl.abovehead.GetAstrophotosQuery
 import pl.abovehead.PictureDetailsActivity
 import pl.abovehead.R
 import pl.abovehead.apolloClient
-import pl.abovehead.pictures.AstroPhotosState.ApplicationError
-import pl.abovehead.pictures.AstroPhotosState.Loading
-import pl.abovehead.pictures.AstroPhotosState.ProtocolError
-import pl.abovehead.pictures.AstroPhotosState.Success
+import pl.abovehead.pictures.OsloPhotosState.ApplicationError
+import pl.abovehead.pictures.OsloPhotosState.Loading
+import pl.abovehead.pictures.OsloPhotosState.ProtocolError
+import pl.abovehead.pictures.OsloPhotosState.Success
 import pl.abovehead.pictures.domain.PageToPictureMapper
 import pl.abovehead.pictures.domain.Picture
 import java.util.Locale
 
-private sealed interface AstroPhotosState {
-    data object Loading : AstroPhotosState
-    data class ProtocolError(val exception: ApolloException) : AstroPhotosState
-    data class ApplicationError(val errors: List<Error>) : AstroPhotosState
-    data class Success(val pictures: List<Picture>) : AstroPhotosState
+private sealed interface OsloPhotosState {
+    data object Loading : OsloPhotosState
+    data class ProtocolError(val exception: ApolloException) : OsloPhotosState
+    data class ApplicationError(val errors: List<Error>) : OsloPhotosState
+    data class Success(val pictures: List<Picture>) : OsloPhotosState
 }
 
-private const val ASTROPHOTOPAGEID = "cG9zdDoxMTA="
+private const val OSLOPAGEID = "cG9zdDoxOTE="
 
 @Composable
-fun AstroPhotoList() {
-    var state by remember { mutableStateOf<AstroPhotosState>(Loading) }
+fun OsloPhotoList() {
+    var state by remember { mutableStateOf<OsloPhotosState>(Loading) }
     LaunchedEffect(Unit) {
         state = try {
-            val response = apolloClient.query(GetAstrophotosQuery(ASTROPHOTOPAGEID)).execute()
+            val response = apolloClient.query(GetAstrophotosQuery(OSLOPAGEID)).execute()
             if (response.hasErrors()) {
                 ApplicationError(response.errors!!)
             } else {
@@ -82,6 +82,13 @@ fun AstroPhotoList() {
                 items(s.pictures.size) { index ->
                     if (s.pictures[index].title.isNotBlank()) PictureItem(picture = s.pictures[index])
                 }
+//
+//                item {
+//                    if (response?.data?.launches?.hasMore == true) {
+//                        LoadingItem()
+//                        cursor = response?.data?.launches?.cursor
+//                    }
+//                }
             }
     }
 }

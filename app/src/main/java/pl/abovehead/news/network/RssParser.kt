@@ -2,6 +2,10 @@ package pl.abovehead.news.network
 
 import org.xmlpull.v1.XmlPullParser
 import pl.abovehead.news.model.RssItem
+import java.time.LocalDate
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import javax.inject.Inject
 
 interface RssParser{
@@ -65,7 +69,7 @@ class RssParserImpl @Inject constructor(): RssParser {
                         }
 
                         parser.name.equals("pubDate", ignoreCase = true) -> {
-                            pubDate = parseText(parser)
+                            pubDate = parseDate(parseText(parser))
                         }
                         // Add more tags as needed
                     }
@@ -106,6 +110,12 @@ class RssParserImpl @Inject constructor(): RssParser {
         }
 
         return substr
+    }
+
+    private fun parseDate(dateString: String): String {
+        val formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH)
+        val zonedDateTime = LocalDate.parse(dateString, formatter)
+        return zonedDateTime.toString()
     }
 
 

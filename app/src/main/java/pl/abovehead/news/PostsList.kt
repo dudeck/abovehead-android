@@ -1,4 +1,4 @@
-package pl.abovehead.pictures
+package pl.abovehead.news
 
 import android.content.Intent
 import androidx.compose.foundation.layout.Box
@@ -25,44 +25,43 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat.startActivity
-import androidx.core.text.HtmlCompat
 import coil.compose.AsyncImage
 import com.apollographql.apollo3.api.Error
 import com.apollographql.apollo3.exception.ApolloException
-import com.google.android.material.textview.MaterialTextView
-import pl.abovehead.GetAstrophotosQuery
+import pl.abovehead.GetPostsQuery
 import pl.abovehead.PictureDetailsActivity
 import pl.abovehead.R
 import pl.abovehead.apolloClient
-import pl.abovehead.pictures.AstroPhotosState.ApplicationError
-import pl.abovehead.pictures.AstroPhotosState.Loading
-import pl.abovehead.pictures.AstroPhotosState.ProtocolError
-import pl.abovehead.pictures.AstroPhotosState.Success
-import pl.abovehead.pictures.domain.PageToPictureMapper
-import pl.abovehead.pictures.domain.Picture
+import pl.abovehead.news.PostsState.ApplicationError
+import pl.abovehead.news.PostsState.Loading
+import pl.abovehead.news.PostsState.ProtocolError
+import pl.abovehead.news.PostsState.Success
+import pl.abovehead.news.domain.Post
+import pl.abovehead.news.domain.EdgesToPostsMapper
 import java.util.Locale
 
-private sealed interface AstroPhotosState {
-    data object Loading : AstroPhotosState
-    data class ProtocolError(val exception: ApolloException) : AstroPhotosState
-    data class ApplicationError(val errors: List<Error>) : AstroPhotosState
-    data class Success(val pictures: List<Picture>) : AstroPhotosState
+private sealed interface PostsState {
+    data object Loading : PostsState
+    data class ProtocolError(val exception: ApolloException) : PostsState
+    data class ApplicationError(val errors: List<Error>) : PostsState
+    data class Success(val posts: List<Post>) : PostsState
 }
 
-private const val ASTROPHOTOPAGEID = "cG9zdDoxMTA="
-
 @Composable
-fun AstroPhotoList() {
-    var state by remember { mutableStateOf<AstroPhotosState>(Loading) }
+fun PostsList() {
+    var state by remember { mutableStateOf<PostsState>(Loading) }
     LaunchedEffect(Unit) {
         state = try {
-            val response = apolloClient.query(GetAstrophotosQuery(ASTROPHOTOPAGEID)).execute()
-            if (response.hasErrors()) {
-                ApplicationError(response.errors!!)
+            val response = apolloClient.query(GetPostsQuery()).execute()
+            val edges = response.data?.posts?.edges
+            if (!response.hasErrors() && edges?.isNotEmpty() == true) {
+                val posts = EdgesToPostsMapper().mapList(edges = edges)
+                Success(posts)
             } else {
-                Success(PageToPictureMapper().mapList(response.data!!.page!!))
+                ApplicationError(response.errors!!)
+
+
             }
         } catch (e: ApolloException) {
             ProtocolError(e)
@@ -79,8 +78,9 @@ fun AstroPhotoList() {
         is ApplicationError -> ErrorMessage(s.errors[0].message)
         is Success ->
             LazyColumn {
-                items(s.pictures.size) { index ->
-                    if (s.pictures[index].title.isNotBlank()) PictureItem(picture = s.pictures[index])
+                items(s.posts.size) { index ->
+                    PostItem(post = s.posts[index])
+
                 }
             }
     }
@@ -89,7 +89,7 @@ fun AstroPhotoList() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PictureItem(picture: Picture) {
+private fun PostItem(post: Post) {
     val mContext = LocalContext.current
     Card(
         modifier = Modifier
@@ -101,7 +101,7 @@ private fun PictureItem(picture: Picture) {
                 Intent(mContext, PictureDetailsActivity::class.java).apply {
                     putExtra(
                         "item",
-                        picture
+                        post
                     )
                 },
                 null
@@ -119,22 +119,18 @@ private fun PictureItem(picture: Picture) {
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 fontSize = 24.sp,
-                text = picture.title.uppercase(Locale.ROOT)
+                text = post.title.uppercase(Locale.ROOT)
             )
             AsyncImage(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(8.dp),
-                model = picture.url,
+                model = post.imageUrl,
                 placeholder = painterResource(R.drawable.ic_launcher_background),
 //                error = painterResource(com.google.android.material.R.drawable.m3_password_eye),
                 contentDescription = "Mission patch"
             )
-            AndroidView(
-//                modifier = modifier,
-                factory = { MaterialTextView(it) },
-                update = { it.text = HtmlCompat.fromHtml(picture.shortDescription ?: "", 0) }
-            )
+            Text(text = post.modifiedDate.toString())
         }
 
     }

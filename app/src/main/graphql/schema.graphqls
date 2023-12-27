@@ -1,5 +1,6 @@
 type Query {
   page(id: ID!): Page
+  posts: Posts
 }
 
 type Page {
@@ -11,6 +12,33 @@ type Blocks {
   type: String
   tagName: String
   innerHtml: String
+}
+
+type Posts {
+  edges: [Edges]
+}
+
+type Edges {
+  node: Node
+}
+
+type Node {
+  id: String
+  title: String
+  content(format: Formats): String
+  featuredImage: FeaturedImage
+  modified: String
+  link: String
+}
+enum Formats {
+  RENDERED, RAW
+}
+
+type FeaturedImage {
+  node: ImageNode
+}
+type ImageNode {
+  mediaItemUrl: String
 }
 
 schema {

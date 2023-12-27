@@ -36,29 +36,29 @@ import pl.abovehead.GetAstrophotosQuery
 import pl.abovehead.PictureDetailsActivity
 import pl.abovehead.R
 import pl.abovehead.apolloClient
-import pl.abovehead.pictures.AstroPhotosState.ApplicationError
-import pl.abovehead.pictures.AstroPhotosState.Loading
-import pl.abovehead.pictures.AstroPhotosState.ProtocolError
-import pl.abovehead.pictures.AstroPhotosState.Success
+import pl.abovehead.pictures.SeaPhotosState.ApplicationError
+import pl.abovehead.pictures.SeaPhotosState.Loading
+import pl.abovehead.pictures.SeaPhotosState.ProtocolError
+import pl.abovehead.pictures.SeaPhotosState.Success
 import pl.abovehead.pictures.domain.PageToPictureMapper
 import pl.abovehead.pictures.domain.Picture
 import java.util.Locale
 
-private sealed interface AstroPhotosState {
-    data object Loading : AstroPhotosState
-    data class ProtocolError(val exception: ApolloException) : AstroPhotosState
-    data class ApplicationError(val errors: List<Error>) : AstroPhotosState
-    data class Success(val pictures: List<Picture>) : AstroPhotosState
+private sealed interface SeaPhotosState {
+    data object Loading : SeaPhotosState
+    data class ProtocolError(val exception: ApolloException) : SeaPhotosState
+    data class ApplicationError(val errors: List<Error>) : SeaPhotosState
+    data class Success(val pictures: List<Picture>) : SeaPhotosState
 }
 
-private const val ASTROPHOTOPAGEID = "cG9zdDoxMTA="
+private const val SEAPAGEID = "cG9zdDoxODY="
 
 @Composable
-fun AstroPhotoList() {
-    var state by remember { mutableStateOf<AstroPhotosState>(Loading) }
+fun SeaPhotoList() {
+    var state by remember { mutableStateOf<SeaPhotosState>(Loading) }
     LaunchedEffect(Unit) {
         state = try {
-            val response = apolloClient.query(GetAstrophotosQuery(ASTROPHOTOPAGEID)).execute()
+            val response = apolloClient.query(GetAstrophotosQuery(SEAPAGEID)).execute()
             if (response.hasErrors()) {
                 ApplicationError(response.errors!!)
             } else {
@@ -82,6 +82,13 @@ fun AstroPhotoList() {
                 items(s.pictures.size) { index ->
                     if (s.pictures[index].title.isNotBlank()) PictureItem(picture = s.pictures[index])
                 }
+//
+//                item {
+//                    if (response?.data?.launches?.hasMore == true) {
+//                        LoadingItem()
+//                        cursor = response?.data?.launches?.cursor
+//                    }
+//                }
             }
     }
 }
