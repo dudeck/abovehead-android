@@ -26,13 +26,6 @@ fun PicturesTabLayout(viewModel: PicturesViewModel) {
                 Tab(text = { Text(title) },
                     selected = tabIndex.value!! == index,
                     onClick = { viewModel.updateTabIndex(index) },
-                    icon = {
-                        when (index) {
-                            0 -> Icon(imageVector = Icons.Default.Home, contentDescription = null)
-                            1 -> Icon(imageVector = Icons.Default.Info, contentDescription = null)
-                            2 -> Icon(imageVector = Icons.Default.Settings, contentDescription = null)
-                        }
-                    }
                 )
             }
         }

@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class NewsViewModel @Inject constructor(
+class NASANewsViewModel @Inject constructor(
     private val fetchRssNasaFeedUseCase: FetchRssNasaFeedUseCase
 ) : ViewModel() {
 // RssFeedViewModel.kt

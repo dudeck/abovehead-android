@@ -1,10 +1,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
         <variable
             name="viewModel"
-            type="pl.abovehead.news.NASANewsViewModel" />
+            type="pl.abovehead.news.PostsViewModel" />
     </data>
 
     <RelativeLayout

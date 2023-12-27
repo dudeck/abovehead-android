@@ -48,7 +48,6 @@ class NewsDetailsActivity : ComponentActivity() {
 fun NewsDetail(item: RssItem?, modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current
     Column(modifier = modifier.padding(16.dp)) {
-        PostsList()
         Text(text = item?.title ?: "")
         AsyncImage(
             model = item?.enclosureUrl,

@@ -2,6 +2,8 @@
     <string name="app_name">AboveHead</string>
 
     <string name="news">News</string>
+    <string name="nasaNews">NASA News</string>
+    <string name="blogNews">Blog News</string>
     <string name="pictures">Pictures</string>
     <string name="cart">Cart</string>
     <string name="shoppingCart">Shopping Cart</string>

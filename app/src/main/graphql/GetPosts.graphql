@@ -1,4 +1,4 @@
-query GetPosts() {
+query GetPosts {
   posts {
     edges {
       node {
