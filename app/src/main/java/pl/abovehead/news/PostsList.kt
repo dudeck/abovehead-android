@@ -1,7 +1,6 @@
 package pl.abovehead.news
 
 import android.content.Intent
-import android.text.Html
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,13 +25,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat.startActivity
-import androidx.core.text.HtmlCompat
 import coil.compose.AsyncImage
 import com.apollographql.apollo3.api.Error
 import com.apollographql.apollo3.exception.ApolloException
-import com.google.android.material.textview.MaterialTextView
 import pl.abovehead.GetPostsQuery
 import pl.abovehead.PictureDetailsActivity
 import pl.abovehead.R
@@ -41,14 +37,15 @@ import pl.abovehead.news.PostsState.ApplicationError
 import pl.abovehead.news.PostsState.Loading
 import pl.abovehead.news.PostsState.ProtocolError
 import pl.abovehead.news.PostsState.Success
-import pl.abovehead.pictures.domain.Picture
+import pl.abovehead.news.domain.Post
+import pl.abovehead.news.domain.EdgesToPostsMapper
 import java.util.Locale
 
 private sealed interface PostsState {
     data object Loading : PostsState
     data class ProtocolError(val exception: ApolloException) : PostsState
     data class ApplicationError(val errors: List<Error>) : PostsState
-    data class Success(val posts: List<GetPostsQuery.Edge?>?) : PostsState
+    data class Success(val posts: List<Post>) : PostsState
 }
 
 @Composable
@@ -57,10 +54,14 @@ fun PostsList() {
     LaunchedEffect(Unit) {
         state = try {
             val response = apolloClient.query(GetPostsQuery()).execute()
-            if (response.hasErrors()) {
-                ApplicationError(response.errors!!)
+            val edges = response.data?.posts?.edges
+            if (!response.hasErrors() && edges?.isNotEmpty() == true) {
+                val posts = EdgesToPostsMapper().mapList(edges = edges)
+                Success(posts)
             } else {
-                Success(response.data?.posts?.edges)
+                ApplicationError(response.errors!!)
+
+
             }
         } catch (e: ApolloException) {
             ProtocolError(e)
@@ -77,23 +78,10 @@ fun PostsList() {
         is ApplicationError -> ErrorMessage(s.errors[0].message)
         is Success ->
             LazyColumn {
-                items(s.posts!!.size) { index ->
-                    if (s.posts[index]?.node?.title?.isNotBlank() == true) Text(s.posts[index]!!.node!!.title!!)
-                    if (s.posts[index]?.node?.content?.isNotBlank() == true) Text(
-                        Html.fromHtml(
-                            s.posts[index]!!.node!!.content!!,
-                            HtmlCompat.FROM_HTML_MODE_LEGACY
-                        ).toString()
-                    )
+                items(s.posts.size) { index ->
+                    PostItem(post = s.posts[index])
 
                 }
-//
-//                item {
-//                    if (response?.data?.launches?.hasMore == true) {
-//                        LoadingItem()
-//                        cursor = response?.data?.launches?.cursor
-//                    }
-//                }
             }
     }
 }
@@ -101,7 +89,7 @@ fun PostsList() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PictureItem(picture: Picture) {
+private fun PostItem(post: Post) {
     val mContext = LocalContext.current
     Card(
         modifier = Modifier
@@ -113,7 +101,7 @@ private fun PictureItem(picture: Picture) {
                 Intent(mContext, PictureDetailsActivity::class.java).apply {
                     putExtra(
                         "item",
-                        picture
+                        post
                     )
                 },
                 null
@@ -131,22 +119,18 @@ private fun PictureItem(picture: Picture) {
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 fontSize = 24.sp,
-                text = picture.title.uppercase(Locale.ROOT)
+                text = post.title.uppercase(Locale.ROOT)
             )
             AsyncImage(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(8.dp),
-                model = picture.url,
+                model = post.imageUrl,
                 placeholder = painterResource(R.drawable.ic_launcher_background),
 //                error = painterResource(com.google.android.material.R.drawable.m3_password_eye),
                 contentDescription = "Mission patch"
             )
-            AndroidView(
-//                modifier = modifier,
-                factory = { MaterialTextView(it) },
-                update = { it.text = HtmlCompat.fromHtml(picture.shortDescription ?: "", 0) }
-            )
+            Text(text = post.modifiedDate.toString())
         }
 
     }

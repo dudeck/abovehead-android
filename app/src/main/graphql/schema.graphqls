@@ -25,7 +25,20 @@ type Edges {
 type Node {
   id: String
   title: String
-  content: String
+  content(format: Formats): String
+  featuredImage: FeaturedImage
+  modified: String
+  link: String
+}
+enum Formats {
+  RENDERED, RAW
+}
+
+type FeaturedImage {
+  node: ImageNode
+}
+type ImageNode {
+  mediaItemUrl: String
 }
 
 schema {

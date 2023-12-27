@@ -82,13 +82,6 @@ fun AstroPhotoList() {
                 items(s.pictures.size) { index ->
                     if (s.pictures[index].title.isNotBlank()) PictureItem(picture = s.pictures[index])
                 }
-//
-//                item {
-//                    if (response?.data?.launches?.hasMore == true) {
-//                        LoadingItem()
-//                        cursor = response?.data?.launches?.cursor
-//                    }
-//                }
             }
     }
 }

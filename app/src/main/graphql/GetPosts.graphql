@@ -4,7 +4,14 @@ query GetPosts {
       node {
         id
         title
-        content
+        content(format: RENDERED)
+        featuredImage {
+          node {
+            mediaItemUrl
+          }
+        }
+        modified
+        link
       }
     }
   }
