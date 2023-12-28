@@ -1,4 +1,4 @@
-package pl.abovehead.news
+package pl.abovehead.news.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import pl.abovehead.databinding.FragmentNewsBinding
-import pl.abovehead.news.model.RssItem
+import pl.abovehead.news.viewModel.NASANewsViewModel
+import pl.abovehead.news.RssFeedAdapter
+import pl.abovehead.news.domain.RssItem
 
 @AndroidEntryPoint
 class NASANewsFragment : Fragment() {

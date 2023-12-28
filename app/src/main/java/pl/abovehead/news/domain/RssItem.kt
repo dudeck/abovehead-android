@@ -1,4 +1,4 @@
-package pl.abovehead.news.model
+package pl.abovehead.news.domain
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

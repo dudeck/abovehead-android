@@ -5,10 +5,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import pl.abovehead.cart.screens.CartScreen
-import pl.abovehead.news.NewsScreen
+import pl.abovehead.news.ui.NewsDetails
+import pl.abovehead.news.ui.NewsScreen
 import pl.abovehead.pictures.PicturesScreen
 
 @Composable
@@ -23,6 +26,12 @@ fun NavigationHost(navController: NavHostController, paddingValues: PaddingValue
         }
         composable(Routes.Pictures.route) {
             PicturesScreen()
+        }
+        composable(
+            Routes.PostDetails.route + "/{postId}",
+            arguments = listOf(navArgument("postId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            NewsDetails(postId = backStackEntry.arguments?.getString("postId"))
         }
         composable(Routes.ShoppingCart.route) {
             CartScreen()

@@ -1,9 +1,8 @@
 package pl.abovehead.news.network
 
 import org.xmlpull.v1.XmlPullParser
-import pl.abovehead.news.model.RssItem
+import pl.abovehead.news.domain.RssItem
 import java.time.LocalDate
-import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import javax.inject.Inject

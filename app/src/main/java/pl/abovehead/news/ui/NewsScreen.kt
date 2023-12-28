@@ -1,4 +1,4 @@
-package pl.abovehead.news
+package pl.abovehead.news.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.viewinterop.AndroidViewBinding

@@ -4,7 +4,7 @@
 
         <variable
             name="viewModel"
-            type="pl.abovehead.news.NASANewsViewModel" />
+            type="pl.abovehead.news.viewModel.NASANewsViewModel" />
     </data>
 
     <RelativeLayout
