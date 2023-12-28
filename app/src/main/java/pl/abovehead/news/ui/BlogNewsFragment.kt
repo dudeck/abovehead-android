@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.AndroidEntryPoint
+import pl.abovehead.NavControllerViewModel
 
 @AndroidEntryPoint
 class BlogNewsFragment : Fragment() {
@@ -17,7 +18,8 @@ class BlogNewsFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                PostsList(postViewModel = viewModel())
+                val navControllerViewModel: NavControllerViewModel = viewModel()
+                PostsList(postViewModel = viewModel(), navControllerViewModel.navControllerState.value)
             }
         }
     }

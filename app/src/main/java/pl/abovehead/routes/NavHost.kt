@@ -9,6 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import pl.abovehead.NavControllerViewModel
 import pl.abovehead.cart.screens.CartScreen
 import pl.abovehead.news.ui.NewsDetails
 import pl.abovehead.news.ui.NewsScreen
@@ -22,7 +23,7 @@ fun NavigationHost(navController: NavHostController, paddingValues: PaddingValue
         modifier = Modifier.padding(paddingValues = paddingValues)
     ) {
         composable(Routes.News.route) {
-            NewsScreen()
+            NewsScreen( navController = navController, navControllerViewModel = NavControllerViewModel())
         }
         composable(Routes.Pictures.route) {
             PicturesScreen()

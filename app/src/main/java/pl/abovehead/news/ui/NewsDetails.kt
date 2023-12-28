@@ -11,13 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import pl.abovehead.news.domain.RssItem
+import pl.abovehead.news.viewModel.PostViewModel
 import pl.abovehead.ui.theme.AboveHeadTheme
 
 @Composable
 fun NewsDetails(postId: String?) {
     val uriHandler = LocalUriHandler.current
+    val postViewModel: PostViewModel = viewModel()
+    val post = postViewModel.findPostById(postId)
 
     AboveHeadTheme {
         // A surface container using the 'background' color from the theme
@@ -26,13 +30,13 @@ fun NewsDetails(postId: String?) {
             color = MaterialTheme.colorScheme.background
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(text = item?.title ?: "")
+                Text(text = post?.title ?: "")
                 AsyncImage(
-                    model = item?.enclosureUrl,
-                    contentDescription = item?.title
+                    model = post?.imageUrl,
+                    contentDescription = post?.title
                 )
-                Text(text = item?.description ?: "")
-                Button(onClick = { uriHandler.openUri(item?.link ?: "https:www.abovehead.pl") }) {
+                Text(text = post?.description ?: "")
+                Button(onClick = { uriHandler.openUri(post?.link ?: "https:www.abovehead.pl") }) {
                     Text(text = "More details")
                 }
             }

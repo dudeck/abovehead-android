@@ -10,6 +10,7 @@ class EdgesToPostsMapper {
         val inputFormatter = DateTimeFormatter.ISO_DATE_TIME
         val postList = mutableListOf<Post>() + edges.filterNotNull().map { item ->
             Post(
+                id = item.node?.id ?: "",
                 title = item.node?.title ?: "",
                 description = item.node?.content ?: "",
                 imageUrl = item.node?.featuredImage?.node?.mediaItemUrl ?: "",

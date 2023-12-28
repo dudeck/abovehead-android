@@ -40,6 +40,14 @@ class PostViewModel: ViewModel() {
 
     }
 
+   fun findPostById(postId: String?):Post?{
+       val state = _postsState.value
+       if (state is Success){
+           return state.posts.firstOrNull { it.id == postId }
+       }
+       return null
+    }
+
     private val _postsState = MutableStateFlow<PostsState>(Loading)
     val postsState: StateFlow<PostsState> = _postsState.asStateFlow()
 }
