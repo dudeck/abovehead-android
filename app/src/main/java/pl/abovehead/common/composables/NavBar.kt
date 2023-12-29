@@ -14,12 +14,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import pl.abovehead.NavControllerViewModel
 import pl.abovehead.routes.NavigationHost
 import pl.abovehead.common.NavBarItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomNavigation() {
+fun BottomNavigation(viewModel: NavControllerViewModel) {
     val navController = rememberNavController()
     val navBarStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBarStackEntry?.destination
@@ -55,6 +56,6 @@ fun BottomNavigation() {
             }
         })
     { paddingValues ->
-        NavigationHost(navController = navController, paddingValues = paddingValues)
+        NavigationHost(navController = navController, paddingValues = paddingValues, navControllerViewModel = viewModel)
     }
 }

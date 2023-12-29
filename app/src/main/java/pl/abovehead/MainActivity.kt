@@ -12,6 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import pl.abovehead.common.composables.BottomNavigation
 import pl.abovehead.ui.theme.AboveHeadTheme
@@ -20,6 +21,10 @@ import pl.abovehead.ui.theme.AboveHeadTheme
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val viewModel: NavControllerViewModel =
+            ViewModelProvider(this)[NavControllerViewModel::class.java]
+
+
         setContent {
             AboveHeadTheme {
                 // A surface container using the 'background' color from the theme
@@ -27,17 +32,9 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    BottomNavigation()
+                    BottomNavigation(viewModel)
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    AboveHeadTheme {
-        BottomNavigation()
     }
 }

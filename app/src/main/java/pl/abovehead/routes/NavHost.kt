@@ -16,14 +16,14 @@ import pl.abovehead.news.ui.NewsScreen
 import pl.abovehead.pictures.PicturesScreen
 
 @Composable
-fun NavigationHost(navController: NavHostController, paddingValues: PaddingValues) {
+fun NavigationHost(navController: NavHostController, paddingValues: PaddingValues, navControllerViewModel: NavControllerViewModel) {
     NavHost(
         navController = navController,
         startDestination = Routes.News.route,
         modifier = Modifier.padding(paddingValues = paddingValues)
     ) {
         composable(Routes.News.route) {
-            NewsScreen( navController = navController, navControllerViewModel = NavControllerViewModel())
+            NewsScreen( navController = navController, navControllerViewModel = navControllerViewModel)
         }
         composable(Routes.Pictures.route) {
             PicturesScreen()
