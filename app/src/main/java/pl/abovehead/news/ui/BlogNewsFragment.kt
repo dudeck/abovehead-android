@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.AndroidEntryPoint
 import pl.abovehead.NavControllerViewModel
+import pl.abovehead.news.viewModel.PostViewModel
 
 @AndroidEntryPoint
 class BlogNewsFragment : Fragment() {
@@ -23,7 +24,7 @@ class BlogNewsFragment : Fragment() {
                     ViewModelProvider(requireActivity())[NavControllerViewModel::class.java]
 
                 PostsList(
-                    postViewModel = viewModel(),
+                    postViewModel =   ViewModelProvider(requireActivity())[PostViewModel::class.java],
                     navControllerViewModel.navControllerState.value
                 )
             }

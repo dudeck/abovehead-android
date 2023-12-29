@@ -13,15 +13,14 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import pl.abovehead.news.domain.Post
 import pl.abovehead.news.domain.RssItem
 import pl.abovehead.news.viewModel.PostViewModel
 import pl.abovehead.ui.theme.AboveHeadTheme
 
 @Composable
-fun NewsDetails(postId: String?) {
+fun NewsDetails(post: Post?) {
     val uriHandler = LocalUriHandler.current
-    val postViewModel: PostViewModel = viewModel()
-    val post = postViewModel.findPostById(postId)
 
     AboveHeadTheme {
         // A surface container using the 'background' color from the theme
