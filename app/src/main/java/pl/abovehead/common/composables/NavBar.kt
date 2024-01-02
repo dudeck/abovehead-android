@@ -25,8 +25,6 @@ import pl.abovehead.routes.Routes
 @Composable
 fun BottomNavigation(viewModel: NavControllerViewModel, postViewModel: PostViewModel) {
     val navController = rememberNavController()
-    val navBarStackEntry by navController.currentBackStackEntryAsState()
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = { BottomBar(navController = navController) }) { paddingValues ->

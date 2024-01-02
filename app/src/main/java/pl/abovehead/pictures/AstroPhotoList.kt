@@ -6,9 +6,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -91,52 +95,55 @@ fun AstroPhotoList() {
 @Composable
 private fun PictureItem(picture: Picture) {
     val mContext = LocalContext.current
-    Card(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize(),
-        onClick = {
-            startActivity(
-                mContext,
-                Intent(mContext, PictureDetailsActivity::class.java).apply {
-                    putExtra(
-                        "item",
-                        picture
-                    )
-                },
-                null
-            )
-        }
+    Box (contentAlignment = Alignment.BottomEnd){
+        Card(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize(),
+            onClick = {
+                startActivity(
+                    mContext,
+                    Intent(mContext, PictureDetailsActivity::class.java).apply {
+                        putExtra(
+                            "item",
+                            picture
+                        )
+                    },
+                    null
+                )
+            }
 
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
         ) {
-            Text(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp,
-                text = picture.title.uppercase(Locale.ROOT)
-            )
-            AsyncImage(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
-                model = picture.url,
-                placeholder = painterResource(R.drawable.ic_launcher_background),
-//                error = painterResource(com.google.android.material.R.drawable.m3_password_eye),
-                contentDescription = "Mission patch"
-            )
-            AndroidView(
-//                modifier = modifier,
-                factory = { MaterialTextView(it) },
-                update = { it.text = HtmlCompat.fromHtml(picture.shortDescription ?: "", 0) }
-            )
-        }
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp),
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    fontSize = 24.sp,
+                    text = picture.title.uppercase(Locale.ROOT)
+                )
+                AsyncImage(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp),
+                    model = picture.url,
+                    placeholder = painterResource(R.drawable.ic_launcher_background),
+                    //                error = painterResource(com.google.android.material.R.drawable.m3_password_eye),
+                    contentDescription = "Mission patch"
+                )
+                AndroidView(
+                    //                modifier = modifier,
+                    factory = { MaterialTextView(it) },
+                    update = { it.text = HtmlCompat.fromHtml(picture.shortDescription ?: "", 0) }
+                )
+            }
 
+        }
+        AddToCartButton()
     }
 }
 
@@ -152,5 +159,12 @@ private fun ErrorMessage(text: String) {
 private fun Loading() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         CircularProgressIndicator()
+    }
+}
+
+@Composable
+fun AddToCartButton() {
+    FloatingActionButton(modifier = Modifier.padding(36.dp), onClick = { /*TODO*/ }) {
+        Icon(Icons.Filled.Add, "Add to cart")
     }
 }
