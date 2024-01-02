@@ -17,14 +17,22 @@ import pl.abovehead.news.viewModel.PostViewModel
 import pl.abovehead.pictures.PicturesScreen
 
 @Composable
-fun NavigationHost(navController: NavHostController, paddingValues: PaddingValues, navControllerViewModel: NavControllerViewModel, postViewModel: PostViewModel) {
+fun NavigationHost(
+    navController: NavHostController,
+    paddingValues: PaddingValues,
+    navControllerViewModel: NavControllerViewModel,
+    postViewModel: PostViewModel
+) {
     NavHost(
         navController = navController,
         startDestination = Routes.News.route,
         modifier = Modifier.padding(paddingValues = paddingValues)
     ) {
         composable(Routes.News.route) {
-            NewsScreen( navController = navController, navControllerViewModel = navControllerViewModel)
+            NewsScreen(
+                navController = navController,
+                navControllerViewModel = navControllerViewModel
+            )
         }
         composable(Routes.Pictures.route) {
             PicturesScreen()
@@ -33,8 +41,9 @@ fun NavigationHost(navController: NavHostController, paddingValues: PaddingValue
             Routes.PostDetails.route + "/{postId}",
             arguments = listOf(navArgument("postId") { type = NavType.StringType })
         ) { backStackEntry ->
-            val post = postViewModel.findPostById(postId =backStackEntry.arguments?.getString("postId") )
-            NewsDetails(post = post )
+            val post =
+                postViewModel.findPostById(postId = backStackEntry.arguments?.getString("postId"))
+            NewsDetails(post = post)
         }
         composable(Routes.ShoppingCart.route) {
             CartScreen()
