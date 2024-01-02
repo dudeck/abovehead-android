@@ -1,4 +1,4 @@
-package pl.abovehead.news
+package pl.abovehead.news.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

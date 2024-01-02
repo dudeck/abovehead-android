@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import pl.abovehead.NewsDetailsActivity
 import pl.abovehead.databinding.ListItemRssBinding
-import pl.abovehead.news.model.RssItem
+import pl.abovehead.news.domain.RssItem
 
 
 class RssFeedAdapter :
