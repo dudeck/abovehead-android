@@ -16,6 +16,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import pl.abovehead.NavControllerViewModel
+import pl.abovehead.cart.screens.viewmodel.OrderViewModel
 import pl.abovehead.common.NavBarItem
 import pl.abovehead.news.viewModel.PostViewModel
 import pl.abovehead.routes.NavigationHost
@@ -23,7 +24,11 @@ import pl.abovehead.routes.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomNavigation(viewModel: NavControllerViewModel, postViewModel: PostViewModel) {
+fun BottomNavigation(
+    viewModel: NavControllerViewModel,
+    postViewModel: PostViewModel,
+    orderViewModel: OrderViewModel
+) {
     val navController = rememberNavController()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -32,7 +37,8 @@ fun BottomNavigation(viewModel: NavControllerViewModel, postViewModel: PostViewM
             navController = navController,
             paddingValues = paddingValues,
             navControllerViewModel = viewModel,
-            postViewModel = postViewModel
+            postViewModel = postViewModel,
+            orderViewModel = orderViewModel
         )
     }
 }

@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.text.HtmlCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.apollographql.apollo3.api.Error
 import com.apollographql.apollo3.exception.ApolloException
@@ -40,6 +41,8 @@ import pl.abovehead.GetAstrophotosQuery
 import pl.abovehead.PictureDetailsActivity
 import pl.abovehead.R
 import pl.abovehead.apolloClient
+import pl.abovehead.cart.screens.viewmodel.OrderItem
+import pl.abovehead.cart.screens.viewmodel.OrderViewModel
 import pl.abovehead.pictures.AstroPhotosState.ApplicationError
 import pl.abovehead.pictures.AstroPhotosState.Loading
 import pl.abovehead.pictures.AstroPhotosState.ProtocolError
@@ -58,7 +61,7 @@ private sealed interface AstroPhotosState {
 private const val ASTROPHOTOPAGEID = "cG9zdDoxMTA="
 
 @Composable
-fun AstroPhotoList() {
+fun AstroPhotoList(orderViewModel: OrderViewModel) {
     var state by remember { mutableStateOf<AstroPhotosState>(Loading) }
     LaunchedEffect(Unit) {
         state = try {
@@ -84,7 +87,7 @@ fun AstroPhotoList() {
         is Success ->
             LazyColumn {
                 items(s.pictures.size) { index ->
-                    if (s.pictures[index].title.isNotBlank()) PictureItem(picture = s.pictures[index])
+                    if (s.pictures[index].title.isNotBlank()) PictureItem(picture = s.pictures[index], orderViewModel)
                 }
             }
     }
@@ -93,7 +96,7 @@ fun AstroPhotoList() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PictureItem(picture: Picture) {
+private fun PictureItem(picture: Picture, orderViewModel: OrderViewModel) {
     val mContext = LocalContext.current
     Box (contentAlignment = Alignment.BottomEnd){
         Card(
@@ -143,7 +146,7 @@ private fun PictureItem(picture: Picture) {
             }
 
         }
-        AddToCartButton()
+        AddToCartButton(title = picture.title, image = picture.url, orderViewModel = orderViewModel)
     }
 }
 
@@ -163,8 +166,10 @@ private fun Loading() {
 }
 
 @Composable
-fun AddToCartButton() {
-    FloatingActionButton(modifier = Modifier.padding(36.dp), onClick = { /*TODO*/ }) {
+fun AddToCartButton(orderViewModel: OrderViewModel, title:String, image: String?) {
+    FloatingActionButton(modifier = Modifier.padding(36.dp), onClick = {
+        orderViewModel.addOrder(orderItem = OrderItem(title = title, image = image))
+    }) {
         Icon(Icons.Filled.Add, "Add to cart")
     }
 }

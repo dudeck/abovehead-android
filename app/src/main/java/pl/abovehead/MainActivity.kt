@@ -12,6 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
+import pl.abovehead.cart.screens.viewmodel.OrderViewModel
 import pl.abovehead.common.composables.BottomNavigation
 import pl.abovehead.news.viewModel.PostViewModel
 import pl.abovehead.ui.theme.AboveHeadTheme
@@ -22,18 +23,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val navControllerViewModel: NavControllerViewModel =
             ViewModelProvider(this)[NavControllerViewModel::class.java]
-        val postViewModel: PostViewModel =
-            ViewModelProvider(this)[PostViewModel::class.java]
+        val postViewModel: PostViewModel = ViewModelProvider(this)[PostViewModel::class.java]
+        val orderViewModel: OrderViewModel = ViewModelProvider(this)[OrderViewModel::class.java]
 
 
         setContent {
             AboveHeadTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    BottomNavigation(navControllerViewModel, postViewModel)
+                    BottomNavigation(navControllerViewModel, postViewModel, orderViewModel)
                 }
             }
         }

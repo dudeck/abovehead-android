@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import pl.abovehead.NavControllerViewModel
 import pl.abovehead.cart.screens.CartScreen
+import pl.abovehead.cart.screens.viewmodel.OrderViewModel
 import pl.abovehead.news.ui.NewsDetails
 import pl.abovehead.news.ui.NewsScreen
 import pl.abovehead.news.viewModel.PostViewModel
@@ -21,7 +22,8 @@ fun NavigationHost(
     navController: NavHostController,
     paddingValues: PaddingValues,
     navControllerViewModel: NavControllerViewModel,
-    postViewModel: PostViewModel
+    postViewModel: PostViewModel,
+    orderViewModel: OrderViewModel
 ) {
     NavHost(
         navController = navController,
@@ -35,7 +37,7 @@ fun NavigationHost(
             )
         }
         composable(Routes.Pictures.route) {
-            PicturesScreen()
+            PicturesScreen(orderViewModel)
         }
         composable(
             Routes.PostDetails.route + "/{postId}",
@@ -46,7 +48,7 @@ fun NavigationHost(
             NewsDetails(post = post)
         }
         composable(Routes.ShoppingCart.route) {
-            CartScreen()
+            CartScreen(orderViewModel)
         }
     }
 }
