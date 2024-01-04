@@ -1,5 +1,6 @@
 package pl.abovehead.cart.screens.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,15 +23,21 @@ data class OrderItem(
 @HiltViewModel
 
 class OrderViewModel @Inject constructor() : ViewModel() {
-    private val _orderState = MutableStateFlow<MutableList<OrderItem>>(mutableListOf())
-    val orderState: StateFlow<MutableList<OrderItem>> = _orderState.asStateFlow()
+    private val _orderState = MutableStateFlow<MutableList<OrderItem>>(mutableStateListOf())
+    val orderState: StateFlow<List<OrderItem>> = _orderState.asStateFlow()
     fun addOrder(orderItem: OrderItem) {
-        _orderState.update { currentList ->
-            currentList.apply { add(orderItem) }
+        _orderState.update {
+            it.apply {
+                add(orderItem)
+            }
         }
     }
 
     fun removeOrder(orderItem: OrderItem) {
-        _orderState.update { currentList -> currentList.apply { remove(orderItem) } }
+        _orderState.update {
+            it.apply {
+                remove(orderItem)
+            }
+        }
     }
 }

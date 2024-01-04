@@ -3,7 +3,10 @@ package pl.abovehead.routes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -16,16 +19,15 @@ import pl.abovehead.news.ui.NewsDetails
 import pl.abovehead.news.ui.NewsScreen
 import pl.abovehead.news.viewModel.PostViewModel
 import pl.abovehead.pictures.PicturesScreen
-import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun NavigationHost(
     navController: NavHostController,
     paddingValues: PaddingValues,
 
-) {
+    ) {
     val navControllerViewModel = hiltViewModel<NavControllerViewModel>()
-    val postViewModel= hiltViewModel<PostViewModel>()
+    val postViewModel = hiltViewModel<PostViewModel>()
     val orderViewModel = hiltViewModel<OrderViewModel>()
     NavHost(
         navController = navController,
@@ -50,7 +52,8 @@ fun NavigationHost(
             NewsDetails(post = post)
         }
         composable(Routes.ShoppingCart.route) {
-            CartScreen(orderViewModel)
+            val ordersByState by orderViewModel.orderState.collectAsStateWithLifecycle()
+            CartScreen(orders = ordersByState, removeOrder = orderViewModel::removeOrder)
         }
     }
 }
