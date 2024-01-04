@@ -25,9 +25,6 @@ import pl.abovehead.routes.Routes
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomNavigation(
-    viewModel: NavControllerViewModel,
-    postViewModel: PostViewModel,
-    orderViewModel: OrderViewModel
 ) {
     val navController = rememberNavController()
     Scaffold(
@@ -36,9 +33,6 @@ fun BottomNavigation(
         NavigationHost(
             navController = navController,
             paddingValues = paddingValues,
-            navControllerViewModel = viewModel,
-            postViewModel = postViewModel,
-            orderViewModel = orderViewModel
         )
     }
 }

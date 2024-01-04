@@ -90,6 +90,8 @@ fun AstroPhotoList(orderViewModel: OrderViewModel) {
                     if (s.pictures[index].title.isNotBlank()) PictureItem(picture = s.pictures[index], orderViewModel)
                 }
             }
+
+        else -> {}
     }
 }
 

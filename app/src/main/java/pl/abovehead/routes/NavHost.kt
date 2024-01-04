@@ -16,15 +16,17 @@ import pl.abovehead.news.ui.NewsDetails
 import pl.abovehead.news.ui.NewsScreen
 import pl.abovehead.news.viewModel.PostViewModel
 import pl.abovehead.pictures.PicturesScreen
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun NavigationHost(
     navController: NavHostController,
     paddingValues: PaddingValues,
-    navControllerViewModel: NavControllerViewModel,
-    postViewModel: PostViewModel,
-    orderViewModel: OrderViewModel
+
 ) {
+    val navControllerViewModel = hiltViewModel<NavControllerViewModel>()
+    val postViewModel= hiltViewModel<PostViewModel>()
+    val orderViewModel = hiltViewModel<OrderViewModel>()
     NavHost(
         navController = navController,
         startDestination = Routes.News.route,
