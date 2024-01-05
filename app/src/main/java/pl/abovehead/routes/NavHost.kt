@@ -41,7 +41,7 @@ fun NavigationHost(
             )
         }
         composable(Routes.Pictures.route) {
-            PicturesScreen(orderViewModel)
+            PicturesScreen(orderViewModel::addOrder)
         }
         composable(
             Routes.PostDetails.route + "/{postId}",

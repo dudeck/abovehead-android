@@ -5,6 +5,7 @@ type Query {
 
 type Page {
   blocks: [Blocks]!
+  content: String
 }
 
 type Blocks {

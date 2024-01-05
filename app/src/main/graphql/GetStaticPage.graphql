@@ -1,0 +1,5 @@
+query GetStaticPage($id: ID!) {
+    page(id: $id) {
+        content
+    }
+}

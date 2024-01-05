@@ -36,12 +36,14 @@ import pl.abovehead.GetAstrophotosQuery
 import pl.abovehead.PictureDetailsActivity
 import pl.abovehead.R
 import pl.abovehead.apolloClient
+import pl.abovehead.cart.screens.viewmodel.OrderItem
 import pl.abovehead.pictures.SeaPhotosState.ApplicationError
 import pl.abovehead.pictures.SeaPhotosState.Loading
 import pl.abovehead.pictures.SeaPhotosState.ProtocolError
 import pl.abovehead.pictures.SeaPhotosState.Success
 import pl.abovehead.pictures.domain.PageToPictureMapper
 import pl.abovehead.pictures.domain.Picture
+import pl.abovehead.pictures.ui.AddToCartButton
 import java.util.Locale
 
 private sealed interface SeaPhotosState {
@@ -54,7 +56,7 @@ private sealed interface SeaPhotosState {
 private const val SEAPAGEID = "cG9zdDoxODY="
 
 @Composable
-fun SeaPhotoList() {
+fun SeaPhotoList(addOrder: (OrderItem) -> Unit) {
     var state by remember { mutableStateOf<SeaPhotosState>(Loading) }
     LaunchedEffect(Unit) {
         state = try {
@@ -80,15 +82,11 @@ fun SeaPhotoList() {
         is Success ->
             LazyColumn {
                 items(s.pictures.size) { index ->
-                    if (s.pictures[index].title.isNotBlank()) PictureItem(picture = s.pictures[index])
+                    if (s.pictures[index].title.isNotBlank()) PictureItem(
+                        picture = s.pictures[index],
+                        addOrder
+                    )
                 }
-//
-//                item {
-//                    if (response?.data?.launches?.hasMore == true) {
-//                        LoadingItem()
-//                        cursor = response?.data?.launches?.cursor
-//                    }
-//                }
             }
     }
 }
@@ -96,53 +94,56 @@ fun SeaPhotoList() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PictureItem(picture: Picture) {
+private fun PictureItem(picture: Picture, addOrder: (OrderItem) -> Unit) {
     val mContext = LocalContext.current
-    Card(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize(),
-        onClick = {
-            startActivity(
-                mContext,
-                Intent(mContext, PictureDetailsActivity::class.java).apply {
-                    putExtra(
-                        "item",
-                        picture
-                    )
-                },
-                null
-            )
-        }
+    Box(contentAlignment = Alignment.BottomEnd) {
+        Card(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize(),
+            onClick = {
+                startActivity(
+                    mContext,
+                    Intent(mContext, PictureDetailsActivity::class.java).apply {
+                        putExtra(
+                            "item",
+                            picture
+                        )
+                    },
+                    null
+                )
+            }
 
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
         ) {
-            Text(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp,
-                text = picture.title.uppercase(Locale.ROOT)
-            )
-            AsyncImage(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
-                model = picture.url,
-                placeholder = painterResource(R.drawable.ic_launcher_background),
-//                error = painterResource(com.google.android.material.R.drawable.m3_password_eye),
-                contentDescription = "Mission patch"
-            )
-            AndroidView(
-//                modifier = modifier,
-                factory = { MaterialTextView(it) },
-                update = { it.text = HtmlCompat.fromHtml(picture.shortDescription ?: "", 0) }
-            )
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp),
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    fontSize = 24.sp,
+                    text = picture.title.uppercase(Locale.ROOT)
+                )
+                AsyncImage(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp),
+                    model = picture.url,
+                    placeholder = painterResource(R.drawable.ic_launcher_background),
+                    //                error = painterResource(com.google.android.material.R.drawable.m3_password_eye),
+                    contentDescription = "Mission patch"
+                )
+                AndroidView(
+                    //                modifier = modifier,
+                    factory = { MaterialTextView(it) },
+                    update = { it.text = HtmlCompat.fromHtml(picture.shortDescription ?: "", 0) }
+                )
+            }
         }
+        AddToCartButton(title = picture.title, image = picture.url, addOrder = addOrder)
 
     }
 }

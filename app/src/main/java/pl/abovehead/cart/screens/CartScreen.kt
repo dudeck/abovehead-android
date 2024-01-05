@@ -24,8 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import pl.abovehead.cart.screens.viewmodel.OrderItem
+import pl.abovehead.cart.screens.viewmodel.OrderViewModel
 
 @Composable
 fun CartScreen(orders: List<OrderItem>, removeOrder: (OrderItem) -> Unit) {

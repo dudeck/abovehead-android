@@ -3,11 +3,13 @@ package pl.abovehead.cart.screens.viewmodel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
+import javax.inject.Singleton
 
 enum class FrameSize { Small, Big }
 enum class FrameColor { White, Black }
@@ -21,7 +23,6 @@ data class OrderItem(
 )
 
 @HiltViewModel
-
 class OrderViewModel @Inject constructor() : ViewModel() {
     private val _orderState = MutableStateFlow<MutableList<OrderItem>>(mutableStateListOf())
     val orderState: StateFlow<List<OrderItem>> = _orderState.asStateFlow()
