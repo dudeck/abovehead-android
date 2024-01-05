@@ -56,13 +56,8 @@ fun NavigationHost(
         composable(Routes.ShoppingCart.route) {
             val ordersByState by orderViewModel.orderState.collectAsStateWithLifecycle()
             val mContext = LocalContext.current
-            fun makeOrder(email: String): () -> Unit {
-                return {
-                    val ordersIntent = orderViewModel.makeOrderIntent(email)
-                    startActivity(mContext, ordersIntent, null)
-                }
-            }
-            CartScreen(orders = ordersByState, removeOrder = orderViewModel::removeOrder, {startActivity(mContext, {(email) -> makeOrder(email)}, null)})
+
+            CartScreen(orders = ordersByState, removeOrder = { orderViewModel.removeOrder(it) }, {startActivity(mContext,  orderViewModel.makeOrderIntent(it), null)})
         }
     }
 }

@@ -21,36 +21,59 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import pl.abovehead.cart.screens.domain.OrderData
 import pl.abovehead.cart.screens.domain.OrderItem
-import pl.abovehead.ui.theme.AboveHeadTheme
 
 @Composable
-fun CartScreen(orders: List<OrderItem>, removeOrder: (OrderItem) -> Unit, makeOrder: () -> Unit) {
+fun CartScreen(
+    orders: List<OrderItem>,
+    removeOrder: (OrderItem) -> Unit,
+    makeOrder: (data: OrderData) -> Unit
+) {
     Surface(color = MaterialTheme.colorScheme.background) {
-        OrderList(orders, removeOrder)
+        OrderList(orders, removeOrder, makeOrder)
     }
 }
 
 @Composable
-fun OrderList(orders: List<OrderItem>, removeOrder: (OrderItem) -> Unit) {
-    LazyColumn {
-        items(orders.size) { index ->
-            OrderItemRow(orders[index], removeOrder)
+fun OrderList(
+    orders: List<OrderItem>,
+    removeOrder: (OrderItem) -> Unit,
+    makeOrder: (data: OrderData) -> Unit
+) {
+    Column(
+        Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        LazyColumn(Modifier.weight(1f)) {
+            items(orders.size) { index ->
+                OrderItemRow(orders[index], removeOrder)
+            }
         }
-    }
-    if(orders.isNotEmpty()){
-        Button(
-            onClick = { /* Handle button click */ },
-            modifier = Modifier
-                .padding(8.dp)
-        ) {
-            // Button content
-            Text("Zamów", color = MaterialTheme.colorScheme.onPrimary)
+        if (orders.isNotEmpty()) {
+            Button(
+                onClick = {
+                    makeOrder(
+                        OrderData(
+                            "Mateusz",
+                            "Dudkowski",
+                            "123456789",
+                            "test@test.pl"
+                        )
+                    )
+                },
+                modifier = Modifier
+                    .padding(8.dp)
+            ) {
+                // Button content
+                Text("Zamów", color = MaterialTheme.colorScheme.onPrimary)
+            }
         }
     }
 }
