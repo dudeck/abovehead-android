@@ -36,7 +36,7 @@ import pl.abovehead.GetAstrophotosQuery
 import pl.abovehead.PictureDetailsActivity
 import pl.abovehead.R
 import pl.abovehead.apolloClient
-import pl.abovehead.cart.screens.viewmodel.OrderItem
+import pl.abovehead.cart.screens.domain.OrderItem
 import pl.abovehead.pictures.SeaPhotosState.ApplicationError
 import pl.abovehead.pictures.SeaPhotosState.Loading
 import pl.abovehead.pictures.SeaPhotosState.ProtocolError

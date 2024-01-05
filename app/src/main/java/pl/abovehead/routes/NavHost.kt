@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -53,7 +55,14 @@ fun NavigationHost(
         }
         composable(Routes.ShoppingCart.route) {
             val ordersByState by orderViewModel.orderState.collectAsStateWithLifecycle()
-            CartScreen(orders = ordersByState, removeOrder = orderViewModel::removeOrder)
+            val mContext = LocalContext.current
+            fun makeOrder(email: String): () -> Unit {
+                return {
+                    val ordersIntent = orderViewModel.makeOrderIntent(email)
+                    startActivity(mContext, ordersIntent, null)
+                }
+            }
+            CartScreen(orders = ordersByState, removeOrder = orderViewModel::removeOrder, {startActivity(mContext, {(email) -> makeOrder(email)}, null)})
         }
     }
 }

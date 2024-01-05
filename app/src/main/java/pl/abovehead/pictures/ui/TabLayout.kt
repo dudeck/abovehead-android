@@ -15,7 +15,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import pl.abovehead.cart.screens.viewmodel.OrderItem
+import pl.abovehead.cart.screens.domain.OrderItem
 import pl.abovehead.pictures.AstroPhotoList
 import pl.abovehead.pictures.OsloPhotoList
 import pl.abovehead.pictures.PicturesViewModel
