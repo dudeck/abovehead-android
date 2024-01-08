@@ -3,7 +3,12 @@ package pl.abovehead.routes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat.startActivity
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -11,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import pl.abovehead.NavControllerViewModel
 import pl.abovehead.cart.screens.CartScreen
+import pl.abovehead.cart.screens.viewmodel.OrderViewModel
 import pl.abovehead.news.ui.NewsDetails
 import pl.abovehead.news.ui.NewsScreen
 import pl.abovehead.news.viewModel.PostViewModel
@@ -20,9 +26,11 @@ import pl.abovehead.pictures.PicturesScreen
 fun NavigationHost(
     navController: NavHostController,
     paddingValues: PaddingValues,
-    navControllerViewModel: NavControllerViewModel,
-    postViewModel: PostViewModel
-) {
+
+    ) {
+    val navControllerViewModel = hiltViewModel<NavControllerViewModel>()
+    val postViewModel = hiltViewModel<PostViewModel>()
+    val orderViewModel = hiltViewModel<OrderViewModel>()
     NavHost(
         navController = navController,
         startDestination = Routes.News.route,
@@ -35,7 +43,7 @@ fun NavigationHost(
             )
         }
         composable(Routes.Pictures.route) {
-            PicturesScreen()
+            PicturesScreen(orderViewModel::addOrder)
         }
         composable(
             Routes.PostDetails.route + "/{postId}",
@@ -46,7 +54,10 @@ fun NavigationHost(
             NewsDetails(post = post)
         }
         composable(Routes.ShoppingCart.route) {
-            CartScreen()
+            val ordersByState by orderViewModel.orderState.collectAsStateWithLifecycle()
+            val mContext = LocalContext.current
+
+            CartScreen(orders = ordersByState, removeOrder = { orderViewModel.removeOrder(it) }, {startActivity(mContext,  orderViewModel.makeOrderIntent(it), null)})
         }
     }
 }

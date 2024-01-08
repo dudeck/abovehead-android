@@ -31,8 +31,6 @@ class PostViewModel: ViewModel() {
                 Success(posts)
             } else {
                 ApplicationError(response.errors!!)
-
-
             }
         } catch (e: ApolloException) {
             ProtocolError(e)
