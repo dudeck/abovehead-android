@@ -40,6 +40,7 @@ fun BottomBar(navController: NavController) {
         Routes.News,
         Routes.Pictures,
         Routes.ShoppingCart,
+        Routes.OtherInfo,
     )
     val navBarStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBarStackEntry?.destination

@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
 import androidx.compose.ui.graphics.vector.ImageVector
 import pl.abovehead.R
@@ -34,6 +35,12 @@ data class NavBarItem(
                 icon = Icons.Filled.Check,
                 contentDescriptionId = R.string.cart,
                 route = Routes.ShoppingCart.route,
+            ),
+            NavBarItem(
+                titleId = R.string.other_info,
+                icon = Icons.Filled.Info,
+                contentDescriptionId = R.string.other_info,
+                route = Routes.OtherInfo.route,
             ),
         )
     }

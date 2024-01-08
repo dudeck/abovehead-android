@@ -20,6 +20,7 @@ import pl.abovehead.cart.screens.viewmodel.OrderViewModel
 import pl.abovehead.news.ui.NewsDetails
 import pl.abovehead.news.ui.NewsScreen
 import pl.abovehead.news.viewModel.PostViewModel
+import pl.abovehead.other.OtherInfoScreen
 import pl.abovehead.pictures.PicturesScreen
 
 @Composable
@@ -58,6 +59,9 @@ fun NavigationHost(
             val mContext = LocalContext.current
 
             CartScreen(orders = ordersByState, removeOrder = { orderViewModel.removeOrder(it) }, {startActivity(mContext,  orderViewModel.makeOrderIntent(it), null)})
+        }
+        composable(Routes.OtherInfo.route) {
+            OtherInfoScreen()
         }
     }
 }
