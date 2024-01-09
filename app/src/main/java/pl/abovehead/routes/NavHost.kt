@@ -20,7 +20,10 @@ import pl.abovehead.cart.screens.viewmodel.OrderViewModel
 import pl.abovehead.news.ui.NewsDetails
 import pl.abovehead.news.ui.NewsScreen
 import pl.abovehead.news.viewModel.PostViewModel
+import pl.abovehead.other.AboutScreen
 import pl.abovehead.other.OtherInfoScreen
+import pl.abovehead.other.PrivacyPolicyScreen
+import pl.abovehead.other.TermsOfUseScreen
 import pl.abovehead.pictures.PicturesScreen
 
 @Composable
@@ -58,10 +61,22 @@ fun NavigationHost(
             val ordersByState by orderViewModel.orderState.collectAsStateWithLifecycle()
             val mContext = LocalContext.current
 
-            CartScreen(orders = ordersByState, removeOrder = { orderViewModel.removeOrder(it) }, {startActivity(mContext,  orderViewModel.makeOrderIntent(it), null)})
+            CartScreen(
+                orders = ordersByState,
+                removeOrder = { orderViewModel.removeOrder(it) },
+                { startActivity(mContext, orderViewModel.makeOrderIntent(it), null) })
         }
         composable(Routes.OtherInfo.route) {
-            OtherInfoScreen()
+            OtherInfoScreen(navController)
+        }
+        composable(SettingsRoutes.TermsOfUse.route) {
+            TermsOfUseScreen()
+        }
+        composable(SettingsRoutes.PrivacyPolicy.route) {
+            PrivacyPolicyScreen()
+        }
+        composable(SettingsRoutes.About.route) {
+            AboutScreen()
         }
     }
 }
