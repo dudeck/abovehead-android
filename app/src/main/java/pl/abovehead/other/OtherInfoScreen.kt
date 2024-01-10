@@ -12,8 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import pl.abovehead.R
 import pl.abovehead.routes.SettingsRoutes
 
 @Composable
@@ -26,10 +28,10 @@ val settings = listOf(SettingsRoutes.PrivacyPolicy, SettingsRoutes.TermsOfUse, S
 @Composable
 fun SettingsList(settings: List<SettingsRoutes>, navController: NavController) {
     // Use LazyColumn to create a scrollable list
-    LazyColumn{
+    LazyColumn {
         // Use items to display each setting as an item
         items(settings.size) { index ->
-            Box (
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .clickable(
@@ -41,9 +43,18 @@ fun SettingsList(settings: List<SettingsRoutes>, navController: NavController) {
                             navController.navigate(settings[index].route)
                         })
             ) {
-                Text(settings[index].route, modifier = Modifier.padding(16.dp))
+                Text(getScreenTitle(settings[index]), modifier = Modifier.padding(16.dp))
             }
             Divider()
         }
+    }
+}
+
+@Composable
+private fun getScreenTitle(settingsRoute: SettingsRoutes): String {
+    return when (settingsRoute) {
+        SettingsRoutes.About -> stringResource(id = R.string.about)
+        SettingsRoutes.PrivacyPolicy -> stringResource(id = R.string.privacy_policy)
+        SettingsRoutes.TermsOfUse -> stringResource(id = R.string.terms_of_use)
     }
 }

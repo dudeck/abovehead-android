@@ -9,5 +9,8 @@
     <string name="shoppingCart">Shopping Cart</string>
     <string name="title_activity_news_detail">News Details</string>
     <string name="other_info">Other Info</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_of_use">Terms of Use</string>
+    <string name="about">About Us</string>
     <string name="general_error_message">We are sorry, error occurred:</string>
 </resources>
