@@ -62,7 +62,6 @@ fun NavigationHost(
         }
         composable(Routes.ShoppingCart.route) {
             val ordersByState by orderViewModel.orderState.collectAsStateWithLifecycle()
-            val mContext = LocalContext.current
 
             CartScreen(
                 orders = ordersByState,

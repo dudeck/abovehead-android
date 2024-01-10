@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import pl.abovehead.R
-import pl.abovehead.cart.screens.domain.OrderData
 import pl.abovehead.cart.screens.domain.OrderItem
 import pl.abovehead.routes.Routes
 
@@ -72,7 +71,7 @@ fun OrderList(
                     .padding(8.dp)
             ) {
                 // Button content
-                Text("Zamów", color = MaterialTheme.colorScheme.onPrimary)
+                Text(stringResource(R.string.order), color = MaterialTheme.colorScheme.onPrimary)
             }
         }
     }
@@ -97,14 +96,8 @@ fun OrderItemRow(order: OrderItem, removeOrder: (OrderItem) -> Unit) {
             Spacer(modifier = Modifier.width(8.dp))
             Column {
                 Text(text = order.title, fontWeight = FontWeight.Bold)
-                Text(text = "Size: ${order.frameSize}")
-                Text(text = "Color: ${order.frameColor}")
-                if (order.addLogo) {
-                    Text(text = "Logo: Yes")
-                }
-                if (order.addTitle) {
-                    Text(text = "Sign: Yes")
-                }
+                Text(text = stringResource(R.string.size, order.frameSize))
+                Text(text = stringResource(R.string.color, order.frameColor))
             }
             RemoveFromCartButton(order, removeOrder)
         }

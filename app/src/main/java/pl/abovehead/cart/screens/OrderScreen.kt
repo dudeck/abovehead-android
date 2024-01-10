@@ -9,19 +9,29 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import pl.abovehead.R
+import pl.abovehead.cart.screens.domain.FrameColor
+import pl.abovehead.cart.screens.domain.FrameSize
 import pl.abovehead.cart.screens.domain.OrderData
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,7 +74,9 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
                     formState.value.name,
                     formState.value.surname,
                     formState.value.phone,
-                    formState.value.email
+                    formState.value.email,
+                    formState.value.addLogo,
+                    formState.value.addTitle
                 )
             )
         }
@@ -110,6 +122,7 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
+        LogoAndTitleOptions()
 
         // A checkbox for the agreement
         Row(
@@ -142,11 +155,103 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LogoAndTitleOptions( formState: MutableState<FormState>) {
+    // Use state variables to store the selected options and the expanded status of the drop-downs
+    var size by remember { mutableStateOf(FrameSize.Big) }
+    var color by remember { mutableStateOf(FrameColor.White) }
+    var sizeExpanded by remember { mutableStateOf(true) }
+    var colorExpanded by remember { mutableStateOf(true) }
+
+    formState.value.s
+
+    // Use a column to arrange the drop-downs vertically
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        // Use an ExposedDropdownMenuBox for each drop-down
+        ExposedDropdownMenuBox(
+            expanded = sizeExpanded,
+            onExpandedChange = { sizeExpanded = it }
+        ) {
+            // Use a TextField to display the selected option and a trailing icon to indicate the drop-down status
+            TextField(
+                value = size.name,
+                onValueChange = {},
+                label = { Text(stringResource(id = R.string.size)) },
+                readOnly = true,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(
+                        expanded = sizeExpanded
+                    )
+                },
+                modifier = Modifier.menuAnchor()
+            )
+            // Use a DropdownMenu to display the options when expanded
+            DropdownMenu(
+                expanded = sizeExpanded,
+                onDismissRequest = { sizeExpanded = false }
+            ) {
+                FrameSize.entries.forEach { option ->
+                    DropdownMenuItem(
+                        text = {
+                            Text(option.name)
+                        } ,
+                        onClick = {
+                            size = option
+                            sizeExpanded = false
+                        }
+                    )
+                }
+            }
+        }
+        ExposedDropdownMenuBox(
+            expanded = colorExpanded,
+            onExpandedChange = { colorExpanded = it }
+        ) {
+            TextField(
+                value = color.name,
+                onValueChange = {},
+                label = { Text(stringResource(id = R.string.color)) },
+                readOnly = true,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(
+                        expanded = colorExpanded
+                    )
+                },
+                modifier = Modifier.menuAnchor()
+            )
+            DropdownMenu(
+                expanded = colorExpanded,
+                onDismissRequest = { colorExpanded = false }
+            ) {
+                FrameColor.entries.forEach { option ->
+                    DropdownMenuItem(
+                        text = {
+                            Text(option.name)
+                        },
+                        onClick = {
+                            color = option
+                            colorExpanded = false
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
 // A data class to hold the form state
 data class FormState(
     val name: String = "",
     val surname: String = "",
     val phone: String = "",
     val email: String = "",
-    val agreement: Boolean = false
+    val agreement: Boolean = false,
+    val addLogo: Boolean = true,
+    val addTitle: Boolean = true,
 )
