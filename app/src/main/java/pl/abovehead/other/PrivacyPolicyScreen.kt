@@ -7,14 +7,11 @@ import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,8 +28,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.material.textview.MaterialTextView
 import pl.abovehead.R
+import pl.abovehead.common.composables.ErrorMessage
+import pl.abovehead.common.composables.Loading
 import pl.abovehead.other.viewModel.OtherInfoState
 import pl.abovehead.other.viewModel.OtherInfoViewModel
+import pl.abovehead.other.viewModel.privacyPolicyId
 
 @Composable
 fun PrivacyPolicyScreen() {
@@ -42,7 +42,7 @@ fun PrivacyPolicyScreen() {
     Surface(color = MaterialTheme.colorScheme.background) {
         val state: OtherInfoState by viewModel.otherInfoState.collectAsStateWithLifecycle()
         LaunchedEffect(Unit) {
-            viewModel.fetch()
+            viewModel.fetch(privacyPolicyId)
         }
         when (val s = state) {
             OtherInfoState.Loading -> Loading()
@@ -92,23 +92,6 @@ fun PrivacyPolicyScreen() {
                         )
                     }
                 }
-
         }
-    }
-
-}
-
-
-@Composable
-private fun ErrorMessage(text: String) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = text)
-    }
-}
-
-@Composable
-private fun Loading() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
     }
 }

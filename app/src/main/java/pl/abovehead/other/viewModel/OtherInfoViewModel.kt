@@ -16,6 +16,8 @@ import pl.abovehead.other.viewModel.OtherInfoState.Success
 import javax.inject.Inject
 
 const val privacyPolicyId = "cG9zdDoz"
+const val aboutId = "cG9zdDo1NzA="
+const val termsOfUseId = "cG9zdDozNDI="
 
 sealed interface OtherInfoState {
     data object Loading : OtherInfoState
@@ -26,9 +28,9 @@ sealed interface OtherInfoState {
 
 @HiltViewModel
 class OtherInfoViewModel @Inject constructor() : ViewModel() {
-    suspend fun fetch() {
+    suspend fun fetch(screenId: String) {
         _otherInfoState.value = try {
-            val response = apolloClient.query(GetStaticPageQuery(privacyPolicyId)).execute()
+            val response = apolloClient.query(GetStaticPageQuery(screenId)).execute()
             val page = response.data?.page
             if (!response.hasErrors() && page?.editorBlocks?.first()?.renderedHtml?.isNotBlank() == true) {
                 val info = PageToOtherInfoMapper().map(page)

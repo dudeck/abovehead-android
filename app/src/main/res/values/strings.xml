@@ -12,5 +12,6 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_of_use">Terms of Use</string>
     <string name="about">About Us</string>
+    <string name="empty_cart">Your shopping cart is empty</string>
     <string name="general_error_message">We are sorry, error occurred:</string>
 </resources>
