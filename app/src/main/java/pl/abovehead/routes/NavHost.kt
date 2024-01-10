@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -15,7 +16,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import pl.abovehead.NavControllerViewModel
+import pl.abovehead.R
 import pl.abovehead.cart.screens.CartScreen
+import pl.abovehead.cart.screens.OrderScreen
 import pl.abovehead.cart.screens.viewmodel.OrderViewModel
 import pl.abovehead.news.ui.NewsDetails
 import pl.abovehead.news.ui.NewsScreen
@@ -64,7 +67,20 @@ fun NavigationHost(
             CartScreen(
                 orders = ordersByState,
                 removeOrder = { orderViewModel.removeOrder(it) },
-                { startActivity(mContext, orderViewModel.makeOrderIntent(it), null) })
+                navController,
+            )
+        }
+        composable(Routes.Order.route) {
+            val mContext = LocalContext.current
+            val policyAgreement = stringResource(R.string.i_agree_to_the_terms_of_use_and_privacy_policy)
+
+            OrderScreen {
+                startActivity(
+                    mContext,
+                    orderViewModel.makeOrderIntent(it, policyAgreement),
+                    null
+                )
+            }
         }
         composable(Routes.OtherInfo.route) {
             OtherInfoScreen(navController)

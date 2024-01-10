@@ -1,13 +1,6 @@
 package pl.abovehead.other
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.text.Html
 import android.text.util.Linkify
-import android.widget.TextView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
@@ -33,9 +26,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.Coil
-import coil.ImageLoader
-import coil.request.ImageRequest
 import com.google.android.material.textview.MaterialTextView
 import pl.abovehead.R
 import pl.abovehead.common.CoilImageGetter
@@ -92,7 +82,8 @@ fun TermsOfUseScreen() {
                                 MaterialTextView(it).apply {
                                     // links
                                     autoLinkMask = Linkify.WEB_URLS
-                                    linksClickable = true
+                                    linksClickable = false
+                                    setLinkTextColor(textColors)
                                 }
                             },
                             update =

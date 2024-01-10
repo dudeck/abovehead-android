@@ -5,6 +5,7 @@ sealed class Routes(val route: String) {
     object Pictures : Routes("pictures_route")
     object PostDetails : Routes("post_details_route")
     object ShoppingCart : Routes("shopping_cart_route")
+    object Order : Routes("order_route")
     object OtherInfo : Routes("other_info_route")
 }
 

@@ -53,45 +53,39 @@ fun PrivacyPolicyScreen() {
             )
 
             is OtherInfoState.ApplicationError -> ErrorMessage(s.errors[0].message)
-            is OtherInfoState.Success ->
-                Box(
-                    Modifier
-                        .scrollable(
-                            orientation = Orientation.Vertical,
-                            // Scrollable state: describes how to consume
-                            // scrolling delta and update offset
-                            state = rememberScrollableState { delta ->
-                                offset += delta
-                                delta
-                            }
-                        )
-                        .background(MaterialTheme.colorScheme.background),
-                    contentAlignment = Alignment.Center
+            is OtherInfoState.Success -> Box(
+                Modifier
+                    .scrollable(orientation = Orientation.Vertical,
+                        // Scrollable state: describes how to consume
+                        // scrolling delta and update offset
+                        state = rememberScrollableState { delta ->
+                            offset += delta
+                            delta
+                        })
+                    .background(MaterialTheme.colorScheme.background),
+                contentAlignment = Alignment.Center) {
+                Column(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
+                        .padding(horizontal = 8.dp)
+                        .verticalScroll(scrollState)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.background)
-                            .padding(horizontal = 8.dp)
-                            .verticalScroll(scrollState)
-                    ) {
-                        AndroidView(
-                            //                modifier = modifier,
-                            factory = {
-                                MaterialTextView(it).apply {
-                                    // links
-                                    autoLinkMask = Linkify.WEB_URLS
-                                    linksClickable = true
-                                }
-                            },
-                            update =
-                            {
-                                it.text =
-                                    HtmlCompat.fromHtml(s.content.trim().replace("￼", "") ?: "", 0)
+                    AndroidView(
+                        //                modifier = modifier,
+                        factory = {
+                            MaterialTextView(it).apply {
+                                // links
+                                autoLinkMask = Linkify.WEB_URLS
+                                linksClickable = true
                             }
+                        }, update = {
+                            it.text =
+                                HtmlCompat.fromHtml(s.content.trim().replace("￼", "") ?: "", 0)
+                        }
 
-                        )
-                    }
+                    )
                 }
+            }
         }
     }
 }

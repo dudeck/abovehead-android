@@ -10,8 +10,21 @@
     <string name="title_activity_news_detail">Wiadomości szczegóły</string>
     <string name="other_info">Inne</string>
     <string name="privacy_policy">Polityka Prywatności</string>
-    <string name="terms_of_use">Warunki użycia</string>
+    <string name="terms_of_use">Oferta</string>
     <string name="about">O nas</string>
     <string name="general_error_message">Przepraszamy, wystąpił błąd</string>
     <string name="empty_cart">Koszyk jest pusty</string>
+    <string name="please_enter_your_name">Proszę podać imię</string>
+    <string name="please_enter_your_surname">Proszę podać nazwisko</string>
+    <string name="please_enter_your_phone_number">Proszę podać numer telefonu</string>
+    <string name="please_enter_a_valid_phone_number">Proszę podać poprawny numer telefonu</string>
+    <string name="please_enter_your_email_address">Proszę podać adres email</string>
+    <string name="please_enter_a_valid_email_address">Proszę podać poprawny adres email</string>
+    <string name="please_agree_to_the_terms_of_use_and_privacy_policy">Proszę zaakceptować warunki użytkowania i politykę prywatności</string>
+    <string name="name">Imię</string>
+    <string name="surname">Nazwisko</string>
+    <string name="phone">Telefon</string>
+    <string name="email">Email</string>
+    <string name="i_agree_to_the_terms_of_use_and_privacy_policy">Zgadzam się z warunkami użytkowania i polityką prywatności</string>
+    <string name="submit">Utwórz email</string>
 </resources>
