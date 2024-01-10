@@ -1,20 +1,16 @@
 package pl.abovehead.news.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,9 +19,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import pl.abovehead.R
+import pl.abovehead.common.composables.ErrorMessage
+import pl.abovehead.common.composables.Loading
 import pl.abovehead.news.domain.Post
 import pl.abovehead.news.viewModel.PostViewModel
 import pl.abovehead.news.viewModel.PostsState
@@ -49,6 +46,7 @@ fun PostsList(postViewModel: PostViewModel, navController: NavController) {
                 R.string.general_error_message,
             )
         )
+
         is ApplicationError -> ErrorMessage(s.errors[0].message)
         is Success ->
             LazyColumn {
@@ -68,7 +66,7 @@ private fun PostItem(post: Post, navController: NavController) {
             .padding(16.dp)
             .fillMaxSize(),
         onClick = {
-            navController.navigate(Routes.PostDetails.route+"/${post.id}")
+            navController.navigate(Routes.PostDetails.route + "/${post.id}")
         }
 
     ) {
@@ -96,20 +94,5 @@ private fun PostItem(post: Post, navController: NavController) {
             Text(text = post.modifiedDate.toString())
         }
 
-    }
-}
-
-
-@Composable
-private fun ErrorMessage(text: String) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = text)
-    }
-}
-
-@Composable
-private fun Loading() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
     }
 }

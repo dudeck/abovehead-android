@@ -24,20 +24,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import pl.abovehead.R
 import pl.abovehead.cart.screens.domain.OrderData
 import pl.abovehead.cart.screens.domain.OrderItem
+import pl.abovehead.routes.Routes
 
 @Composable
 fun CartScreen(
     orders: List<OrderItem>,
     removeOrder: (OrderItem) -> Unit,
-    makeOrder: (data: OrderData) -> Unit
+    navController: NavHostController
 ) {
     Surface(color = MaterialTheme.colorScheme.background) {
-        OrderList(orders, removeOrder, makeOrder)
+        OrderList(orders, removeOrder, navController)
     }
 }
 
@@ -45,28 +49,24 @@ fun CartScreen(
 fun OrderList(
     orders: List<OrderItem>,
     removeOrder: (OrderItem) -> Unit,
-    makeOrder: (data: OrderData) -> Unit
+    navController: NavHostController
 ) {
     Column(
-        Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        if (orders.isEmpty()) {
+            Text(text = stringResource(id = R.string.empty_cart))
+        } else {
         LazyColumn(Modifier.weight(1f)) {
             items(orders.size) { index ->
                 OrderItemRow(orders[index], removeOrder)
             }
         }
-        if (orders.isNotEmpty()) {
             Button(
                 onClick = {
-                    makeOrder(
-                        OrderData(
-                            "Mateusz",
-                            "Dudkowski",
-                            "123456789",
-                            "test@test.pl"
-                        )
-                    )
+                    navController.navigate(Routes.Order.route)
                 },
                 modifier = Modifier
                     .padding(8.dp)

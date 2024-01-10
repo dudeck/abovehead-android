@@ -8,5 +8,23 @@
     <string name="cart">Cart</string>
     <string name="shoppingCart">Shopping Cart</string>
     <string name="title_activity_news_detail">News Details</string>
+    <string name="other_info">Other Info</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_of_use">Terms of Use</string>
+    <string name="about">About Us</string>
+    <string name="empty_cart">Your shopping cart is empty</string>
     <string name="general_error_message">We are sorry, error occurred:</string>
+    <string name="please_enter_your_name">Please enter your name</string>
+    <string name="please_enter_your_surname">Please enter your surname</string>
+    <string name="please_enter_your_phone_number">Please enter your phone number</string>
+    <string name="please_enter_a_valid_phone_number">Please enter a valid phone number</string>
+    <string name="please_enter_your_email_address">Please enter your email address</string>
+    <string name="please_enter_a_valid_email_address">Please enter a valid email address</string>
+    <string name="please_agree_to_the_terms_of_use_and_privacy_policy">Please agree to the terms of use and privacy policy</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+    <string name="i_agree_to_the_terms_of_use_and_privacy_policy">I agree to the terms of use and privacy policy</string>
+    <string name="submit">Create email</string>
 </resources>

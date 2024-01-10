@@ -6,6 +6,7 @@ type Query {
 type Page {
   blocks: [Blocks]!
   content: String
+  editorBlocks: [EditorBlocks]?
 }
 
 type Blocks {
@@ -40,6 +41,10 @@ type FeaturedImage {
 }
 type ImageNode {
   mediaItemUrl: String
+}
+
+type EditorBlocks {
+  renderedHtml: String
 }
 
 schema {

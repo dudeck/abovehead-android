@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,6 +36,8 @@ import pl.abovehead.PictureDetailsActivity
 import pl.abovehead.R
 import pl.abovehead.apolloClient
 import pl.abovehead.cart.screens.domain.OrderItem
+import pl.abovehead.common.composables.ErrorMessage
+import pl.abovehead.common.composables.Loading
 import pl.abovehead.pictures.AstroPhotosState.ApplicationError
 import pl.abovehead.pictures.AstroPhotosState.Loading
 import pl.abovehead.pictures.AstroPhotosState.ProtocolError
@@ -145,20 +146,5 @@ private fun PictureItem(picture: Picture, addOrder: (OrderItem) -> Unit) {
 
         }
         AddToCartButton(title = picture.title, image = picture.url, addOrder = addOrder)
-    }
-}
-
-
-@Composable
-private fun ErrorMessage(text: String) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = text)
-    }
-}
-
-@Composable
-private fun Loading() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
     }
 }
