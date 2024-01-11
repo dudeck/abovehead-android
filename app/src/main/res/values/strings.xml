@@ -27,7 +27,7 @@
     <string name="email">Email</string>
     <string name="i_agree_to_the_terms_of_use_and_privacy_policy">I agree to the terms of use and privacy policy</string>
     <string name="submit">Create email</string>
-    <string name="size">Size: %1$s</string>
-    <string name="color">Frame color: %1$s</string>
+    <string name="size">Size:</string>
+    <string name="color">Frame color:</string>
     <string name="order">Order</string>
 </resources>

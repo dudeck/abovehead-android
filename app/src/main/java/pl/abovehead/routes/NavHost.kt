@@ -66,12 +66,14 @@ fun NavigationHost(
             CartScreen(
                 orders = ordersByState,
                 removeOrder = { orderViewModel.removeOrder(it) },
+                updateOrder = { oldItem, newItem -> orderViewModel.updateOrder(oldItem, newItem) },
                 navController,
             )
         }
         composable(Routes.Order.route) {
             val mContext = LocalContext.current
-            val policyAgreement = stringResource(R.string.i_agree_to_the_terms_of_use_and_privacy_policy)
+            val policyAgreement =
+                stringResource(R.string.i_agree_to_the_terms_of_use_and_privacy_policy)
 
             OrderScreen {
                 startActivity(

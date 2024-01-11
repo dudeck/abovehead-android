@@ -37,11 +37,8 @@ import pl.abovehead.cart.screens.domain.OrderData
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
-
-    // A state object to hold the user input
     val formState = remember { mutableStateOf(FormState()) }
 
-    // A function to validate the user input and return an error message if any
     @Composable
     fun validateInput(): String? {
         val state = formState.value
@@ -61,13 +58,11 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
         }
     }
 
-    // A state object to hold the error message
     val errorMessage = remember { mutableStateOf<String?>(null) }
 
     fun onSubmit(error: String?) {
         errorMessage.value = error
 
-        // If there is no error, navigate to the next screen or perform other actions
         if (error == null) {
             makeOrder(
                 OrderData(
@@ -82,14 +77,12 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
         }
     }
 
-    // A column layout to display the form elements
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // A text field for the name
         OutlinedTextField(
             value = formState.value.name,
             onValueChange = { formState.value = formState.value.copy(name = it) },
@@ -97,7 +90,6 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
             singleLine = true
         )
 
-        // A text field for the surname
         OutlinedTextField(
             value = formState.value.surname,
             onValueChange = { formState.value = formState.value.copy(surname = it) },
@@ -105,7 +97,6 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
             singleLine = true
         )
 
-        // A text field for the phone number
         OutlinedTextField(
             value = formState.value.phone,
             onValueChange = { formState.value = formState.value.copy(phone = it) },
@@ -114,7 +105,6 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
         )
 
-        // A text field for the email address
         OutlinedTextField(
             value = formState.value.email,
             onValueChange = { formState.value = formState.value.copy(email = it) },
@@ -122,9 +112,6 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
-        LogoAndTitleOptions()
-
-        // A checkbox for the agreement
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -135,16 +122,13 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
                 modifier = Modifier.padding(start = 8.dp)
             )
         }
-        // Validate the input and show the error message if any
         val error = validateInput()
-        // A button to submit the form
         Button(
             onClick = { onSubmit(error) }, modifier = Modifier.align(Alignment.End)
         ) {
             Text(stringResource(R.string.submit))
         }
 
-        // A text to show the error message if any
         errorMessage.value?.let {
             Text(
                 text = it,
@@ -155,97 +139,6 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun LogoAndTitleOptions( formState: MutableState<FormState>) {
-    // Use state variables to store the selected options and the expanded status of the drop-downs
-    var size by remember { mutableStateOf(FrameSize.Big) }
-    var color by remember { mutableStateOf(FrameColor.White) }
-    var sizeExpanded by remember { mutableStateOf(true) }
-    var colorExpanded by remember { mutableStateOf(true) }
-
-    formState.value.s
-
-    // Use a column to arrange the drop-downs vertically
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        // Use an ExposedDropdownMenuBox for each drop-down
-        ExposedDropdownMenuBox(
-            expanded = sizeExpanded,
-            onExpandedChange = { sizeExpanded = it }
-        ) {
-            // Use a TextField to display the selected option and a trailing icon to indicate the drop-down status
-            TextField(
-                value = size.name,
-                onValueChange = {},
-                label = { Text(stringResource(id = R.string.size)) },
-                readOnly = true,
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(
-                        expanded = sizeExpanded
-                    )
-                },
-                modifier = Modifier.menuAnchor()
-            )
-            // Use a DropdownMenu to display the options when expanded
-            DropdownMenu(
-                expanded = sizeExpanded,
-                onDismissRequest = { sizeExpanded = false }
-            ) {
-                FrameSize.entries.forEach { option ->
-                    DropdownMenuItem(
-                        text = {
-                            Text(option.name)
-                        } ,
-                        onClick = {
-                            size = option
-                            sizeExpanded = false
-                        }
-                    )
-                }
-            }
-        }
-        ExposedDropdownMenuBox(
-            expanded = colorExpanded,
-            onExpandedChange = { colorExpanded = it }
-        ) {
-            TextField(
-                value = color.name,
-                onValueChange = {},
-                label = { Text(stringResource(id = R.string.color)) },
-                readOnly = true,
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(
-                        expanded = colorExpanded
-                    )
-                },
-                modifier = Modifier.menuAnchor()
-            )
-            DropdownMenu(
-                expanded = colorExpanded,
-                onDismissRequest = { colorExpanded = false }
-            ) {
-                FrameColor.entries.forEach { option ->
-                    DropdownMenuItem(
-                        text = {
-                            Text(option.name)
-                        },
-                        onClick = {
-                            color = option
-                            colorExpanded = false
-                        }
-                    )
-                }
-            }
-        }
-    }
-}
-
-// A data class to hold the form state
 data class FormState(
     val name: String = "",
     val surname: String = "",

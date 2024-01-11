@@ -27,7 +27,7 @@
     <string name="email">Email</string>
     <string name="i_agree_to_the_terms_of_use_and_privacy_policy">Zgadzam się z warunkami użytkowania i polityką prywatności</string>
     <string name="submit">Utwórz email</string>
-    <string name="size">Rozmiar: %1$s</string>
-    <string name="color">Kolor ramki: %1$s</string>
+    <string name="size">Rozmiar:</string>
+    <string name="color">Kolor ramki:</string>
     <string name="order">Zamów</string>
 </resources>

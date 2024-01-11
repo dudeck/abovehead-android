@@ -2,16 +2,13 @@ package pl.abovehead.cart.screens.viewmodel
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import pl.abovehead.R
 import pl.abovehead.cart.screens.domain.OrderData
 import pl.abovehead.cart.screens.domain.OrderDataMapper
 import pl.abovehead.cart.screens.domain.OrderItem
@@ -20,7 +17,10 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class OrderViewModel @Inject constructor(private val orderMapper: OrderMapper, private val orderDataMapper: OrderDataMapper) : ViewModel() {
+class OrderViewModel @Inject constructor(
+    private val orderMapper: OrderMapper,
+    private val orderDataMapper: OrderDataMapper
+) : ViewModel() {
     private val _orderState = MutableStateFlow<MutableList<OrderItem>>(mutableStateListOf())
     val orderState: StateFlow<List<OrderItem>> = _orderState.asStateFlow()
     fun addOrder(orderItem: OrderItem) {
@@ -35,6 +35,14 @@ class OrderViewModel @Inject constructor(private val orderMapper: OrderMapper, p
         _orderState.update {
             it.apply {
                 remove(orderItem)
+            }
+        }
+    }
+
+    fun updateOrder(oldItem: OrderItem, newItem: OrderItem) {
+        _orderState.update {
+            it.apply {
+                this[indexOf(oldItem)] = newItem
             }
         }
     }
