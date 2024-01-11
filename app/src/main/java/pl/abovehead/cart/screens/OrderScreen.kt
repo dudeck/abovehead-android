@@ -115,6 +115,26 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Checkbox(checked = formState.value.addLogo,
+                onCheckedChange = { formState.value = formState.value.copy(addLogo = it) })
+            Text(
+                text = stringResource(R.string.addLogo),
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(checked = formState.value.addTitle,
+                onCheckedChange = { formState.value = formState.value.copy(addTitle = it) })
+            Text(
+                text = stringResource(R.string.addTitle),
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Checkbox(checked = formState.value.agreement,
                 onCheckedChange = { formState.value = formState.value.copy(agreement = it) })
             Text(

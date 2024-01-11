@@ -30,4 +30,6 @@
     <string name="size">Rozmiar:</string>
     <string name="color">Kolor ramki:</string>
     <string name="order">Zamów</string>
+    <string name="addLogo">Logo ABOVEHEAD</string>
+    <string name="addTitle">Podpis</string>
 </resources>

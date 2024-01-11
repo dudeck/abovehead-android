@@ -30,4 +30,6 @@
     <string name="size">Size:</string>
     <string name="color">Frame color:</string>
     <string name="order">Order</string>
+    <string name="addLogo">ABOVEHEAD logo</string>
+    <string name="addTitle">Title</string>
 </resources>
