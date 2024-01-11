@@ -31,5 +31,10 @@
     <string name="color">Frame color:</string>
     <string name="order">Order</string>
     <string name="addLogo">ABOVEHEAD logo</string>
-    <string name="addTitle">Title</string>
+    <string name="addTitle">Add Title</string>
+    <string name="title">Title</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="white">White</string>
+    <string name="black">Black</string>
 </resources>

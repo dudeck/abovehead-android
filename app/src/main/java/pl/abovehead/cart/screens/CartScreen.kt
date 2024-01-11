@@ -33,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,6 +46,7 @@ import pl.abovehead.R
 import pl.abovehead.cart.screens.domain.FrameColor
 import pl.abovehead.cart.screens.domain.FrameSize
 import pl.abovehead.cart.screens.domain.OrderItem
+import pl.abovehead.cart.screens.domain.translateFrameColorToString
 import pl.abovehead.routes.Routes
 
 @Composable
@@ -127,13 +129,15 @@ fun LogoAndTitleOptions(currentOrderItem: OrderItem, updateOrder: (OrderItem, Or
     var sizeExpanded by remember { mutableStateOf(false) }
     var colorExpanded by remember { mutableStateOf(false) }
 
+    val resources = LocalContext.current.resources
+
     Column(
         modifier = Modifier.padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         ExposedDropdownMenuBox(modifier = Modifier.clip(RoundedCornerShape(8.dp)),
             expanded = sizeExpanded,
             onExpandedChange = { sizeExpanded = it }) {
-            TextField(value = size.name,
+            TextField(value = size.string,
                 onValueChange = {},
                 label = { Text(stringResource(id = R.string.size)) },
                 readOnly = true,
@@ -147,7 +151,7 @@ fun LogoAndTitleOptions(currentOrderItem: OrderItem, updateOrder: (OrderItem, Or
             DropdownMenu(expanded = sizeExpanded, onDismissRequest = { sizeExpanded = false }) {
                 FrameSize.entries.forEach { option ->
                     DropdownMenuItem(text = {
-                        Text(option.name)
+                        Text(option.string)
                     }, onClick = {
                         size = option
                         sizeExpanded = false
@@ -159,7 +163,7 @@ fun LogoAndTitleOptions(currentOrderItem: OrderItem, updateOrder: (OrderItem, Or
         ExposedDropdownMenuBox(modifier = Modifier.clip(RoundedCornerShape(8.dp)),
             expanded = colorExpanded,
             onExpandedChange = { colorExpanded = it }) {
-            TextField(value = color.name,
+            TextField(value = translateFrameColorToString(color, resources),
                 onValueChange = {},
                 label = { Text(stringResource(id = R.string.color)) },
                 readOnly = true,
@@ -173,7 +177,7 @@ fun LogoAndTitleOptions(currentOrderItem: OrderItem, updateOrder: (OrderItem, Or
             DropdownMenu(expanded = colorExpanded, onDismissRequest = { colorExpanded = false }) {
                 FrameColor.entries.forEach { option ->
                     DropdownMenuItem(text = {
-                        Text(option.name)
+                        Text(translateFrameColorToString(option, resources))
                     }, onClick = {
                         color = option
                         colorExpanded = false

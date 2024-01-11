@@ -1,6 +1,7 @@
 package pl.abovehead.cart.screens.viewmodel
 
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
@@ -47,8 +48,8 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    fun makeOrderIntent(orderData: OrderData, policyAgreement: String): Intent {
-        val orders = orderMapper.mapOrder(_orderState.value) + "\n" + policyAgreement
+    fun makeOrderIntent(orderData: OrderData, policyAgreement: String, resources: Resources): Intent {
+        val orders = orderMapper.mapOrder(_orderState.value, resources) + "\n" + policyAgreement
         val userData = orderDataMapper.mapData(orderData)
 
         val selectorIntent = Intent(Intent.ACTION_SENDTO)

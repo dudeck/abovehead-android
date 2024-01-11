@@ -1,5 +1,6 @@
 package pl.abovehead.routes
 
+import android.content.res.Resources
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -74,11 +75,12 @@ fun NavigationHost(
             val mContext = LocalContext.current
             val policyAgreement =
                 stringResource(R.string.i_agree_to_the_terms_of_use_and_privacy_policy)
+            val resources:Resources = LocalContext.current.resources
 
             OrderScreen {
                 startActivity(
                     mContext,
-                    orderViewModel.makeOrderIntent(it, policyAgreement),
+                    orderViewModel.makeOrderIntent(it, policyAgreement, resources),
                     null
                 )
             }
