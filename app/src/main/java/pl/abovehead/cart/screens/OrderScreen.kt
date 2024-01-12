@@ -27,11 +27,8 @@ import pl.abovehead.cart.screens.domain.OrderData
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
-
-    // A state object to hold the user input
     val formState = remember { mutableStateOf(FormState()) }
 
-    // A function to validate the user input and return an error message if any
     @Composable
     fun validateInput(): String? {
         val state = formState.value
@@ -51,33 +48,39 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
         }
     }
 
-    // A state object to hold the error message
     val errorMessage = remember { mutableStateOf<String?>(null) }
 
     fun onSubmit(error: String?) {
         errorMessage.value = error
 
-        // If there is no error, navigate to the next screen or perform other actions
         if (error == null) {
             makeOrder(
                 OrderData(
                     formState.value.name,
                     formState.value.surname,
                     formState.value.phone,
-                    formState.value.email
+                    formState.value.email,
+                    formState.value.promoCode,
+                    formState.value.addLogo,
+                    formState.value.addTitle
                 )
             )
         }
     }
 
-    // A column layout to display the form elements
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // A text field for the name
+        errorMessage.value?.let {
+            Text(
+                text = it,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
         OutlinedTextField(
             value = formState.value.name,
             onValueChange = { formState.value = formState.value.copy(name = it) },
@@ -85,7 +88,6 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
             singleLine = true
         )
 
-        // A text field for the surname
         OutlinedTextField(
             value = formState.value.surname,
             onValueChange = { formState.value = formState.value.copy(surname = it) },
@@ -93,7 +95,6 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
             singleLine = true
         )
 
-        // A text field for the phone number
         OutlinedTextField(
             value = formState.value.phone,
             onValueChange = { formState.value = formState.value.copy(phone = it) },
@@ -102,7 +103,6 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
         )
 
-        // A text field for the email address
         OutlinedTextField(
             value = formState.value.email,
             onValueChange = { formState.value = formState.value.copy(email = it) },
@@ -110,8 +110,32 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
-
-        // A checkbox for the agreement
+        OutlinedTextField(
+            value = formState.value.promoCode,
+            onValueChange = { formState.value = formState.value.copy(promoCode = it) },
+            label = { Text(stringResource(R.string.promo_code)) },
+            singleLine = true,
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(checked = formState.value.addLogo,
+                onCheckedChange = { formState.value = formState.value.copy(addLogo = it) })
+            Text(
+                text = stringResource(R.string.addLogo),
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(checked = formState.value.addTitle,
+                onCheckedChange = { formState.value = formState.value.copy(addTitle = it) })
+            Text(
+                text = stringResource(R.string.addTitle),
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -122,31 +146,22 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
                 modifier = Modifier.padding(start = 8.dp)
             )
         }
-        // Validate the input and show the error message if any
         val error = validateInput()
-        // A button to submit the form
         Button(
             onClick = { onSubmit(error) }, modifier = Modifier.align(Alignment.End)
         ) {
             Text(stringResource(R.string.submit))
         }
-
-        // A text to show the error message if any
-        errorMessage.value?.let {
-            Text(
-                text = it,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-        }
     }
 }
 
-// A data class to hold the form state
 data class FormState(
     val name: String = "",
     val surname: String = "",
     val phone: String = "",
     val email: String = "",
-    val agreement: Boolean = false
+    val promoCode: String = "",
+    val agreement: Boolean = false,
+    val addLogo: Boolean = true,
+    val addTitle: Boolean = true,
 )

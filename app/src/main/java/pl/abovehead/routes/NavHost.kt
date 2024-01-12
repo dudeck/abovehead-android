@@ -1,5 +1,6 @@
 package pl.abovehead.routes
 
+import android.content.res.Resources
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -62,22 +63,24 @@ fun NavigationHost(
         }
         composable(Routes.ShoppingCart.route) {
             val ordersByState by orderViewModel.orderState.collectAsStateWithLifecycle()
-            val mContext = LocalContext.current
 
             CartScreen(
                 orders = ordersByState,
                 removeOrder = { orderViewModel.removeOrder(it) },
+                updateOrder = { oldItem, newItem -> orderViewModel.updateOrder(oldItem, newItem) },
                 navController,
             )
         }
         composable(Routes.Order.route) {
             val mContext = LocalContext.current
-            val policyAgreement = stringResource(R.string.i_agree_to_the_terms_of_use_and_privacy_policy)
+            val policyAgreement =
+                stringResource(R.string.i_agree_to_the_terms_of_use_and_privacy_policy)
+            val resources:Resources = LocalContext.current.resources
 
             OrderScreen {
                 startActivity(
                     mContext,
-                    orderViewModel.makeOrderIntent(it, policyAgreement),
+                    orderViewModel.makeOrderIntent(it, policyAgreement, resources),
                     null
                 )
             }

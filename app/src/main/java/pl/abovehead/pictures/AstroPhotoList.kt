@@ -133,7 +133,7 @@ private fun PictureItem(picture: Picture, addOrder: (OrderItem) -> Unit) {
                         .fillMaxSize()
                         .padding(8.dp),
                     model = picture.url,
-                    placeholder = painterResource(R.drawable.ic_launcher_background),
+//                    placeholder = painterResource(R.drawable.ic_launcher_background),
                     //                error = painterResource(com.google.android.material.R.drawable.m3_password_eye),
                     contentDescription = "Mission patch"
                 )

@@ -27,4 +27,15 @@
     <string name="email">Email</string>
     <string name="i_agree_to_the_terms_of_use_and_privacy_policy">Zgadzam się z warunkami użytkowania i polityką prywatności</string>
     <string name="submit">Utwórz email</string>
+    <string name="size">Rozmiar:</string>
+    <string name="color">Kolor ramki:</string>
+    <string name="order">Zamów</string>
+    <string name="addLogo">Logo ABOVEHEAD</string>
+    <string name="addTitle">Podpis</string>
+    <string name="title">Tytuł</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="white">Biały</string>
+    <string name="black">Czarny</string>
+    <string name="promo_code">Kod promocyjny</string>
 </resources>
