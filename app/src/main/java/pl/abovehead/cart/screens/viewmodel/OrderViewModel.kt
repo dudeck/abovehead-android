@@ -49,8 +49,8 @@ class OrderViewModel @Inject constructor(
     }
 
     fun makeOrderIntent(orderData: OrderData, policyAgreement: String, resources: Resources): Intent {
+        val userData = orderDataMapper.mapData(orderData, resources)
         val orders = orderMapper.mapOrder(_orderState.value, resources) + "\n" + policyAgreement
-        val userData = orderDataMapper.mapData(orderData)
 
         val selectorIntent = Intent(Intent.ACTION_SENDTO)
         selectorIntent.setData(Uri.parse("mailto:"))

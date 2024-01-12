@@ -12,22 +12,10 @@ class OrderMapper @Inject constructor() {
         for (order in orders) {
             ordersStringBuilder.append(
                 "${resources.getString(R.string.title)}: ${order.title}, " +
-                        "${resources.getString(R.string.size)}: ${order.frameSize.string}, " +
-                        "${resources.getString(R.string.color)}: ${
+                        "${resources.getString(R.string.size)} ${order.frameSize.string}, " +
+                        "${resources.getString(R.string.color)} ${
                             translateFrameColorToString(
                                 order.frameColor,
-                                resources
-                            )
-                        }, " +
-                        "${resources.getString(R.string.addLogo)}: ${
-                            translateBoolToString(
-                                order.addLogo,
-                                resources
-                            )
-                        }, " +
-                        "${resources.getString(R.string.addTitle)}: ${
-                            translateBoolToString(
-                                order.addTitle,
                                 resources
                             )
                         }\n\n"
@@ -35,14 +23,6 @@ class OrderMapper @Inject constructor() {
         }
 
         return ordersStringBuilder.toString()
-    }
-
-    private fun translateBoolToString(value: Boolean, resources: Resources): String {
-        return if (value) {
-            resources.getString(R.string.yes)
-        } else {
-            resources.getString(R.string.no)
-        }
     }
 }
 

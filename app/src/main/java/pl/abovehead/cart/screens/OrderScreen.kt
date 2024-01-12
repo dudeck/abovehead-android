@@ -60,6 +60,7 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
                     formState.value.surname,
                     formState.value.phone,
                     formState.value.email,
+                    formState.value.promoCode,
                     formState.value.addLogo,
                     formState.value.addTitle
                 )
@@ -73,6 +74,13 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        errorMessage.value?.let {
+            Text(
+                text = it,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
         OutlinedTextField(
             value = formState.value.name,
             onValueChange = { formState.value = formState.value.copy(name = it) },
@@ -101,6 +109,12 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
             label = { Text(stringResource(R.string.email)) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+        )
+        OutlinedTextField(
+            value = formState.value.promoCode,
+            onValueChange = { formState.value = formState.value.copy(promoCode = it) },
+            label = { Text(stringResource(R.string.promo_code)) },
+            singleLine = true,
         )
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -138,14 +152,6 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
         ) {
             Text(stringResource(R.string.submit))
         }
-
-        errorMessage.value?.let {
-            Text(
-                text = it,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-        }
     }
 }
 
@@ -154,6 +160,7 @@ data class FormState(
     val surname: String = "",
     val phone: String = "",
     val email: String = "",
+    val promoCode: String = "",
     val agreement: Boolean = false,
     val addLogo: Boolean = true,
     val addTitle: Boolean = true,

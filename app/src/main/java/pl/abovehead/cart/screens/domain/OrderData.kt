@@ -5,6 +5,7 @@ data class OrderData(
     val surname: String,
     val phoneNumber: String,
     val email: String,
+    val promoCode: String,
     val addLogo: Boolean,
     val addTitle: Boolean
 )
