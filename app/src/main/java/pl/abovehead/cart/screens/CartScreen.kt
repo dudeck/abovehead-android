@@ -1,5 +1,6 @@
 package pl.abovehead.cart.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,21 +11,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -114,7 +111,7 @@ fun OrderItemRow(
             )
             Column(Modifier.weight(1f)) {
                 Text(text = order.title.uppercase(), fontWeight = FontWeight.Bold)
-                LogoAndTitleOptions(order, updateOrder)
+                SizeAndColorOptions(order, updateOrder)
             }
             RemoveFromCartButton(order, removeOrder)
         }
@@ -123,70 +120,107 @@ fun OrderItemRow(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LogoAndTitleOptions(currentOrderItem: OrderItem, updateOrder: (OrderItem, OrderItem) -> Unit) {
+fun SizeAndColorOptions(currentOrderItem: OrderItem, updateOrder: (OrderItem, OrderItem) -> Unit) {
     var size by remember { mutableStateOf(currentOrderItem.frameSize) }
     var color by remember { mutableStateOf(currentOrderItem.frameColor) }
-    var sizeExpanded by remember { mutableStateOf(false) }
-    var colorExpanded by remember { mutableStateOf(false) }
 
     val resources = LocalContext.current.resources
 
     Column(
         modifier = Modifier.padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        ExposedDropdownMenuBox(modifier = Modifier.clip(RoundedCornerShape(8.dp)),
-            expanded = sizeExpanded,
-            onExpandedChange = { sizeExpanded = it }) {
-            TextField(value = size.string,
-                onValueChange = {},
-                label = { Text(stringResource(id = R.string.size)) },
-                readOnly = true,
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(
-                        expanded = sizeExpanded
+        Text(stringResource(id = R.string.color))
+        Row(modifier = Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Button(
+                onClick = {
+                    color = FrameColor.White
+                    updateOrder(
+                        currentOrderItem, currentOrderItem.copy(frameColor = color)
                     )
                 },
-                modifier = Modifier.menuAnchor()
-            )
-            DropdownMenu(expanded = sizeExpanded, onDismissRequest = { sizeExpanded = false }) {
-                FrameSize.entries.forEach { option ->
-                    DropdownMenuItem(text = {
-                        Text(option.string)
-                    }, onClick = {
-                        size = option
-                        sizeExpanded = false
-                        updateOrder(currentOrderItem, currentOrderItem.copy(frameSize = option))
-                    })
-                }
+                colors = ButtonDefaults.buttonColors(
+                    containerColor =
+                    if (color == FrameColor.White)
+                        MaterialTheme.colorScheme.primary
+                    else
+                        MaterialTheme.colorScheme.primaryContainer
+                )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(color = Color.White)
+                        .size(8.dp)
+                )
+
+                Text(
+                    text = translateFrameColorToString(FrameColor.White, resources),
+                    Modifier.padding(start = 10.dp)
+                )
+            }
+            Button(
+                onClick = {
+                    color = FrameColor.Black
+                    updateOrder(
+                        currentOrderItem, currentOrderItem.copy(frameColor = color)
+                    )
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor =
+                    if (color == FrameColor.Black)
+                        MaterialTheme.colorScheme.primary
+                    else
+                        MaterialTheme.colorScheme.primaryContainer
+                )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(color = Color.Black)
+                        .size(8.dp)
+                )
+
+                Text(
+                    text = translateFrameColorToString(FrameColor.Black, resources),
+                    Modifier.padding(start = 10.dp)
+                )
             }
         }
-        ExposedDropdownMenuBox(modifier = Modifier.clip(RoundedCornerShape(8.dp)),
-            expanded = colorExpanded,
-            onExpandedChange = { colorExpanded = it }) {
-            TextField(value = translateFrameColorToString(color, resources),
-                onValueChange = {},
-                label = { Text(stringResource(id = R.string.color)) },
-                readOnly = true,
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(
-                        expanded = colorExpanded
-                    )
-                },
-                modifier = Modifier.menuAnchor()
+        Text(stringResource(id = R.string.size))
+        Button(
+            onClick = {
+                size = FrameSize.Big
+                updateOrder(
+                    currentOrderItem, currentOrderItem.copy(frameSize = size)
+                )
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor =
+                if (size == FrameSize.Big)
+                    MaterialTheme.colorScheme.primary
+                else
+                    MaterialTheme.colorScheme.primaryContainer
             )
-            DropdownMenu(expanded = colorExpanded, onDismissRequest = { colorExpanded = false }) {
-                FrameColor.entries.forEach { option ->
-                    DropdownMenuItem(text = {
-                        Text(translateFrameColorToString(option, resources))
-                    }, onClick = {
-                        color = option
-                        colorExpanded = false
-                        updateOrder(
-                            currentOrderItem, currentOrderItem.copy(frameColor = option)
-                        )
-                    })
-                }
-            }
+        ) {
+            Text(
+                text = FrameSize.Big.string, Modifier.padding(start = 10.dp)
+            )
+        }
+        Button(onClick = {
+            size = FrameSize.Small
+            updateOrder(
+                currentOrderItem, currentOrderItem.copy(frameSize = size)
+            )
+        },
+            colors = ButtonDefaults.buttonColors(
+                containerColor =
+                if (size == FrameSize.Small)
+                    MaterialTheme.colorScheme.primary
+                else
+                    MaterialTheme.colorScheme.primaryContainer
+            )
+        ) {
+            Text(
+                text = FrameSize.Small.string, Modifier.padding(start = 10.dp)
+            )
         }
     }
 }
