@@ -13,8 +13,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import pl.abovehead.R
 import pl.abovehead.cart.screens.domain.OrderItem
 import pl.abovehead.pictures.AstroPhotoList
 import pl.abovehead.pictures.OsloPhotoList
@@ -49,6 +51,6 @@ fun AddToCartButton(addOrder: (OrderItem) -> Unit, title: String, image: String?
     FloatingActionButton(modifier = Modifier.padding(36.dp), onClick = {
         addOrder(OrderItem(title = title, image = image))
     }) {
-        Icon(Icons.Filled.Add, "Add to cart")
+        Icon(Icons.Filled.Add, stringResource(R.string.add_to_cart))
     }
 }

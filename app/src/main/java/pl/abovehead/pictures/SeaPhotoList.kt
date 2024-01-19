@@ -83,7 +83,7 @@ fun SeaPhotoList(addOrder: (OrderItem) -> Unit) {
         is Success ->
             LazyColumn {
                 items(s.pictures.size) { index ->
-                    if (s.pictures[index].title.isNotBlank()) PictureItem(
+                    if (s.pictures[index].title.isNotBlank()) SeaItem(
                         picture = s.pictures[index],
                         addOrder
                     )
@@ -95,7 +95,7 @@ fun SeaPhotoList(addOrder: (OrderItem) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PictureItem(picture: Picture, addOrder: (OrderItem) -> Unit) {
+fun SeaItem(picture: Picture, addOrder: (OrderItem) -> Unit) {
     val mContext = LocalContext.current
     Box(contentAlignment = Alignment.BottomEnd) {
         Card(
