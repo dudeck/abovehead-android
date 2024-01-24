@@ -20,26 +20,28 @@ import pl.abovehead.R
 import pl.abovehead.cart.screens.domain.OrderItem
 import pl.abovehead.pictures.AstroPhotoList
 import pl.abovehead.pictures.OsloPhotoList
-import pl.abovehead.pictures.PicturesViewModel
+import pl.abovehead.pictures.viewModel.PicturesTabViewModel
 import pl.abovehead.pictures.SeaPhotoList
+import pl.abovehead.pictures.viewModel.PicturesViewModel
 
 @Composable
 fun PicturesTabLayout(addOrder: (OrderItem) -> Unit) {
+    val picturesTabViewModel: PicturesTabViewModel = viewModel()
     val picturesViewModel: PicturesViewModel = viewModel()
-    val tabIndex = picturesViewModel.tabIndex.observeAsState()
+    val tabIndex = picturesTabViewModel.tabIndex.observeAsState()
     Column(modifier = Modifier.fillMaxWidth()) {
         TabRow(selectedTabIndex = tabIndex.value!!) {
-            picturesViewModel.tabs.forEachIndexed { index, title ->
+            picturesTabViewModel.tabs.forEachIndexed { index, title ->
                 Tab(
                     text = { Text(title) },
                     selected = tabIndex.value!! == index,
-                    onClick = { picturesViewModel.updateTabIndex(index) },
+                    onClick = { picturesTabViewModel.updateTabIndex(index) },
                 )
             }
         }
 
         when (tabIndex.value) {
-            0 -> AstroPhotoList(addOrder)
+            0 -> AstroPhotoList(addOrder, picturesViewModel)
             1 -> SeaPhotoList(addOrder)
             2 -> OsloPhotoList(addOrder)
         }

@@ -11,14 +11,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,51 +22,30 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.text.HtmlCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.apollographql.apollo3.api.Error
-import com.apollographql.apollo3.exception.ApolloException
 import com.google.android.material.textview.MaterialTextView
-import pl.abovehead.GetAstrophotosQuery
 import pl.abovehead.PictureDetailsActivity
 import pl.abovehead.R
-import pl.abovehead.apolloClient
 import pl.abovehead.cart.screens.domain.OrderItem
 import pl.abovehead.common.composables.ErrorMessage
 import pl.abovehead.common.composables.Loading
-import pl.abovehead.pictures.AstroPhotosState.ApplicationError
-import pl.abovehead.pictures.AstroPhotosState.Loading
-import pl.abovehead.pictures.AstroPhotosState.ProtocolError
-import pl.abovehead.pictures.AstroPhotosState.Success
-import pl.abovehead.pictures.domain.PageToPictureMapper
 import pl.abovehead.pictures.domain.Picture
 import pl.abovehead.pictures.ui.AddToCartButton
+import pl.abovehead.pictures.viewModel.PicturesState.ApplicationError
+import pl.abovehead.pictures.viewModel.PicturesState.Loading
+import pl.abovehead.pictures.viewModel.PicturesState.ProtocolError
+import pl.abovehead.pictures.viewModel.PicturesState.Success
+import pl.abovehead.pictures.viewModel.PicturesViewModel
 import java.util.Locale
 
-private sealed interface AstroPhotosState {
-    data object Loading : AstroPhotosState
-    data class ProtocolError(val exception: ApolloException) : AstroPhotosState
-    data class ApplicationError(val errors: List<Error>) : AstroPhotosState
-    data class Success(val pictures: List<Picture>) : AstroPhotosState
-}
-
-private const val ASTROPHOTOPAGEID = "cG9zdDoxMTA="
-
 @Composable
-fun AstroPhotoList(addOrder: (OrderItem) -> Unit) {
-    var state by remember { mutableStateOf<AstroPhotosState>(Loading) }
+fun AstroPhotoList(addOrder: (OrderItem) -> Unit, picturesViewModel: PicturesViewModel) {
+    val state = picturesViewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
-        state = try {
-            val response = apolloClient.query(GetAstrophotosQuery(ASTROPHOTOPAGEID)).execute()
-            if (response.hasErrors()) {
-                ApplicationError(response.errors!!)
-            } else {
-                Success(PageToPictureMapper().mapList(response.data!!.page!!))
-            }
-        } catch (e: ApolloException) {
-            ProtocolError(e)
-        }
+        picturesViewModel.fetchPictures()
     }
-    when (val s = state) {
+    when (val data = state.value) {
         Loading -> Loading()
         is ProtocolError -> ErrorMessage(
             stringResource(
@@ -79,12 +53,12 @@ fun AstroPhotoList(addOrder: (OrderItem) -> Unit) {
             )
         )
 
-        is ApplicationError -> ErrorMessage(s.errors[0].message)
+        is ApplicationError -> ErrorMessage(data.errors[0].message)
         is Success ->
             LazyColumn {
-                items(s.pictures.size) { index ->
-                    if (s.pictures[index].title.isNotBlank()) AstroPhotoItem(
-                        picture = s.pictures[index],
+                items(data.pictures.size) { index ->
+                    if (data.pictures[index].title.isNotBlank()) AstroPhotoItem(
+                        picture = data.pictures[index],
                         addOrder
                     )
                 }
@@ -134,7 +108,7 @@ fun AstroPhotoItem(picture: Picture, addOrder: (OrderItem) -> Unit) {
                         .padding(8.dp),
                     model = picture.url,
 //                    placeholder = painterResource(R.drawable.ic_launcher_background),
-                    //                error = painterResource(com.google.android.material.R.drawable.m3_password_eye),
+//                    error = painterResource(com.google.android.material.R.drawable.m3_password_eye),
                     contentDescription = "Mission patch"
                 )
                 AndroidView(
