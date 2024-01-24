@@ -94,7 +94,12 @@ fun OrderList(
 fun OrderItemRow(
     order: OrderItem, removeOrder: (OrderItem) -> Unit, updateOrder: (OrderItem, OrderItem) -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(vertical = 8.dp)
+            .background(color = MaterialTheme.colorScheme.surfaceVariant)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -204,12 +209,13 @@ fun SizeAndColorOptions(currentOrderItem: OrderItem, updateOrder: (OrderItem, Or
                 text = FrameSize.Big.string, Modifier.padding(start = 10.dp)
             )
         }
-        Button(onClick = {
-            size = FrameSize.Small
-            updateOrder(
-                currentOrderItem, currentOrderItem.copy(frameSize = size)
-            )
-        },
+        Button(
+            onClick = {
+                size = FrameSize.Small
+                updateOrder(
+                    currentOrderItem, currentOrderItem.copy(frameSize = size)
+                )
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor =
                 if (size == FrameSize.Small)
