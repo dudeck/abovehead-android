@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -66,7 +67,7 @@ fun NewsDetail(item: RssItem?, modifier: Modifier = Modifier) {
             text = item?.description ?: ""
         )
         Button(onClick = { uriHandler.openUri(item?.link ?: "https:www.abovehead.pl") }) {
-            Text(text = "More details")
+            Text(text = stringResource(R.string.more_details))
         }
     }
 }

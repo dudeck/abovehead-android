@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
 import com.google.android.material.textview.MaterialTextView
+import pl.abovehead.R
 import pl.abovehead.news.domain.Post
 import pl.abovehead.ui.theme.AboveHeadTheme
 
@@ -55,7 +57,7 @@ fun NewsDetails(post: Post?) {
                     it.text = post?.description
                 })
                 Button(onClick = { uriHandler.openUri(post?.link ?: "https:www.abovehead.pl") }) {
-                    Text(text = "More details")
+                    Text(text = stringResource(R.string.more_details))
                 }
             }
         }
