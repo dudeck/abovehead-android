@@ -13,8 +13,11 @@ import pl.abovehead.pictures.viewModel.PicturesState.ApplicationError
 import pl.abovehead.pictures.viewModel.PicturesState.Loading
 import pl.abovehead.pictures.viewModel.PicturesState.ProtocolError
 import pl.abovehead.pictures.viewModel.PicturesState.Success
+import javax.inject.Inject
 
 private const val ASTROPHOTOPAGEID = "cG9zdDoxMTA="
+private const val SEAPAGEID = "cG9zdDoxODY="
+private const val OSLOPAGEID = "cG9zdDoxOTE="
 
 sealed interface PicturesState {
     data object Loading : PicturesState
@@ -23,14 +26,32 @@ sealed interface PicturesState {
     data class Success(val pictures: List<Picture>) : PicturesState
 }
 
-class PicturesViewModel : ViewModel() {
+enum class PictureType {
+    Astrophoto, Sea, Oslo
+}
+
+open class PicturesViewModel @Inject constructor() : ViewModel() {
     private val _state = MutableStateFlow<PicturesState>(Loading)
     val state = _state.asStateFlow()
 
-    suspend fun fetchPictures() {
+    suspend fun fetchPictures(pictureType: PictureType) {
         if (_state.value !is Success) {
             _state.value = try {
-                val response = apolloClient.query(GetAstrophotosQuery(ASTROPHOTOPAGEID)).execute()
+                val response =
+                    when (pictureType) {
+                        PictureType.Astrophoto -> apolloClient.query(
+                            GetAstrophotosQuery(
+                                ASTROPHOTOPAGEID
+                            )
+                        ).execute()
+
+                        PictureType.Sea -> apolloClient.query(GetAstrophotosQuery(SEAPAGEID))
+                            .execute()
+
+                        PictureType.Oslo -> apolloClient.query(GetAstrophotosQuery(OSLOPAGEID))
+                            .execute()
+
+                    }
                 if (response.hasErrors()) {
                     ApplicationError(response.errors!!)
                 } else {
@@ -41,5 +62,8 @@ class PicturesViewModel : ViewModel() {
             }
         }
     }
-
 }
+
+class AstroPhotoViewModel: PicturesViewModel()
+class OsloViewModel: PicturesViewModel()
+class SeaViewModel: PicturesViewModel()

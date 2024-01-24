@@ -20,14 +20,21 @@ import pl.abovehead.R
 import pl.abovehead.cart.screens.domain.OrderItem
 import pl.abovehead.pictures.AstroPhotoList
 import pl.abovehead.pictures.OsloPhotoList
-import pl.abovehead.pictures.viewModel.PicturesTabViewModel
 import pl.abovehead.pictures.SeaPhotoList
+import pl.abovehead.pictures.viewModel.AstroPhotoViewModel
+import pl.abovehead.pictures.viewModel.OsloViewModel
+import pl.abovehead.pictures.viewModel.PicturesTabViewModel
 import pl.abovehead.pictures.viewModel.PicturesViewModel
+import pl.abovehead.pictures.viewModel.SeaViewModel
 
 @Composable
-fun PicturesTabLayout(addOrder: (OrderItem) -> Unit) {
+fun PicturesTabLayout(
+    addOrder: (OrderItem) -> Unit,
+    astroPhotoViewModel: AstroPhotoViewModel = viewModel(),
+    seaViewModel: SeaViewModel = viewModel(),
+    osloViewModel: OsloViewModel = viewModel()
+) {
     val picturesTabViewModel: PicturesTabViewModel = viewModel()
-    val picturesViewModel: PicturesViewModel = viewModel()
     val tabIndex = picturesTabViewModel.tabIndex.observeAsState()
     Column(modifier = Modifier.fillMaxWidth()) {
         TabRow(selectedTabIndex = tabIndex.value!!) {
@@ -41,9 +48,9 @@ fun PicturesTabLayout(addOrder: (OrderItem) -> Unit) {
         }
 
         when (tabIndex.value) {
-            0 -> AstroPhotoList(addOrder, picturesViewModel)
-            1 -> SeaPhotoList(addOrder)
-            2 -> OsloPhotoList(addOrder)
+            0 -> AstroPhotoList(addOrder, astroPhotoViewModel)
+            1 -> SeaPhotoList(addOrder, seaViewModel)
+            2 -> OsloPhotoList(addOrder, osloViewModel)
         }
     }
 }
