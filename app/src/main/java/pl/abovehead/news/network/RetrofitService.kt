@@ -8,6 +8,6 @@ import retrofit2.http.Headers
 
 interface RetrofitService {
     @Headers("Content-Type: application/rss+xml")
-    @GET("rss/dyn/breaking_news.rss")
+    @GET("/rss/dyn/breaking_news.rss")
     suspend fun rssFeeds(): Response<RssFeed>
 }

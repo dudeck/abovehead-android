@@ -39,7 +39,7 @@ object NetworkModule {
     fun provideRetrofitClient(
         okHttpClient: OkHttpClient
     ): Retrofit {
-        return Retrofit.Builder().baseUrl("https://www.nasa.gov/")
+        return Retrofit.Builder().baseUrl("https://www.nasa.gov")
             .client(okHttpClient)
             .addConverterFactory(SimpleXmlConverterFactory.create())
             .build();
