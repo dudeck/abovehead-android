@@ -1,30 +1,45 @@
 package pl.abovehead.news.domain
 
-import com.google.gson.annotations.SerializedName
+import org.simpleframework.xml.Attribute
+import org.simpleframework.xml.Element
+import org.simpleframework.xml.ElementList
+import org.simpleframework.xml.Path
+import org.simpleframework.xml.Root
 
-data class RssFeed(
-    @SerializedName("channel")
-    val channel: RssChannel? = null
-)
+@Root(name = "item", strict=false)
+data class RssFeed @JvmOverloads constructor(
 
-// Create a data class for the RSS channel
-data class RssChannel(
-    @SerializedName("item")
-    val items: List<RssItem2>? = null
+    @field:ElementList(name ="item")
+    @param:ElementList(name ="item")
+    @field:Path("channel")
+    @param:Path("channel")
+    var items: List<RssItem2>? = null
 )
 
 // Create a data class for the RSS item
-data class RssItem2(
-    @SerializedName("title")
-    val title: String? = null,
+data class RssItem2 @JvmOverloads constructor(
+    @field:Element(name ="title")
+    @param:Element(name ="title")
+    @field:Path("channel")
+    @param:Path("channel")
+    var title: String? = null,
 
-    @SerializedName("link")
-    val link: String? = null,
+    @field:Element(name ="link")
+    @param:Element(name ="link")
+    @field:Path("channel")
+    @param:Path("channel")
+    var link: String? = null,
 
-    @SerializedName("description")
-    val description: String? = null,
+    @field:Element(name ="description")
+    @param:Element(name ="description")
+    @field:Path("channel")
+    @param:Path("channel")
+    var description: String? = null,
 
-    @SerializedName("pubDate")
-    val pubDate: String? = null
+    @field:Element(name ="pubDate")
+    @param:Element(name ="pubDate")
+    @field:Path("channel")
+    @param:Path("channel")
+    var pubDate: String? = null,
 )
 

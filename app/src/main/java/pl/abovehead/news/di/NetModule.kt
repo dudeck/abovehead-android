@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package pl.abovehead.news.di
 
 import dagger.Module
@@ -8,7 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.abovehead.news.network.RetrofitService
 import retrofit2.Retrofit
-import retrofit2.converter.jaxb.JaxbConverterFactory
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import javax.inject.Singleton
 
 
@@ -39,7 +41,7 @@ object NetworkModule {
     ): Retrofit {
         return Retrofit.Builder().baseUrl("https://www.nasa.gov/")
             .client(okHttpClient)
-            .addConverterFactory(JaxbConverterFactory.create())
+            .addConverterFactory(SimpleXmlConverterFactory.create())
             .build();
     }
 

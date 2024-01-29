@@ -8,7 +8,7 @@ class NASARetrofitRepository @Inject constructor(private val retrofitService: Re
     Repository<@JvmSuppressWildcards List<RssItem>?> {
     override suspend fun fetch(): List<RssItem>? {
 
-        val items = retrofitService.rssFeeds().body()?.channel?.items
+        val items = retrofitService.rssFeeds().body()?.items
         return emptyList()
     }
 }
