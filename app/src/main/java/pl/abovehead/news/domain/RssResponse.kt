@@ -8,20 +8,8 @@ import org.simpleframework.xml.Root
 @Root(name = "rss", strict = false)
 data class RssFeed @JvmOverloads constructor(
 
-    @field:Element(name = "channel")
-    @param:Element(name = "channel")
-    @field:Path("rss")
-    @param:Path("rss")
-    var channel: Channel? = null
-) {
-
-}
-
-@Root(name = "channel", strict = false)
-data class Channel @JvmOverloads constructor(
-
-    @field:ElementList(name = "item")
-    @param:ElementList(name = "item")
+    @field:ElementList(name = "item", inline = true, required = false)
+    @param:ElementList(name = "item", inline = true, required = false)
     @field:Path("channel")
     @param:Path("channel")
     var items: List<RssItem2>? = null
