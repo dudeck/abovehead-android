@@ -3,6 +3,7 @@
 package pl.abovehead
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import pl.abovehead.common.composables.BottomNavigation
+import pl.abovehead.samples.CoroutinesSamples
 import pl.abovehead.ui.theme.AboveHeadTheme
 
 @AndroidEntryPoint
@@ -23,6 +25,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = Firebase.analytics
+        CoroutinesSamples().apply {
+            runAll()
+        }
+        Log.d("CoroutinesSamples", "End")
         setContent {
             AboveHeadTheme {
                 // A surface container using the 'background' color from the theme
