@@ -2,11 +2,14 @@ package pl.abovehead.samples
 
 import android.util.Log
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 
 /*
 https://kotlinlang.org/docs/coroutines-guide.html
@@ -21,6 +24,8 @@ class CoroutinesSamples {
         runBlockingWith2CoroutinesInCoroutinesScope()
         runBlockingWithJob()
         runBlockingWithDeferredAsyncAwait()
+        cancelJoin()
+        runTimeout()
     }
 
     fun runBlockingSample() = runBlocking {
@@ -125,4 +130,73 @@ class CoroutinesSamples {
         return 42
     }
 
+    fun cancelJoin() = runBlocking {
+        val index = 6
+        val job = launch (Dispatchers.Default){
+            repeat(1000) {
+                Log.d(tag + index, "job: I'm sleeping $it")
+                delay(500L)
+            }
+        }
+        delay(1300L)
+        Log.d(tag + index, "main: I'm tired of waiting!")
+        job.cancel()
+        Log.d(tag + index, "main: Cancelled")
+        job.join()
+        //job.cancelAndJoin()
+        Log.d(tag + index, "main: join called so I can quit.")
+        //2024-01-30 17:15:58.753 25419-25654 CoroutinesSamples6      pl.abovehead                         D  job: I'm sleeping 0
+        //2024-01-30 17:15:59.256 25419-25655 CoroutinesSamples6      pl.abovehead                         D  job: I'm sleeping 1
+        //2024-01-30 17:15:59.759 25419-25655 CoroutinesSamples6      pl.abovehead                         D  job: I'm sleeping 2
+        //2024-01-30 17:16:00.053 25419-25419 CoroutinesSamples6      pl.abovehead                         D  main: I'm tired of waiting!
+        //2024-01-30 17:16:00.055 25419-25419 CoroutinesSamples6      pl.abovehead                         D  main: Cancelled
+        //2024-01-30 17:16:00.056 25419-25419 CoroutinesSamples6      pl.abovehead                         D  main: join called so I can quit.
+    }
+
+    fun runTimeout() = runBlocking {
+        val index = 7
+        withTimeout(1300L) {
+            repeat(1000) { i ->
+                Log.d(tag + index, "I'm sleeping $i ...")
+                delay(500L)
+            }
+        }
+    }
+
 }
+
+/*
+
+withContext and runBlocking are both constructs used in Kotlin for working with coroutines,
+but they serve different purposes and are used in different contexts.
+
+withContext: It is used to change the coroutine's context for a specific block of code. It
+allows you to switch to a different coroutine context, such as Dispatchers.IO (for I/O-bound tasks),
+ Dispatchers.Main (for UI-related tasks in Android), etc. It's commonly used when you need to
+ perform a suspending function in a specific context.
+
+Example:
+
+kotlin
+Copy code
+suspend fun fetchData() = withContext(Dispatchers.IO) {
+    // Perform IO-bound task here
+}
+runBlocking: It is used to start a new coroutine and block the current thread until its completion.
+It is mainly used in testing and in the main function of a Kotlin application, where you want to
+block the main thread to wait for the coroutines to finish.
+
+Example:
+
+kotlin
+Copy code
+fun main() = runBlocking {
+    // Launch coroutines here
+}
+Note that using runBlocking in Android or in any UI application is generally discouraged because
+it can lead to blocking the main thread, causing the UI to become unresponsive.
+
+In summary, withContext is used to switch coroutine contexts within a coroutine, while runBlocking
+is used to start a new coroutine and block the current thread until its completion. Use them based
+on the specific requirements of your coroutine code.
+ */
