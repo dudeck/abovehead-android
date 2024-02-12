@@ -8,7 +8,7 @@ import pl.abovehead.news.domain.RssItem
 import javax.inject.Inject
 
 class FetchRssNasaFeedUseCase @Inject constructor(
-    @RetrofitRepository private val nasaRepository: Repository<@JvmSuppressWildcards List<RssItem>>,
+    @OkHttpRepository private val nasaRepository: Repository<@JvmSuppressWildcards List<RssItem>>,
 ) : SuspendUseCase<@JvmSuppressWildcards List<RssItem>> {
     override suspend fun execute(): List<RssItem> {
         return nasaRepository.fetch()

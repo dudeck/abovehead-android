@@ -25,10 +25,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = Firebase.analytics
-        CoroutinesSamples().apply {
-            runAll()
-        }
-        Log.d("CoroutinesSamples", "End")
         setContent {
             AboveHeadTheme {
                 // A surface container using the 'background' color from the theme
