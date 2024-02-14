@@ -135,59 +135,57 @@ fun SizeAndColorOptions(currentOrderItem: OrderItem, updateOrder: (OrderItem, Or
         modifier = Modifier.padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(stringResource(id = R.string.color))
-        Row(modifier = Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Button(
-                onClick = {
-                    color = FrameColor.White
-                    updateOrder(
-                        currentOrderItem, currentOrderItem.copy(frameColor = color)
-                    )
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor =
-                    if (color == FrameColor.White)
-                        MaterialTheme.colorScheme.primary
-                    else
-                        MaterialTheme.colorScheme.primaryContainer
+        Button(
+            onClick = {
+                color = FrameColor.White
+                updateOrder(
+                    currentOrderItem, currentOrderItem.copy(frameColor = color)
                 )
-            ) {
-                Box(
-                    modifier = Modifier
-                        .background(color = Color.White)
-                        .size(8.dp)
-                )
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor =
+                if (color == FrameColor.White)
+                    MaterialTheme.colorScheme.primary
+                else
+                    MaterialTheme.colorScheme.primaryContainer
+            )
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(color = Color.White)
+                    .size(8.dp)
+            )
 
-                Text(
-                    text = translateFrameColorToString(FrameColor.White, resources),
-                    Modifier.padding(start = 10.dp)
+            Text(
+                text = translateFrameColorToString(FrameColor.White, resources),
+                Modifier.padding(start = 10.dp)
+            )
+        }
+        Button(
+            onClick = {
+                color = FrameColor.Black
+                updateOrder(
+                    currentOrderItem, currentOrderItem.copy(frameColor = color)
                 )
-            }
-            Button(
-                onClick = {
-                    color = FrameColor.Black
-                    updateOrder(
-                        currentOrderItem, currentOrderItem.copy(frameColor = color)
-                    )
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor =
-                    if (color == FrameColor.Black)
-                        MaterialTheme.colorScheme.primary
-                    else
-                        MaterialTheme.colorScheme.primaryContainer
-                )
-            ) {
-                Box(
-                    modifier = Modifier
-                        .background(color = Color.Black)
-                        .size(8.dp)
-                )
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor =
+                if (color == FrameColor.Black)
+                    MaterialTheme.colorScheme.primary
+                else
+                    MaterialTheme.colorScheme.primaryContainer
+            )
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(color = Color.Black)
+                    .size(8.dp)
+            )
 
-                Text(
-                    text = translateFrameColorToString(FrameColor.Black, resources),
-                    Modifier.padding(start = 10.dp)
-                )
-            }
+            Text(
+                text = translateFrameColorToString(FrameColor.Black, resources),
+                Modifier.padding(start = 10.dp)
+            )
         }
         Text(stringResource(id = R.string.size))
         Button(

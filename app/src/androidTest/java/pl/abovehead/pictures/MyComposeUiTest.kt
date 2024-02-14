@@ -39,7 +39,7 @@ class PictureItemTest {
         val addOrder:(OrderItem) -> Unit = { _: OrderItem -> }
         // Set the content to the PictureItem composable with the mock picture and a mock addOrder function
         composeTestRule.setContent {
-            AstroPhotoItem(picture = picture, addOrder = addOrder)
+            PictureItem(picture = picture, addOrder = addOrder)
         }
 
         // Find the Text composable with the picture title and assert that it has the correct text
