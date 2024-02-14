@@ -7,10 +7,12 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 import javax.inject.Inject
 
-interface RssParser{
+interface RssParser {
     fun parseRssItems(parser: XmlPullParser): List<RssItem>
+    fun parseImg(parser: XmlPullParser?, parseText: String? = null) : String
 }
-class RssParserImpl @Inject constructor(): RssParser {
+
+class RssParserImpl @Inject constructor() : RssParser {
     override
     fun parseRssItems(parser: XmlPullParser): List<RssItem> {
         val rssItems = mutableListOf<RssItem>()
@@ -38,10 +40,6 @@ class RssParserImpl @Inject constructor(): RssParser {
         var imageUrl = ""
         var eventType = parser.eventType
         var pubDate = ""
-
-        if (eventType == XmlPullParser.START_DOCUMENT) {
-            print("LOL")
-        }
 
         while (!(eventType == XmlPullParser.END_TAG && parser.name.equals(
                 "item",
@@ -94,8 +92,9 @@ class RssParserImpl @Inject constructor(): RssParser {
         return result
     }
 
-    private fun parseImg(parser: XmlPullParser): String {
-        var substr = parseText(parser)
+    override
+    fun parseImg(parser: XmlPullParser?, parseText: String?): String {
+        var substr = if (parseText?.isNotBlank() == true) parseText else parseText(parser!!)
 
         val startIndex: Int = substr.indexOf("<img")
         if (startIndex != -1) {
