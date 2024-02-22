@@ -10,12 +10,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -37,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import pl.abovehead.R
@@ -100,30 +98,36 @@ fun OrderItemRow(
             .padding(vertical = 8.dp)
             .background(color = MaterialTheme.colorScheme.surfaceVariant)
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             AsyncImage(
                 model = order.image,
                 contentDescription = order.title,
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape)
             )
-            Column(Modifier.weight(1f)) {
-                Text(text = order.title.uppercase(), fontWeight = FontWeight.Bold)
-                SizeAndColorOptions(order, updateOrder)
+            Row(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Box(Modifier.size(36.dp))
+                Text(
+                    text = order.title.uppercase(),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 32.sp,
+                )
+                RemoveFromCartButton(order, removeOrder)
             }
-            RemoveFromCartButton(order, removeOrder)
+            SizeAndColorOptions(order, updateOrder)
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SizeAndColorOptions(currentOrderItem: OrderItem, updateOrder: (OrderItem, OrderItem) -> Unit) {
     var size by remember { mutableStateOf(currentOrderItem.frameSize) }
@@ -131,109 +135,103 @@ fun SizeAndColorOptions(currentOrderItem: OrderItem, updateOrder: (OrderItem, Or
 
     val resources = LocalContext.current.resources
 
-    Column(
-        modifier = Modifier.padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
+    Row(
+        modifier = Modifier
+            .padding(4.dp)
+            .fillMaxSize(),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(stringResource(id = R.string.color))
-        Button(
-            onClick = {
-                color = FrameColor.White
-                updateOrder(
-                    currentOrderItem, currentOrderItem.copy(frameColor = color)
+        Column {
+            Text(stringResource(id = R.string.color))
+            Button(
+                onClick = {
+                    color = FrameColor.White
+                    updateOrder(
+                        currentOrderItem, currentOrderItem.copy(frameColor = color)
+                    )
+                }, colors = ButtonDefaults.buttonColors(
+                    containerColor = if (color == FrameColor.White) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.primaryContainer
                 )
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor =
-                if (color == FrameColor.White)
-                    MaterialTheme.colorScheme.primary
-                else
-                    MaterialTheme.colorScheme.primaryContainer
-            )
-        ) {
-            Box(
-                modifier = Modifier
-                    .background(color = Color.White)
-                    .size(8.dp)
-            )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(color = Color.White)
+                        .size(8.dp)
+                )
 
-            Text(
-                text = translateFrameColorToString(FrameColor.White, resources),
-                Modifier.padding(start = 10.dp)
-            )
-        }
-        Button(
-            onClick = {
-                color = FrameColor.Black
-                updateOrder(
-                    currentOrderItem, currentOrderItem.copy(frameColor = color)
+                Text(
+                    text = translateFrameColorToString(FrameColor.White, resources),
+                    Modifier.padding(start = 10.dp)
                 )
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor =
-                if (color == FrameColor.Black)
-                    MaterialTheme.colorScheme.primary
-                else
-                    MaterialTheme.colorScheme.primaryContainer
-            )
-        ) {
-            Box(
-                modifier = Modifier
-                    .background(color = Color.Black)
-                    .size(8.dp)
-            )
+            }
+            Button(
+                onClick = {
+                    color = FrameColor.Black
+                    updateOrder(
+                        currentOrderItem, currentOrderItem.copy(frameColor = color)
+                    )
+                }, colors = ButtonDefaults.buttonColors(
+                    containerColor = if (color == FrameColor.Black) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.primaryContainer
+                )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(color = Color.Black)
+                        .size(8.dp)
+                )
 
-            Text(
-                text = translateFrameColorToString(FrameColor.Black, resources),
-                Modifier.padding(start = 10.dp)
-            )
-        }
-        Text(stringResource(id = R.string.size))
-        Button(
-            onClick = {
-                size = FrameSize.Big
-                updateOrder(
-                    currentOrderItem, currentOrderItem.copy(frameSize = size)
+                Text(
+                    text = translateFrameColorToString(FrameColor.Black, resources),
+                    Modifier.padding(start = 10.dp)
                 )
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor =
-                if (size == FrameSize.Big)
-                    MaterialTheme.colorScheme.primary
-                else
-                    MaterialTheme.colorScheme.primaryContainer
-            )
-        ) {
-            Text(
-                text = FrameSize.Big.string, Modifier.padding(start = 10.dp)
-            )
+            }
         }
-        Button(
-            onClick = {
-                size = FrameSize.Small
-                updateOrder(
-                    currentOrderItem, currentOrderItem.copy(frameSize = size)
+        Column {
+
+
+            Text(stringResource(id = R.string.size))
+            Button(
+                onClick = {
+                    size = FrameSize.Big
+                    updateOrder(
+                        currentOrderItem, currentOrderItem.copy(frameSize = size)
+                    )
+                }, colors = ButtonDefaults.buttonColors(
+                    containerColor = if (size == FrameSize.Big) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.primaryContainer
                 )
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor =
-                if (size == FrameSize.Small)
-                    MaterialTheme.colorScheme.primary
-                else
-                    MaterialTheme.colorScheme.primaryContainer
-            )
-        ) {
-            Text(
-                text = FrameSize.Small.string, Modifier.padding(start = 10.dp)
-            )
+            ) {
+                Text(
+                    text = FrameSize.Big.string, Modifier.padding(start = 10.dp)
+                )
+            }
+            Button(
+                onClick = {
+                    size = FrameSize.Small
+                    updateOrder(
+                        currentOrderItem, currentOrderItem.copy(frameSize = size)
+                    )
+                }, colors = ButtonDefaults.buttonColors(
+                    containerColor = if (size == FrameSize.Small) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.primaryContainer
+                )
+            ) {
+                Text(
+                    text = FrameSize.Small.string, Modifier.padding(start = 10.dp)
+                )
+            }
         }
     }
 }
 
 @Composable
 fun RemoveFromCartButton(order: OrderItem, removeOrder: (OrderItem) -> Unit) {
-    IconButton(onClick = {
+    IconButton(modifier = Modifier.size(36.dp), onClick = {
         removeOrder(order)
-    }, content = { Icon(Icons.Filled.Clear, "Remove from cart") })
+    }, content = { Icon(Icons.Filled.Delete, "Remove from cart") })
 }
 
 class SampleOrderItemProvider : PreviewParameterProvider<OrderItem> {
