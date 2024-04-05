@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import pl.abovehead.R
@@ -42,6 +43,7 @@ import pl.abovehead.cart.screens.domain.FrameColor
 import pl.abovehead.cart.screens.domain.FrameSize
 import pl.abovehead.cart.screens.domain.OrderItem
 import pl.abovehead.cart.screens.domain.translateFrameColorToString
+import pl.abovehead.cart.screens.viewmodel.OrderViewModel
 import pl.abovehead.routes.Routes
 
 @Composable
@@ -63,6 +65,7 @@ fun OrderList(
     updateOrder: (OrderItem, OrderItem) -> Unit,
     navController: NavHostController
 ) {
+    val orderVM: OrderViewModel = hiltViewModel()
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -78,6 +81,7 @@ fun OrderList(
             }
             Button(
                 onClick = {
+                    orderVM.logOrderButtonClickEvent()
                     navController.navigate(Routes.Order.route)
                 }, modifier = Modifier.padding(8.dp)
             ) {

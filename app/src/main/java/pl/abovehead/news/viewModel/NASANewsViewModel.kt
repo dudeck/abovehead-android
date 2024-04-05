@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import pl.abovehead.analytics.AnalyticsService
 import pl.abovehead.news.domain.RssItem
 import pl.abovehead.news.network.FetchRssNasaFeedUseCase
 import javax.inject.Inject
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NASANewsViewModel @Inject constructor(
-    private val fetchRssNasaFeedUseCase: FetchRssNasaFeedUseCase
+    private val fetchRssNasaFeedUseCase: FetchRssNasaFeedUseCase,
+    private val analyticsService: AnalyticsService
 ) : ViewModel() {
 // RssFeedViewModel.kt
 
@@ -25,9 +27,15 @@ class NASANewsViewModel @Inject constructor(
 
     private fun fetchRssFeed() {
         viewModelScope.launch(Dispatchers.Main) {
-            val rssItems = fetchRssNasaFeedUseCase.execute()
+            runCatching {
+                val rssItems = fetchRssNasaFeedUseCase.execute()
 
-            rssItemsLiveData.value = rssItems
+                rssItemsLiveData.value = rssItems
+            }.onFailure {
+                analyticsService.logNASAFeedFetchError(it.message ?: "general error")
+            }.onSuccess {
+                analyticsService.logNASAFeedsFetched()
+            }
         }
     }
 }

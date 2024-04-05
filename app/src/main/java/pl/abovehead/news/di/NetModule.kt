@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import pl.abovehead.analytics.AnalyticsService
 import pl.abovehead.news.network.RetrofitService
 import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
@@ -42,7 +43,7 @@ object NetworkModule {
         return Retrofit.Builder().baseUrl("https://www.nasa.gov")
             .client(okHttpClient)
             .addConverterFactory(SimpleXmlConverterFactory.create())
-            .build();
+            .build()
     }
 
 
@@ -52,5 +53,12 @@ object NetworkModule {
         retrofit: Retrofit
     ): RetrofitService {
         return retrofit.create(RetrofitService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAnalyticsService(
+    ): AnalyticsService {
+        return AnalyticsService()
     }
 }

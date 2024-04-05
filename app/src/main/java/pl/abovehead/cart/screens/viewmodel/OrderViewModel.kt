@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import pl.abovehead.analytics.AnalyticsService
 import pl.abovehead.cart.screens.domain.OrderData
 import pl.abovehead.cart.screens.domain.OrderDataMapper
 import pl.abovehead.cart.screens.domain.OrderItem
@@ -20,11 +21,13 @@ import javax.inject.Inject
 @HiltViewModel
 class OrderViewModel @Inject constructor(
     private val orderMapper: OrderMapper,
-    private val orderDataMapper: OrderDataMapper
+    private val orderDataMapper: OrderDataMapper,
+    private val analyticsService: AnalyticsService
 ) : ViewModel() {
     private val _orderState = MutableStateFlow<MutableList<OrderItem>>(mutableStateListOf())
     val orderState: StateFlow<List<OrderItem>> = _orderState.asStateFlow()
     fun addOrder(orderItem: OrderItem) {
+        analyticsService.logAddOrderEvent(orderItem.title)
         _orderState.update {
             it.apply {
                 add(orderItem)
@@ -49,6 +52,7 @@ class OrderViewModel @Inject constructor(
     }
 
     fun makeOrderIntent(orderData: OrderData, policyAgreement: String, resources: Resources): Intent {
+        analyticsService.logSubmitButtonClickedEvent()
         val userData = orderDataMapper.mapData(orderData, resources)
         val orders = orderMapper.mapOrder(_orderState.value, resources) + "\n" + policyAgreement
 
@@ -62,5 +66,9 @@ class OrderViewModel @Inject constructor(
         }
         emailIntent.selector = selectorIntent
         return emailIntent
+    }
+
+    fun logOrderButtonClickEvent() {
+        analyticsService.logOrderButtonClickEvent()
     }
 }
