@@ -39,10 +39,6 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
             !Patterns.PHONE.matcher(state.phone)
                 .matches() -> stringResource(R.string.please_enter_a_valid_phone_number)
 
-            state.email.isEmpty() -> stringResource(R.string.please_enter_your_email_address)
-            !Patterns.EMAIL_ADDRESS.matcher(state.email)
-                .matches() -> stringResource(R.string.please_enter_a_valid_email_address)
-
             !state.agreement -> stringResource(R.string.please_agree_to_the_terms_of_use_and_privacy_policy)
             else -> null
         }
@@ -59,7 +55,6 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
                     formState.value.name,
                     formState.value.surname,
                     formState.value.phone,
-                    formState.value.email,
                     formState.value.promoCode,
                     formState.value.addLogo,
                     formState.value.addTitle
@@ -103,13 +98,6 @@ fun OrderScreen(makeOrder: (data: OrderData) -> Unit) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
         )
 
-        OutlinedTextField(
-            value = formState.value.email,
-            onValueChange = { formState.value = formState.value.copy(email = it) },
-            label = { Text(stringResource(R.string.email)) },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-        )
         OutlinedTextField(
             value = formState.value.promoCode,
             onValueChange = { formState.value = formState.value.copy(promoCode = it) },
@@ -159,7 +147,6 @@ data class FormState(
     val name: String = "",
     val surname: String = "",
     val phone: String = "",
-    val email: String = "",
     val promoCode: String = "",
     val agreement: Boolean = false,
     val addLogo: Boolean = true,

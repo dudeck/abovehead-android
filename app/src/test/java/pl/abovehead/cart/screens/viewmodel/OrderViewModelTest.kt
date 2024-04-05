@@ -11,7 +11,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Ignore
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
@@ -67,8 +66,7 @@ class OrderViewModelTest {
     @Ignore
     fun orderViewModel_makeOrderIntent() {
         viewModel.addOrder(orderItem = orderItem)
-        val value = viewModel.orderState.value
-//        val res = mockk<Resources>()
+//        val value = viewModel.orderState.value
         val res = mock<Resources>()
         `when` (res.getString(anyInt())).thenReturn("resourceString")
         val policyAgreement = "Policy"
@@ -80,7 +78,6 @@ class OrderViewModelTest {
                 "name",
                 "surname",
                 "phoneNumber",
-                "email",
                 "promoCode",
                 true,
                 addTitle = true

@@ -11,7 +11,6 @@ class OrderDataMapper @Inject constructor() {
             append(
                 "${resources.getString(R.string.name)}: ${orderData.name}, " +
                         "${resources.getString(R.string.surname)}: ${orderData.surname}, " +
-                        "${resources.getString(R.string.email)}: ${orderData.email}, " +
                         "${resources.getString(R.string.phone)}: ${orderData.phoneNumber}, " +
                         "${resources.getString(R.string.addLogo)}: ${
                             translateBoolToString(
