@@ -20,3 +20,42 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -dontwarn javax.xml.stream.**
+# Keep generic signature of Call, Response (R8 full mode strips signatures from non-kept items).
+-keep,allowobfuscation,allowshrinking interface retrofit2.Call
+-keep,allowobfuscation,allowshrinking class retrofit2.Response
+
+  # With R8 full mode generic signatures are stripped for classes that are not
+  # kept. Suspend functions are wrapped in continuations where the type argument
+  # is used.
+-keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
+
+-dontwarn javax.xml.**
+
+-keep public class org.simpleframework.**{ *; }
+-keep class org.simpleframework.xml.**{ *; }
+-keep class org.simpleframework.xml.core.**{ *; }
+-keep class org.simpleframework.xml.util.**{ *; }
+
+-keepattributes Signature
+-keepattributes *Annotation*
+
+# Ignore our XML Serialization classes
+-keep public class your.annotated.pojo.models.*{
+  public protected private *;
+}
+
+-keepclassmembers class * {
+    @org.simpleframework.xml.* *;
+}
+
+# Ignore our XML Serialization classes
+-keep public class pl.abovehead.news.domain.RssFeed {
+  public protected private *;
+}
+-keep public class pl.abovehead.news.domain.RssItem {
+  public protected private *;
+}
+-keep public class pl.abovehead.news.domain.RssItem2 {
+  public protected private *;
+}
+
