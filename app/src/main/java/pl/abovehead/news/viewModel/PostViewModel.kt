@@ -2,6 +2,7 @@ package pl.abovehead.news.viewModel
 
 import androidx.lifecycle.ViewModel
 import com.apollographql.apollo3.api.Error
+import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.exception.ApolloException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +30,7 @@ class PostViewModel @Inject constructor(private val analyticsService: AnalyticsS
     ViewModel() {
     suspend fun fetch() {
         _postsState.value = try {
-            val response = apolloClient.query(GetPostsQuery()).execute()
+            val response = apolloClient.query(GetPostsQuery(first = Optional.present(100))).execute()
             val edges = response.data?.posts?.edges
             if (!response.hasErrors() && edges?.isNotEmpty() == true) {
                 val posts = EdgesToPostsMapper().mapList(edges = edges)

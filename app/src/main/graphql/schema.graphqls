@@ -1,6 +1,6 @@
 type Query {
   page(id: ID!): Page
-  posts: Posts
+  posts(first: Int): Posts
 }
 
 type Page {
