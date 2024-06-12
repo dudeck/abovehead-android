@@ -12,7 +12,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -35,14 +35,14 @@ import pl.abovehead.common.composables.Loading
 import pl.abovehead.other.viewModel.OtherInfoState
 import pl.abovehead.other.viewModel.OtherInfoViewModel
 import pl.abovehead.other.viewModel.aboutId
-import pl.abovehead.other.viewModel.privacyPolicyId
 
 @Composable
 fun AboutScreen() {
     val viewModel: OtherInfoViewModel = hiltViewModel()
     var offset by rememberSaveable { mutableFloatStateOf(0f) }
     val scrollState = rememberScrollState()
-    Surface(color = MaterialTheme.colorScheme.background) {
+    val colorScheme = MaterialTheme.colorScheme
+    Surface(color = colorScheme.background) {
         val state: OtherInfoState by viewModel.otherInfoState.collectAsStateWithLifecycle()
         LaunchedEffect(Unit) {
             viewModel.fetch(aboutId)
@@ -84,15 +84,18 @@ fun AboutScreen() {
                                     // links
                                     autoLinkMask = Linkify.WEB_URLS
                                     linksClickable = true
+                                    setTextColor(colorScheme.onSurface.toArgb())
                                 }
                             },
                             update =
                             {
                                 it.text =
-                                    HtmlCompat.fromHtml(s.content.trim().replace("￼", ""),
+                                    HtmlCompat.fromHtml(
+                                        s.content.trim().replace("￼", ""),
                                         HtmlCompat.FROM_HTML_MODE_COMPACT,
                                         CoilImageGetter(it),
-                                        null)
+                                        null
+                                    )
                             }
 
                         )

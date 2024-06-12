@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,8 +31,9 @@ fun NewsDetails(post: Post?) {
 
     AboveHeadTheme {
         // A surface container using the 'background' color from the theme
+        val colorScheme = MaterialTheme.colorScheme
         Surface(
-            modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+            modifier = Modifier.fillMaxSize(), color = colorScheme.background
         ) {
             Column(
                 modifier = Modifier
@@ -48,14 +50,15 @@ fun NewsDetails(post: Post?) {
                     text = post?.title ?: ""
                 )
                 AsyncImage(
-                    modifier = Modifier.padding (8.dp),
+                    modifier = Modifier.padding(8.dp),
                     model = post?.imageUrl, contentDescription = post?.title
                 )
                 AndroidView(
-                    modifier = Modifier.padding (8.dp),
-                    factory = { MaterialTextView(it) }, update = {
-                    it.text = post?.description
-                })
+                    modifier = Modifier.padding(8.dp),
+                    factory = { MaterialTextView(it).apply { setTextColor(colorScheme.onSurface.toArgb()) } },
+                    update = {
+                        it.text = post?.description
+                    })
                 Button(onClick = { uriHandler.openUri(post?.link ?: "https:www.abovehead.pl") }) {
                     Text(text = stringResource(R.string.more_details))
                 }

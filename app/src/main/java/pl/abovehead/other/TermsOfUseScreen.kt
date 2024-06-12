@@ -20,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -41,7 +42,8 @@ fun TermsOfUseScreen() {
     val viewModel: OtherInfoViewModel = hiltViewModel()
     var offset by rememberSaveable { mutableFloatStateOf(0f) }
     val scrollState = rememberScrollState()
-    Surface(color = MaterialTheme.colorScheme.background) {
+    val colorScheme = MaterialTheme.colorScheme
+    Surface(color = colorScheme.background) {
         val state: OtherInfoState by viewModel.otherInfoState.collectAsStateWithLifecycle()
         LaunchedEffect(Unit) {
             viewModel.fetch(termsOfUseId)
@@ -84,6 +86,7 @@ fun TermsOfUseScreen() {
                                     autoLinkMask = Linkify.WEB_URLS
                                     linksClickable = false
                                     setLinkTextColor(textColors)
+                                    setTextColor(colorScheme.onSurface.toArgb())
                                 }
                             },
                             update =

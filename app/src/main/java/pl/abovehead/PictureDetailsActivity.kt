@@ -14,6 +14,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -51,6 +52,7 @@ class PictureDetailsActivity : ComponentActivity() {
 
 @Composable
 fun PictureDetails(item: Picture?, modifier: Modifier = Modifier) {
+    val colorScheme = MaterialTheme.colorScheme
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -76,7 +78,7 @@ fun PictureDetails(item: Picture?, modifier: Modifier = Modifier) {
         )
         AndroidView(
             modifier = modifier,
-            factory = { MaterialTextView(it) },
+            factory = { MaterialTextView(it).apply { setTextColor(colorScheme.onSurface.toArgb()) } },
             update = { it.text = HtmlCompat.fromHtml(item?.shortDescription ?: "", 0) }
         )
         Text(text = item?.description ?: "")

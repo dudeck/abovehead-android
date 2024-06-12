@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -66,6 +68,7 @@ fun PictureList(addOrder: (OrderItem) -> Unit, state: State<PicturesState>) {
 @Composable
 fun PictureItem(picture: Picture, addOrder: (OrderItem) -> Unit) {
     val mContext = LocalContext.current
+    val colorScheme = MaterialTheme.colorScheme
     Box(contentAlignment = Alignment.BottomEnd) {
         Card(
             modifier = Modifier
@@ -108,7 +111,7 @@ fun PictureItem(picture: Picture, addOrder: (OrderItem) -> Unit) {
                 )
                 AndroidView(
                     //                modifier = modifier,
-                    factory = { MaterialTextView(it) },
+                    factory = { MaterialTextView(it).apply { setTextColor(colorScheme.onSurface.toArgb()) } },
                     update = { it.text = HtmlCompat.fromHtml(picture.shortDescription ?: "", 0) }
                 )
             }
