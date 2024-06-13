@@ -10,7 +10,7 @@ query GetPosts($first: Int) {
             mediaItemUrl
           }
         }
-        modified
+        date
         link
       }
     }

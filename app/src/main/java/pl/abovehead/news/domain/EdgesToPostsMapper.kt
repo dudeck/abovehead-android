@@ -16,8 +16,8 @@ class EdgesToPostsMapper {
                 description = HtmlCompat.fromHtml(item.node?.content ?: "", 0).toString().trim().replace("￼", ""),
                 imageUrl = item.node?.featuredImage?.node?.mediaItemUrl ?: "",
                 link = item.node?.link ?: "",
-                modifiedDate = if ((item.node?.modified)?.isBlank() == false) LocalDate.parse(
-                    item.node.modified,
+                modifiedDate = if ((item.node?.date)?.isBlank() == false) LocalDate.parse(
+                    item.node.date,
                     inputFormatter
                 ) else null
             )
