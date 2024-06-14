@@ -14,6 +14,8 @@ import coil.load
 import pl.abovehead.NewsDetailsActivity
 import pl.abovehead.databinding.ListItemRssBinding
 import pl.abovehead.news.domain.RssItem
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class RssFeedAdapter :
@@ -35,7 +37,7 @@ class RssFeedAdapter :
 
         fun bind(item: RssItem) {
             binding.titleTextView.text = item.title
-            binding.pubDate.text = item.pubDate
+            binding.pubDate.text = parseDate(item.pubDate)
             binding.rssItemImage.load(Uri.parse(item.enclosureUrl))
             binding.root.setOnClickListener {
                 val context = binding.root.context
@@ -46,6 +48,20 @@ class RssFeedAdapter :
                 )
             }
             // You can handle the click event or additional UI bindings here
+        }
+        private fun parseDate(dateString: String?): String? {
+            if (dateString.isNullOrBlank()){
+                return ""
+            }
+            val inputFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH)
+            val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+            return try {
+                val date = inputFormat.parse(dateString) ?: return ""
+                outputFormat.format(date)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ""
+            }
         }
     }
 }
