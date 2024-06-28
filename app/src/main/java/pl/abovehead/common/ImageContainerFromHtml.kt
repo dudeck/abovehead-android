@@ -14,16 +14,17 @@ import coil.request.ImageRequest
 open class CoilImageGetter(
     private val textView: TextView,
     private val imageLoader: ImageLoader = Coil.imageLoader(textView.context),
-    private val sourceModifier: ((source: String) -> String)? = null
+    private val sourceModifier: ((source: String) -> String)? = null,
+    private val widthScreen: Int = 320
 ) : Html.ImageGetter {
 
     override fun getDrawable(source: String): Drawable {
         val finalSource = sourceModifier?.invoke(source) ?: source
-        val targetBitmap = Bitmap.createBitmap(320, 320, Bitmap.Config.ARGB_8888)
+        val targetBitmap = Bitmap.createBitmap(widthScreen, widthScreen, Bitmap.Config.ARGB_8888)
         val drawablePlaceholder = DrawablePlaceHolder(textView.context, targetBitmap)
         imageLoader.enqueue(ImageRequest.Builder(textView.context).data(finalSource).apply {
             target { drawable ->
-                drawablePlaceholder.updateDrawable(drawable)
+                drawablePlaceholder.updateDrawable(drawable, widthScreen)
                 // invalidating the drawable doesn't seem to be enough...
                 textView.text = textView.text
             }
@@ -33,7 +34,8 @@ open class CoilImageGetter(
         return drawablePlaceholder
     }
 
-    private class DrawablePlaceHolder(context: Context, bitmap: Bitmap) : BitmapDrawable(context.getResources(), bitmap) {
+    private class DrawablePlaceHolder(context: Context, bitmap: Bitmap) :
+        BitmapDrawable(context.getResources(), bitmap) {
 
         private var drawable: Drawable? = null
 
@@ -41,12 +43,13 @@ open class CoilImageGetter(
             drawable?.draw(canvas)
         }
 
-        fun updateDrawable(drawable: Drawable) {
+        fun updateDrawable(drawable: Drawable, widthScreen: Int) {
             this.drawable = drawable
-            val width = drawable.intrinsicWidth
-            val height = drawable.intrinsicHeight
-            drawable.setBounds(0, 0, width, height)
-            setBounds(0, 0, width, height)
+            var height = drawable.intrinsicHeight
+            val aspectRatio: Double = drawable.intrinsicWidth.toDouble() / widthScreen
+            height = (height / aspectRatio).toInt()
+            drawable.setBounds(0, 0, widthScreen, height)
+            setBounds(0, 0, widthScreen, height)
         }
     }
 }

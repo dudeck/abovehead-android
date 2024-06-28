@@ -16,8 +16,8 @@ import pl.abovehead.other.viewModel.OtherInfoState.Success
 import javax.inject.Inject
 
 const val privacyPolicyId = "cG9zdDoz"
-const val aboutId = "cG9zdDo1NzA="
-const val termsOfUseId = "cG9zdDozNDI="
+const val aboutId = "cG9zdDoxMjU1"
+const val termsOfUseId = "cG9zdDoxMjE4"
 
 sealed interface OtherInfoState {
     data object Loading : OtherInfoState

@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -77,6 +78,9 @@ fun AboutScreen() {
                             .padding(horizontal = 8.dp)
                             .verticalScroll(scrollState)
                     ) {
+                        val context = LocalContext.current
+                        val displayMetrics = context.resources.displayMetrics
+                        val width = displayMetrics.widthPixels
                         AndroidView(
                             //                modifier = modifier,
                             factory = {
@@ -93,7 +97,7 @@ fun AboutScreen() {
                                     HtmlCompat.fromHtml(
                                         s.content.trim().replace("￼", ""),
                                         HtmlCompat.FROM_HTML_MODE_COMPACT,
-                                        CoilImageGetter(it),
+                                        CoilImageGetter(it, widthScreen = width),
                                         null
                                     )
                             }
