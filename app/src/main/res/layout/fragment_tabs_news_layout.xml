@@ -5,20 +5,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.tabs.TabLayout
-        app:tabTextColor="@color/purple_500"
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="?attr/colorPrimary"
-        android:elevation="6dp"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Light"/>
+        android:elevation="6dp"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tabLayout"
-        android:background="@android:color/background_light" />
+        android:layout_below="@id/tabLayout" />
 
 </RelativeLayout>
