@@ -1,5 +1,7 @@
 package pl.abovehead.news.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,8 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -70,29 +73,38 @@ private fun PostItem(post: Post, navController: NavController) {
         }
 
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp,
-                text = post.title.uppercase(Locale.ROOT)
-            )
+        Box {
             AsyncImage(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
+                    .fillMaxSize(),
                 model = post.imageUrl,
-//                placeholder = painterResource(R.drawable.ic_launcher_background),
-//                error = painterResource(com.google.android.material.R.drawable.m3_password_eye),
+                //                placeholder = painterResource(R.drawable.ic_launcher_background),
+                //                error = painterResource(com.google.android.material.R.drawable.m3_password_eye),
                 contentDescription = "Mission patch"
             )
-            Text(text = post.modifiedDate.toString())
-        }
+            Column(
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .align(Alignment.BottomCenter)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 8.dp)
+                        .background(colorResource(id = R.color.md_theme_surfaceContainer_highContrast)),
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    fontSize = 24.sp,
+                    text = post.title.uppercase(Locale.ROOT)
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .background(colorResource(id = R.color.md_theme_surfaceContainer_highContrast)),
+                    text = post.modifiedDate.toString()
+                )
 
+            }
+        }
     }
 }
