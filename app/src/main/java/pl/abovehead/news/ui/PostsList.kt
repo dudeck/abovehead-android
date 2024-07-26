@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
@@ -14,6 +16,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -67,16 +71,17 @@ private fun PostItem(post: Post, navController: NavController) {
     Card(
         modifier = Modifier
             .padding(16.dp)
+            .height(400.dp)
             .fillMaxSize(),
         onClick = {
             navController.navigate(Routes.PostDetails.route + "/${post.id}")
         }
 
     ) {
-        Box {
+        Box (modifier = Modifier.fillMaxSize()){
             AsyncImage(
-                modifier = Modifier
-                    .fillMaxSize(),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.matchParentSize(),
                 model = post.imageUrl,
                 //                placeholder = painterResource(R.drawable.ic_launcher_background),
                 //                error = painterResource(com.google.android.material.R.drawable.m3_password_eye),
@@ -89,18 +94,20 @@ private fun PostItem(post: Post, navController: NavController) {
             ) {
                 Text(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .padding(vertical = 8.dp)
                         .background(colorResource(id = R.color.md_theme_surfaceContainer_highContrast)),
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     fontSize = 24.sp,
+                    color = Color.White,
                     text = post.title.uppercase(Locale.ROOT)
                 )
                 Text(
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
                         .background(colorResource(id = R.color.md_theme_surfaceContainer_highContrast)),
+                    color = colorResource(id = R.color.md_theme_onSurfaceVariant_highContrast),
                     text = post.modifiedDate.toString()
                 )
 
