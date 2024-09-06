@@ -28,6 +28,7 @@ import pl.abovehead.other.AboutScreen
 import pl.abovehead.other.OtherInfoScreen
 import pl.abovehead.other.PrivacyPolicyScreen
 import pl.abovehead.other.TermsOfUseScreen
+import pl.abovehead.pictures.GalleryScreen
 import pl.abovehead.pictures.PicturesScreen
 
 @Composable
@@ -50,9 +51,14 @@ fun NavigationHost(
                 navControllerViewModel = navControllerViewModel
             )
         }
+        composable(Routes.Gallery.route) {
+            GalleryScreen(orderViewModel::addOrder)
+        }
+
         composable(Routes.Pictures.route) {
             PicturesScreen(orderViewModel::addOrder)
         }
+
         composable(
             Routes.PostDetails.route + "/{postId}",
             arguments = listOf(navArgument("postId") { type = NavType.StringType })

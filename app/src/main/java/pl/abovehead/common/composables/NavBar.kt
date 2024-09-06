@@ -39,6 +39,7 @@ fun BottomBar(navController: NavController) {
     val screensWithBottomBar = listOf(
         Routes.News,
         Routes.Pictures,
+        Routes.Gallery,
         Routes.ShoppingCart,
         Routes.OtherInfo,
     )
