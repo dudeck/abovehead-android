@@ -32,6 +32,7 @@ import pl.abovehead.common.composables.ErrorMessage
 import pl.abovehead.common.composables.Loading
 import pl.abovehead.pictures.domain.Picture
 import pl.abovehead.pictures.viewModel.AstroPhotoViewModel
+import pl.abovehead.pictures.viewModel.GalleryViewModel
 import pl.abovehead.pictures.viewModel.PictureType
 import pl.abovehead.pictures.viewModel.PicturesState
 import pl.abovehead.pictures.viewModel.PicturesState.ApplicationError
@@ -39,10 +40,10 @@ import pl.abovehead.pictures.viewModel.PicturesState.ProtocolError
 import pl.abovehead.pictures.viewModel.PicturesState.Success
 
 @Composable
-fun AstroPhotoGallery(addOrder: (OrderItem) -> Unit, astroPhotoViewModel: AstroPhotoViewModel) {
-    val state = astroPhotoViewModel.state.collectAsStateWithLifecycle()
+fun AstroPhotoGallery(addOrder: (OrderItem) -> Unit, galleryViewModel: GalleryViewModel) {
+    val state = galleryViewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
-        astroPhotoViewModel.fetchPictures(PictureType.Astrophoto)
+        galleryViewModel.fetchPictures(PictureType.Gallery)
     }
     GalleryView(addOrder = addOrder, state = state)
 }
@@ -87,13 +88,15 @@ fun GalleryView(addOrder: (OrderItem) -> Unit, state: State<PicturesState>) {
             } else {
                 // Display the gallery
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(3),
+                    columns = GridCells.Fixed(2),
                     contentPadding = PaddingValues(8.dp)
                 ) {
-                    items(data.pictures.size) { index ->
-                        if (data.pictures[index].title.isNotBlank()) GalleryItem(
-                            picture = data.pictures[index]
-                        ) { selectedImage = data.pictures[index] }
+                    val pictures = data.pictures.filter { it.url?.isNotBlank() == true }
+                    val count = pictures.size
+                    items(count) { index ->
+                        GalleryItem(
+                            picture = pictures[index]
+                        ) { selectedImage = pictures[index] }
                     }
                 }
             }

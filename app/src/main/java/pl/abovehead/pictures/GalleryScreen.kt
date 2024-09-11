@@ -10,6 +10,6 @@ import pl.abovehead.pictures.ui.PicturesTabLayout
 @Composable
 fun GalleryScreen( addOrder: (OrderItem) -> Unit) {
     Surface(color = MaterialTheme.colorScheme.background) {
-        AstroPhotoGallery(addOrder, astroPhotoViewModel = viewModel())
+        AstroPhotoGallery(addOrder, galleryViewModel = viewModel())
     }
 }

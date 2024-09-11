@@ -18,6 +18,7 @@ import javax.inject.Inject
 private const val ASTROPHOTOPAGEID = "cG9zdDoxMTA="
 private const val SEAPAGEID = "cG9zdDoxODY="
 private const val OSLOPAGEID = "cG9zdDoxOTE="
+private const val GALLERYPAGEID = "cG9zdDoxMzM2"
 
 sealed interface PicturesState {
     data object Loading : PicturesState
@@ -27,7 +28,7 @@ sealed interface PicturesState {
 }
 
 enum class PictureType {
-    Astrophoto, Sea, Oslo
+    Astrophoto, Sea, Oslo, Gallery
 }
 
 open class PicturesViewModel @Inject constructor() : ViewModel() {
@@ -51,6 +52,8 @@ open class PicturesViewModel @Inject constructor() : ViewModel() {
                         PictureType.Oslo -> apolloClient.query(GetAstrophotosQuery(OSLOPAGEID))
                             .execute()
 
+                        PictureType.Gallery -> apolloClient.query(GetAstrophotosQuery(GALLERYPAGEID))
+                            .execute()
                     }
                 if (response.hasErrors()) {
                     ApplicationError(response.errors!!)
@@ -64,6 +67,7 @@ open class PicturesViewModel @Inject constructor() : ViewModel() {
     }
 }
 
-class AstroPhotoViewModel: PicturesViewModel()
-class OsloViewModel: PicturesViewModel()
-class SeaViewModel: PicturesViewModel()
+class AstroPhotoViewModel : PicturesViewModel()
+class GalleryViewModel : PicturesViewModel()
+class OsloViewModel : PicturesViewModel()
+class SeaViewModel : PicturesViewModel()
