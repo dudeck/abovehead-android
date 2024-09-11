@@ -137,7 +137,7 @@
     <color name="md_theme_surfaceBright_highContrast">#FAF8FF</color>
     <color name="md_theme_surfaceContainerLowest_highContrast">#FFFFFF</color>
     <color name="md_theme_surfaceContainerLow_highContrast">#F4F2FA</color>
-    <color name="md_theme_surfaceContainer_highContrast">#861B1B1C</color>
+    <color name="md_theme_surfaceContainer_highContrast">#B61B1B1C</color>
     <color name="md_theme_surfaceContainerHigh_highContrast">#E9E7EF</color>
     <color name="md_theme_surfaceContainerHighest_highContrast">#E3E1E9</color>
 </resources>
