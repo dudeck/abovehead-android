@@ -29,7 +29,7 @@ data class NavBarItem(
             NavBarItem(
                 titleId = R.string.gallery,
                 icon = Icons.Filled.Face,
-                contentDescriptionId = R.string.pictures,
+                contentDescriptionId = R.string.gallery,
                 route = Routes.Gallery.route,
             ),
             NavBarItem(
