@@ -109,7 +109,6 @@ fun GalleryView(addOrder: (OrderItem) -> Unit, state: State<PicturesState>) {
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GalleryItem(picture: Picture, onClick: () -> Unit) {
@@ -125,9 +124,7 @@ fun GalleryItem(picture: Picture, onClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(8.dp),
-                model = picture.url,
-//                    placeholder = painterResource(R.drawable.ic_launcher_background),
-//                    error = painterResource(com.google.android.material.R.drawable.m3_password_eye),
+                model = picture.thumbnailUrl,
                 contentDescription = "Mission patch"
             )
 

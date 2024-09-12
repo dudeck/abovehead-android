@@ -1,8 +1,10 @@
 package pl.abovehead.pictures.domain
 
 import pl.abovehead.GetAstrophotosQuery
+import pl.abovehead.common.urlFileExists
 
-
+const val THUMBNAIL_SUFFIX1 = "-1536x864.jpg"
+const val THUMBNAIL_SUFFIX2 = "-864x1536.jpg"
 class PageToPictureMapper {
 
     private fun splitListByDelimiter(inputList: List<GetAstrophotosQuery.Block?>): List<List<GetAstrophotosQuery.Block?>> =
@@ -29,18 +31,24 @@ class PageToPictureMapper {
         return substr
     }
 
-    fun mapList(page: GetAstrophotosQuery.Page): List<Picture> {
+    suspend fun mapList(page: GetAstrophotosQuery.Page): List<Picture> {
         val list = page.blocks.drop(1)
         val elements = splitListByDelimiter(list)
 
         val pictures = mutableListOf<Picture>() + elements.map { item ->
+            val url =
+                parseImg(item.firstOrNull { it?.tagName == "p" && it.innerHtml?.contains("<a href") == true }?.innerHtml)
+
+            val thumbnailUrl1 = url.replace(".jpg", THUMBNAIL_SUFFIX1)
+            val thumbnailUrl2 = url.replace(".jpg", THUMBNAIL_SUFFIX2)
             Picture(
                 title = item.firstOrNull { it?.tagName == "h2" }?.innerHtml ?: "",
                 shortDescription = item.firstOrNull { it?.tagName == "ul" }?.innerHtml
                     ?: "",
                 description = item.filter { it?.tagName == "p" && it.innerHtml?.contains("<a href") == false }
                     .fold("") { acc, element -> acc + element?.innerHtml },
-                url = parseImg(item.firstOrNull { it?.tagName == "p" && it.innerHtml?.contains("<a href") == true }?.innerHtml)
+                url = url,
+                thumbnailUrl = if (urlFileExists(thumbnailUrl1)) thumbnailUrl1 else thumbnailUrl2,
             )
         }
 
