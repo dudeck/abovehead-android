@@ -1,6 +1,8 @@
 package pl.abovehead.pictures
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.rememberTransformableState
@@ -16,9 +18,11 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -40,11 +44,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import pl.abovehead.PictureDetailsActivity
+import pl.abovehead.IntentViewModel
 import pl.abovehead.R
-import pl.abovehead.cart.screens.domain.OrderItem
 import pl.abovehead.common.composables.ErrorMessage
 import pl.abovehead.common.composables.Loading
+import pl.abovehead.common.drawableToBitmap
+import pl.abovehead.common.saveBitmapToMediaStore
 import pl.abovehead.pictures.domain.Picture
 import pl.abovehead.pictures.viewModel.GalleryViewModel
 import pl.abovehead.pictures.viewModel.PictureType
@@ -54,16 +59,22 @@ import pl.abovehead.pictures.viewModel.PicturesState.ProtocolError
 import pl.abovehead.pictures.viewModel.PicturesState.Success
 
 @Composable
-fun AstroPhotoGallery(addOrder: (OrderItem) -> Unit, galleryViewModel: GalleryViewModel) {
+fun AstroPhotoGallery(
+    galleryViewModel: GalleryViewModel,
+    intentViewModel: IntentViewModel
+) {
     val state = galleryViewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         galleryViewModel.fetchPictures(PictureType.Gallery)
     }
-    GalleryView(addOrder = addOrder, state = state)
+    GalleryView(state = state, intentViewModel)
 }
 
 @Composable
-fun GalleryView(addOrder: (OrderItem) -> Unit, state: State<PicturesState>) {
+fun GalleryView(
+    state: State<PicturesState>,
+    intentViewModel: IntentViewModel,
+) {
 
     var scale by remember {
         mutableFloatStateOf(1f)
@@ -71,7 +82,7 @@ fun GalleryView(addOrder: (OrderItem) -> Unit, state: State<PicturesState>) {
     var offset by remember {
         mutableStateOf(Offset.Zero)
     }
-
+    val mContext = LocalContext.current
     when (val data = state.value) {
         PicturesState.Loading -> Loading()
         is ProtocolError -> ErrorMessage(
@@ -83,7 +94,8 @@ fun GalleryView(addOrder: (OrderItem) -> Unit, state: State<PicturesState>) {
         is ApplicationError -> ErrorMessage(data.errors[0].message)
         is Success -> {
             var selectedImage by rememberSaveable { mutableStateOf<Picture?>(null) }
-            val mContext = LocalContext.current
+            var imageUri by rememberSaveable { mutableStateOf<Uri?>(null) }
+
             if (selectedImage != null) {
                 // Display full-screen image
                 Box {
@@ -110,6 +122,11 @@ fun GalleryView(addOrder: (OrderItem) -> Unit, state: State<PicturesState>) {
                         AsyncImage(
                             model = selectedImage!!.url,
                             contentDescription = null,
+                            onSuccess = { state ->
+                                val bitmap = drawableToBitmap(state.result.drawable)
+                                imageUri =
+                                    saveBitmapToMediaStore(mContext, bitmap, selectedImage!!.title)
+                            },
                             modifier = Modifier
                                 .fillMaxSize()
                                 .graphicsLayer {
@@ -120,25 +137,16 @@ fun GalleryView(addOrder: (OrderItem) -> Unit, state: State<PicturesState>) {
                                 }
                                 .transformable(transformableState)
                                 .clickable {
-                                    val picture = selectedImage
                                     selectedImage = null
                                     scale = 1f
                                     offset = Offset.Zero
-                                    startActivity(
-                                        mContext,
-                                        Intent(mContext, PictureDetailsActivity::class.java).apply {
-                                            putExtra(
-                                                "item",
-                                                picture
-                                            )
-                                        },
-                                        null
-                                    )
-                                } // Close on click
+                                } //Close on click
                         )
-                        Box(modifier = Modifier
-                            .padding(8.dp)
-                            .align(Alignment.TopEnd)) {
+                        Box(
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .align(Alignment.TopEnd)
+                        ) {
                             Icon(Icons.Filled.Close,
                                 "Close gallery item view",
                                 modifier = Modifier
@@ -153,7 +161,21 @@ fun GalleryView(addOrder: (OrderItem) -> Unit, state: State<PicturesState>) {
                                     })
                         }
                     }
+                    FloatingActionButton(
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(8.dp),
+                        onClick = {
+                            imageUri?.let {
+                                intentViewModel.updateUriResult(it)
+                                openPictureViaIntent(mContext, it)
+                            }
+                        },
+                    ) {
+                        Icon(Icons.Filled.AccountBox, "Floating action button.")
+                    }
                 }
+
             } else {
                 // Display the gallery
                 LazyVerticalStaggeredGrid(
@@ -196,4 +218,32 @@ fun GalleryItem(picture: Picture, onClick: () -> Unit) {
 
         }
     }
+}
+
+private fun openPictureViaIntent(
+    context: Context,
+    imageUri: Uri,
+) {
+    val intent = Intent(Intent.ACTION_VIEW).apply {
+        setDataAndType(imageUri, "image/*")
+        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    }
+    startActivity(context, intent, null)
+//    val wallpaperManager = WallpaperManager.getInstance(context)
+//    try {
+//        val isWallpaperSet = wallpaperManager.isSetWallpaperAllowed
+//        val mimeType = context.contentResolver.getType(imageUri)
+//        Log.d("LOL", "setWallpaperFromUri: isWallpaperSet= $isWallpaperSet")
+//        Log.d("LOL", "setWallpaperFromUri: imageUri schema= ${imageUri.scheme}")
+//        Log.d("LOL", "setWallpaperFromUri: mimeType= ${mimeType}")
+//        wallpaperManager.getCropAndSetWallpaperIntent(imageUri).also { intent ->
+//            startActivity(context, intent, null)
+//        }
+//    } catch (e: Exception) {
+//        Log.d("LOL", "setWallpaperFromUri: exc= ${e.message}")
+////        galleryViewModel.setErrorState(
+////            e.message ?: context.getString(R.string.wallpaper_setup_error)
+////        )
+//        wallpaperManager.setBitmap(bitmap)
+//    }
 }

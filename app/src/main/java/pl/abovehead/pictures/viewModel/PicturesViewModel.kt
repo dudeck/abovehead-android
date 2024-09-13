@@ -65,6 +65,20 @@ open class PicturesViewModel @Inject constructor() : ViewModel() {
             }
         }
     }
+
+    fun setErrorState(errorMessage: String) {
+        _state.value = ApplicationError(
+            listOf(
+                com.apollographql.apollo3.api.Error(
+                    message = errorMessage,
+                    null,
+                    null,
+                    null,
+                    null
+                )
+            )
+        )
+    }
 }
 
 class AstroPhotoViewModel : PicturesViewModel()

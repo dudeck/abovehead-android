@@ -4,6 +4,7 @@ package pl.abovehead
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,11 +21,15 @@ import pl.abovehead.ui.theme.AboveHeadTheme
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+    private val viewModel: IntentViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = Firebase.analytics
 
         setContent {
+//            val state = viewModel.state.collectAsStateWithLifecycle()
+//            state.value?.let { setWallpaperFromUri(it) }
             AboveHeadTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
