@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -189,7 +190,7 @@ fun GalleryView(
                             }
                         },
                     ) {
-                        Icon(Icons.Filled.AccountBox, "Floating action button.")
+                        Icon(Icons.Filled.Check, "Floating action button.")
                     }
                 }
 
