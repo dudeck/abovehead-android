@@ -32,6 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -44,11 +45,11 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import kotlinx.coroutines.launch
 import pl.abovehead.IntentViewModel
 import pl.abovehead.R
 import pl.abovehead.common.composables.ErrorMessage
 import pl.abovehead.common.composables.Loading
-import pl.abovehead.common.drawableToBitmap
 import pl.abovehead.common.saveBitmapToMediaStore
 import pl.abovehead.pictures.domain.Picture
 import pl.abovehead.pictures.viewModel.GalleryViewModel
@@ -83,6 +84,8 @@ fun GalleryView(
         mutableStateOf(Offset.Zero)
     }
     val mContext = LocalContext.current
+
+    val coroutineScope = rememberCoroutineScope()
     when (val data = state.value) {
         PicturesState.Loading -> Loading()
         is ProtocolError -> ErrorMessage(
@@ -122,10 +125,24 @@ fun GalleryView(
                         AsyncImage(
                             model = selectedImage!!.url,
                             contentDescription = null,
-                            onSuccess = { state ->
-                                val bitmap = drawableToBitmap(state.result.drawable)
-                                imageUri =
-                                    saveBitmapToMediaStore(mContext, bitmap, selectedImage!!.title)
+                            onSuccess = { _ ->
+                                coroutineScope.launch {
+                                    val bitmap =
+                                        selectedImage!!.url?.let {
+                                            intentViewModel.downloadWallPaper(
+                                                url = it
+                                            )
+                                        }
+                                    imageUri =
+                                        bitmap?.let {
+                                            saveBitmapToMediaStore(
+                                                mContext,
+                                                it,
+                                                selectedImage!!.title
+                                            )
+                                        }
+
+                                }
                             },
                             modifier = Modifier
                                 .fillMaxSize()

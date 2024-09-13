@@ -1,5 +1,6 @@
 package pl.abovehead.news.di
 
+import android.graphics.Bitmap
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,6 +15,7 @@ import pl.abovehead.news.network.NASAOkHttpRepository
 import pl.abovehead.news.network.NASARetrofitRepository
 import pl.abovehead.news.network.RssParser
 import pl.abovehead.news.network.RssParserImpl
+import pl.abovehead.news.network.WallpaperRepository
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -34,5 +36,9 @@ abstract class RssModule {
     @Binds
     @RetrofitRepository
     abstract fun bindRetrofitRepository(repository: NASARetrofitRepository): Repository<List<RssItem>>
+
+    @Binds
+    @RetrofitRepository
+    abstract fun bindWallpaperRepository(repository: WallpaperRepository): Repository<Bitmap?>
 
 }

@@ -9,7 +9,7 @@ class NASARetrofitRepository @Inject constructor(
     private val rssParser: RssParser,
 ) :
     Repository<@JvmSuppressWildcards List<RssItem>?> {
-    override suspend fun fetch(): List<RssItem> {
+    override suspend fun fetch(url: String): List<RssItem> {
 
         val items = retrofitService.rssFeeds().body()?.items ?: emptyList()
 

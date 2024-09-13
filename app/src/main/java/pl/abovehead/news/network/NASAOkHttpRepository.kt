@@ -15,10 +15,10 @@ class NASAOkHttpRepository @Inject constructor(
     private val okHttpClient: OkHttpClient,
     private val rssParser: RssParser,
 ) : Repository<@JvmSuppressWildcards List<RssItem>?> {
-    override suspend fun fetch(): List<RssItem> {
+    override suspend fun fetch(url: String): List<RssItem> {
         return withContext(Dispatchers.IO) {
             val request =
-                Request.Builder().url("https://www.nasa.gov/rss/dyn/breaking_news.rss").build()
+                Request.Builder().url(url).build()
             okHttpClient.newCall(request).execute().use { response ->
                 val inputStream: InputStream? = response.body?.byteStream()
                 val parser = XmlPullParserFactory.newInstance().newPullParser()

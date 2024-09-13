@@ -16,6 +16,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import pl.abovehead.IntentViewModel
 import pl.abovehead.NavControllerViewModel
 import pl.abovehead.R
 import pl.abovehead.cart.screens.CartScreen
@@ -40,6 +41,7 @@ fun NavigationHost(
     val navControllerViewModel = hiltViewModel<NavControllerViewModel>()
     val postViewModel = hiltViewModel<PostViewModel>()
     val orderViewModel = hiltViewModel<OrderViewModel>()
+    val intentViewModel = hiltViewModel<IntentViewModel>()
     NavHost(
         navController = navController,
         startDestination = Routes.News.route,
@@ -52,7 +54,7 @@ fun NavigationHost(
             )
         }
         composable(Routes.Gallery.route) {
-            GalleryScreen(orderViewModel::addOrder)
+            GalleryScreen(intentViewModel)
         }
 
         composable(Routes.Pictures.route) {
