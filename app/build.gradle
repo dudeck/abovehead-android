@@ -16,7 +16,7 @@ android {
         applicationId "pl.abovehead"
         minSdk 24
         targetSdk 34
-        versionCode 21
+        versionCode 22
         versionName "1.0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -84,6 +84,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.compose.material3:material3'
     implementation 'androidx.compose.ui:ui'
+    implementation "androidx.compose.material:material-icons-extended:1.7.1"
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'

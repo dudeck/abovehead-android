@@ -18,9 +18,8 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -171,7 +170,7 @@ fun GalleryView(
                                     .background(
                                         MaterialTheme.colorScheme.background, CircleShape
                                     )
-                                    .padding(8.dp)
+                                    .padding(16.dp)
                                     .clickable {
                                         selectedImage = null
                                         scale = 1f
@@ -181,8 +180,8 @@ fun GalleryView(
                     }
                     FloatingActionButton(
                         modifier = Modifier
-                            .align(Alignment.BottomStart)
-                            .padding(8.dp),
+                            .align(Alignment.BottomEnd)
+                            .padding(vertical = 48.dp, horizontal = 16.dp),
                         onClick = {
                             imageUri?.let {
                                 intentViewModel.updateUriResult(it)
@@ -190,7 +189,7 @@ fun GalleryView(
                             }
                         },
                     ) {
-                        Icon(Icons.Filled.Check, "Floating action button.")
+                        Icon(Icons.Filled.Save, "Floating action button.")
                     }
                 }
 
