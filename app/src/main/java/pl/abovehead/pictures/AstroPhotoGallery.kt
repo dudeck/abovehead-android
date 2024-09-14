@@ -161,7 +161,7 @@ fun GalleryView(
                         )
                         Box(
                             modifier = Modifier
-                                .padding(8.dp)
+                                .padding(16.dp)
                                 .align(Alignment.TopEnd)
                         ) {
                             Icon(Icons.Filled.Close,
@@ -170,7 +170,7 @@ fun GalleryView(
                                     .background(
                                         MaterialTheme.colorScheme.background, CircleShape
                                     )
-                                    .padding(16.dp)
+                                    .padding(8.dp)
                                     .clickable {
                                         selectedImage = null
                                         scale = 1f
