@@ -18,6 +18,15 @@
         android:theme="@style/Theme.AboveHead"
         tools:targetApi="34">
 
+        <property
+            android:name="android.adservices.AD_SERVICES_CONFIG"
+            android:resource="@xml/gma_ad_services_config"
+            tools:replace="android:resource" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9991692736822332~5246602255"/>
+
         <provider
             android:name="pl.abovehead.common.MyFileProvider"
             android:authorities="pl.abovehead.fileprovider"

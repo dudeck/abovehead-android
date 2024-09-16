@@ -10,9 +10,11 @@ import androidx.compose.foundation.gestures.transformable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -25,6 +27,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -38,16 +41,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
 import pl.abovehead.IntentViewModel
 import pl.abovehead.R
+import pl.abovehead.common.AdViewModel
 import pl.abovehead.common.composables.ErrorMessage
 import pl.abovehead.common.composables.Loading
 import pl.abovehead.common.saveBitmapToMediaStore
@@ -62,19 +68,21 @@ import pl.abovehead.pictures.viewModel.PicturesState.Success
 @Composable
 fun AstroPhotoGallery(
     galleryViewModel: GalleryViewModel,
-    intentViewModel: IntentViewModel
+    intentViewModel: IntentViewModel,
+    adViewModel: AdViewModel
 ) {
     val state = galleryViewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         galleryViewModel.fetchPictures(PictureType.Gallery)
     }
-    GalleryView(state = state, intentViewModel)
+    GalleryView(state = state, intentViewModel, adViewModel)
 }
 
 @Composable
 fun GalleryView(
     state: State<PicturesState>,
     intentViewModel: IntentViewModel,
+    adViewModel: AdViewModel
 ) {
 
     var scale by remember {
@@ -86,127 +94,138 @@ fun GalleryView(
     val mContext = LocalContext.current
 
     val coroutineScope = rememberCoroutineScope()
-    when (val data = state.value) {
-        PicturesState.Loading -> Loading()
-        is ProtocolError -> ErrorMessage(
-            stringResource(
-                R.string.general_error_message,
-            )
+    Column(modifier = Modifier.fillMaxSize()) {
+        AndroidView(
+            modifier = Modifier.fillMaxWidth(),
+            factory = { context ->
+                adViewModel.getAdView(context) // Get the AdView from the ViewModel
+            },
+            update = { adView ->
+                // Update the AdView if needed
+            }
         )
+        when (val data = state.value) {
+            PicturesState.Loading -> Loading()
+            is ProtocolError -> ErrorMessage(
+                stringResource(
+                    R.string.general_error_message,
+                )
+            )
 
-        is ApplicationError -> ErrorMessage(data.errors[0].message)
-        is Success -> {
-            var selectedImage by rememberSaveable { mutableStateOf<Picture?>(null) }
-            var imageUri by rememberSaveable { mutableStateOf<Uri?>(null) }
+            is ApplicationError -> ErrorMessage(data.errors[0].message)
+            is Success -> {
+                var selectedImage by rememberSaveable { mutableStateOf<Picture?>(null) }
+                var imageUri by rememberSaveable { mutableStateOf<Uri?>(null) }
 
-            if (selectedImage != null) {
-                // Display full-screen image
-                Box {
-                    BoxWithConstraints(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                        //            .aspectRatio(1280f / 959f)
-                    ) {
-                        val transformableState =
-                            rememberTransformableState { zoomChange, panChange, rotationChange ->
-                                scale = (scale * zoomChange).coerceIn(1f, 5f)
-
-                                val extraWidth = (scale - 1) * constraints.maxWidth
-                                val extraHeight = (scale - 1) * constraints.maxHeight
-
-                                val maxX = extraWidth / 2
-                                val maxY = extraHeight / 2
-
-                                offset = Offset(
-                                    x = (offset.x + scale * panChange.x).coerceIn(-maxX, maxX),
-                                    y = (offset.y + scale * panChange.y).coerceIn(-maxY, maxY),
-                                )
-                            }
-                        AsyncImage(
-                            model = selectedImage!!.url,
-                            contentDescription = null,
-                            onSuccess = { _ ->
-                                coroutineScope.launch {
-                                    val bitmap =
-                                        selectedImage!!.url?.let {
-                                            intentViewModel.downloadWallPaper(
-                                                url = it
-                                            )
-                                        }
-                                    imageUri =
-                                        bitmap?.let {
-                                            saveBitmapToMediaStore(
-                                                mContext,
-                                                it,
-                                                selectedImage!!.title
-                                            )
-                                        }
-
-                                }
-                            },
+                if (selectedImage != null) {
+                    // Display full-screen image
+                    Box {
+                        BoxWithConstraints(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .graphicsLayer {
-                                    scaleX = scale
-                                    scaleY = scale
-                                    translationX = offset.x
-                                    translationY = offset.y
-                                }
-                                .transformable(transformableState)
-                                .clickable {
-                                    selectedImage = null
-                                    scale = 1f
-                                    offset = Offset.Zero
-                                } //Close on click
-                        )
-                        Box(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .align(Alignment.TopEnd)
+                                .fillMaxWidth()
+                            //            .aspectRatio(1280f / 959f)
                         ) {
-                            Icon(Icons.Filled.Close,
-                                "Close gallery item view",
-                                modifier = Modifier
-                                    .background(
-                                        MaterialTheme.colorScheme.background, CircleShape
+                            val transformableState =
+                                rememberTransformableState { zoomChange, panChange, rotationChange ->
+                                    scale = (scale * zoomChange).coerceIn(1f, 5f)
+
+                                    val extraWidth = (scale - 1) * constraints.maxWidth
+                                    val extraHeight = (scale - 1) * constraints.maxHeight
+
+                                    val maxX = extraWidth / 2
+                                    val maxY = extraHeight / 2
+
+                                    offset = Offset(
+                                        x = (offset.x + scale * panChange.x).coerceIn(-maxX, maxX),
+                                        y = (offset.y + scale * panChange.y).coerceIn(-maxY, maxY),
                                     )
-                                    .padding(8.dp)
+                                }
+                            AsyncImage(
+                                model = selectedImage!!.url,
+                                contentDescription = null,
+                                onSuccess = { _ ->
+                                    coroutineScope.launch {
+                                        val bitmap =
+                                            selectedImage!!.url?.let {
+                                                intentViewModel.downloadWallPaper(
+                                                    url = it
+                                                )
+                                            }
+                                        imageUri =
+                                            bitmap?.let {
+                                                saveBitmapToMediaStore(
+                                                    mContext,
+                                                    it,
+                                                    selectedImage!!.title
+                                                )
+                                            }
+
+                                    }
+                                },
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .graphicsLayer {
+                                        scaleX = scale
+                                        scaleY = scale
+                                        translationX = offset.x
+                                        translationY = offset.y
+                                    }
+                                    .transformable(transformableState)
                                     .clickable {
                                         selectedImage = null
                                         scale = 1f
                                         offset = Offset.Zero
-                                    })
+                                    } //Close on click
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .align(Alignment.TopEnd)
+                            ) {
+                                Icon(Icons.Filled.Close,
+                                    "Close gallery item view",
+                                    modifier = Modifier
+                                        .background(
+                                            MaterialTheme.colorScheme.background, CircleShape
+                                        )
+                                        .padding(8.dp)
+                                        .clickable {
+                                            selectedImage = null
+                                            scale = 1f
+                                            offset = Offset.Zero
+                                        })
+                            }
+                        }
+                        FloatingActionButton(
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(vertical = 48.dp, horizontal = 16.dp),
+                            onClick = {
+                                imageUri?.let {
+                                    intentViewModel.updateUriResult(it)
+                                    openPictureViaIntent(mContext, it)
+                                }
+                            },
+                        ) {
+                            Icon(Icons.Filled.Save, "Floating action button.")
                         }
                     }
-                    FloatingActionButton(
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(vertical = 48.dp, horizontal = 16.dp),
-                        onClick = {
-                            imageUri?.let {
-                                intentViewModel.updateUriResult(it)
-                                openPictureViaIntent(mContext, it)
-                            }
-                        },
-                    ) {
-                        Icon(Icons.Filled.Save, "Floating action button.")
-                    }
-                }
 
-            } else {
-                // Display the gallery
-                LazyVerticalStaggeredGrid(
-                    columns = StaggeredGridCells.Adaptive(150.dp),
-                    verticalItemSpacing = 4.dp,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    contentPadding = PaddingValues(8.dp)
-                ) {
-                    val pictures = data.pictures.filter { it.url?.isNotBlank() == true }
-                    val count = pictures.size
-                    items(count) { index ->
-                        GalleryItem(
-                            picture = pictures[index]
-                        ) { selectedImage = pictures[index] }
+                } else {
+                    // Display the gallery
+                    LazyVerticalStaggeredGrid(
+                        columns = StaggeredGridCells.Adaptive(150.dp),
+                        verticalItemSpacing = 4.dp,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        contentPadding = PaddingValues(8.dp)
+                    ) {
+                        val pictures = data.pictures.filter { it.url?.isNotBlank() == true }
+                        val count = pictures.size
+                        items(count) { index ->
+                            GalleryItem(
+                                picture = pictures[index]
+                            ) { selectedImage = pictures[index] }
+                        }
                     }
                 }
             }
