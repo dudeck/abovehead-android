@@ -72,9 +72,7 @@ fun PictureDetails(item: Picture?, modifier: Modifier = Modifier) {
                 .fillMaxSize()
                 .padding(8.dp),
             model = item?.url ?: "",
-//            placeholder = painterResource(R.drawable.ic_launcher_background),
-//                error = painterResource(com.google.android.material.R.drawable.m3_password_eye),
-            contentDescription = "Mission patch"
+            contentDescription = item?.title
         )
         AndroidView(
             modifier = modifier,

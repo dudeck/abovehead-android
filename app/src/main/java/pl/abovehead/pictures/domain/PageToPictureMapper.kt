@@ -31,7 +31,7 @@ class PageToPictureMapper {
         return substr
     }
 
-    suspend fun mapList(page: GetAstrophotosQuery.Page): List<Picture> {
+    suspend fun mapList(page: GetAstrophotosQuery.Page, shouldCreateThumbnail: Boolean = false): List<Picture> {
         val list = page.blocks.drop(1)
         val elements = splitListByDelimiter(list)
 
@@ -48,7 +48,7 @@ class PageToPictureMapper {
                 description = item.filter { it?.tagName == "p" && it.innerHtml?.contains("<a href") == false }
                     .fold("") { acc, element -> acc + element?.innerHtml },
                 url = url,
-                thumbnailUrl = if (urlFileExists(thumbnailUrl1)) thumbnailUrl1 else thumbnailUrl2,
+                thumbnailUrl = if (shouldCreateThumbnail) if (urlFileExists(thumbnailUrl1)) thumbnailUrl1 else thumbnailUrl2 else "",
             )
         }
 

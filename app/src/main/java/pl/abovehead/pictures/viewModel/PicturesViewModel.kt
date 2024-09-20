@@ -58,7 +58,7 @@ open class PicturesViewModel @Inject constructor() : ViewModel() {
                 if (response.hasErrors()) {
                     ApplicationError(response.errors!!)
                 } else {
-                    Success(PageToPictureMapper().mapList(response.data!!.page!!))
+                    Success(PageToPictureMapper().mapList(response.data!!.page!!, pictureType == PictureType.Gallery))
                 }
             } catch (e: ApolloException) {
                 ProtocolError(e)
